@@ -55,7 +55,7 @@
 </p> -->
 
 
-This is the README file for Lua to Python Project, which is homework 1 done by Group 7 for the course Automated Software Engineering (CSC591)
+This is the README file for Lua to Python Project, which is homework done by Group 7 for the course Automated Software Engineering (CSC591)
 
 ## Requirements
 
