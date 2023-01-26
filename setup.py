@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(
-    name='ASE-Group7-HW',
+    name='ASE-HW-Group7',
     version='0.1',
     description='Github repository for ASE HWs',
     author='Palash Rathod',
