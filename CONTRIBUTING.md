@@ -2,7 +2,7 @@
 
 Thank you for considering contributing to the Lua to Python Project! We welcome contributions of all kinds, including bug reports, code, documentation, and more.
 
-Please do go through the [Code of Conduct](https://github.com/palash27/ASE-Group7-HW/blob/main/CODE_OF_CONDUCT.md) for this project
+Please do go through the [Code of Conduct](https://github.com/palash27/ASE-HW-Group7/blob/main/CODE_OF_CONDUCT.md) for this project
 
 ## Reporting Bugs
 
@@ -18,7 +18,7 @@ The Lua to Python Project adheres to the [PEP 8](https://www.python.org/dev/peps
 
 ## License
 
-By contributing to the Lua to Python Converter project, you agree to license your contributions under the [MIT License](https://github.com/palash27/ASE-Group7-HW/blob/main/LICENSE.md).
+By contributing to the Lua to Python Converter project, you agree to license your contributions under the [MIT License](https://github.com/palash27/ASE-HW-Group7/blob/main/LICENSE.md).
 
 
 Thank you for your interest in the Lua to Python Project, and we look forward to reviewing your contributions!
