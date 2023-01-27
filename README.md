@@ -2,12 +2,12 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Build Status](https://app.travis-ci.com/palash27/ASE-Group7-HW.svg?branch=main)](https://app.travis-ci.com/palash27/ASE-Group7-HW)
+[![Build Status](https://app.travis-ci.com/palash27/ASE-HW-Group7.svg?branch=main)](https://app.travis-ci.com/palash27/ASE-HW-Group7)
 [![codecov](https://codecov.io/gh/palash27/ASE-Group7-HW/branch/main/graph/badge.svg?token=9ZXVRIPHLO)](https://codecov.io/gh/palash27/ASE-Group7-HW)
-![github workflow](https://github.com/palash27/ASE-Group7-HW/actions/workflows/unit_test.yml/badge.svg)
-![github workflow](https://github.com/palash27/ASE-Group7-HW/actions/workflows/style_checker.yml/badge.svg)
-![github workflow](https://github.com/palash27/ASE-Group7-HW/actions/workflows/syntax_checker.yml/badge.svg)
-![github workflow](https://github.com/palash27/ASE-Group7-HW/actions/workflows/close_as_a_feature.yml/badge.svg) -->
+![github workflow](https://github.com/palash27/ASE-HW-Group7/actions/workflows/unit_test.yml/badge.svg)
+![github workflow](https://github.com/palash27/ASE-HW-Group7/actions/workflows/style_checker.yml/badge.svg)
+![github workflow](https://github.com/palash27/ASE-HW-Group7/actions/workflows/syntax_checker.yml/badge.svg)
+![github workflow](https://github.com/palash27/ASE-HW-Group7/actions/workflows/close_as_a_feature.yml/badge.svg) -->
 <!--Badges-->
 
 ![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
