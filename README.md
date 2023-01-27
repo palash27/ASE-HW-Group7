@@ -7,6 +7,7 @@
 <!--Badges-->
 
 ![GitHub](https://img.shields.io/badge/Language-Python-blue.svg)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/palash27/ASE-HW-Group7/python-app.yml)
 
 [![GitHub](https://img.shields.io/github/license/palash27/ASE-HW-Group7)](https://github.com/palash27/ASE-HW-Group7/blob/main/LICENSE.md)
 <a href="https://github.com/palash27/ASE-HW-Group7/fork" target="blank">
