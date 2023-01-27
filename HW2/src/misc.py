@@ -26,25 +26,37 @@ ACTIONS:
 
 def rint(lo, hi):
     """
-    Rounds to integer
+    a integer lo..hi-1
     """
     return math.floor(0.5 + rand(lo, hi))
 
 def rand(lo, hi, Seed):
+    """
+    a float "x" lo<=x < x
+    """
     lo, hi = lo or 0, hi or 1
     Seed = (16807 * Seed) % 2147483647
     return lo + (hi-lo) * Seed / 2147483647
 
 def rnd(n, nPlaces=3):
+    """
+    return `n` rounded to `nPlaces`
+    """
     mult = 10 ** (nPlaces)
     return math.floor(n * mult + 0.5) / mult
 
 #Lists
 def push(t, x):
+    """
+    push `x` to end of list; return `x` 
+    """
     t[1 + len(t)] = x
     return x
  
 def kap(t, fun):
+    """
+    map function `fun`(k,v) over list (skip nil results) 
+    """
     u = {}
     for k, v in t.items():
         v, k = fun(k ,v)
@@ -53,6 +65,9 @@ def kap(t, fun):
 #strings
 
 def coerce(s):
+    """
+    return int or float or bool or string from `s`
+    """
     def fun(s1):
         if s1 == "true":
             return True
@@ -68,10 +83,16 @@ def coerce(s):
 
 
 def oo(t):
+    """
+    print `t` then return it
+    """
     print(o(t))
     return t
 
 def o(t):
+    """
+    convert `t` to a string. sort named keys. 
+    """
     keys = list(t.keys())
     keys = sorted(keys)
     sorted_t = {i: t[i] for i in keys }
@@ -82,12 +103,18 @@ def o(t):
     return output
 
 def settings(s):
+    """
+    parse help string to extract a table of options
+    """
     t = {}
     for k,v in re.findall("[-][\S]+[\s]+[-][-]([\S]+)[^\n]+= ([\S]+)", s): 
         t[k] = coerce(v)
     return t
 
 def cli(command_line_args):
+    """
+    update key,vals in `t` from command-line flags
+    """
     options = {}
     options = settings(help)
     for k, v in options.items():
@@ -105,6 +132,9 @@ def cli(command_line_args):
     return options
 
 def csv(file_name, fun):
+    """
+    call `fun` on rows (after coercing cell text)
+    """
     sep = "([^" + "\," + "]+"
     with open(file_name) as file_obj:
         reader_obj = reader(file_obj)
