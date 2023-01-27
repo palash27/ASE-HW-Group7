@@ -2,9 +2,10 @@ import re
 from src.Sym import *
 from src.Num import *
 from src.misc import *
+
 class Cols:
     """
-    This is Cols
+    Factory for managing a set of NUMs or SYMs
     """
     def __init__(self, t):
         self.names = t
@@ -31,6 +32,9 @@ class Cols:
                     push(self.x, col)
     
     def add(self, row):
+        """
+        update the (not skipped) columns with details from `row`
+        """
         for _,col in self.x.items():
             col.add(float(row.cells[col.at]))
             # for _,col in t.items():
