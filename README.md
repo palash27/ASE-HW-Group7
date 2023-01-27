@@ -1,6 +1,5 @@
 # ASE-Group7-HW
 
-<!-- [![DOI](https://zenodo.org/badge/404911045.svg)](https://zenodo.org/badge/latestdoi/404911045)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Build Status](https://app.travis-ci.com/palash27/ASE-Group7-HW.svg?branch=main)](https://app.travis-ci.com/palash27/ASE-Group7-HW)
