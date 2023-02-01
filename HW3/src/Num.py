@@ -48,3 +48,16 @@ class Num:
             return x
         else:
             return rnd(x,n)
+
+    def norm(self,n):
+        return n == '?' and n or (n-self.lo)/(self.hi-self.lo+1E-32)
+
+    def dist(self,n1,n2):
+        if n1=='?' and n2=='?':
+            return 1
+        n1,n2 = self.norm(n1), self.norm(n2)
+        if n1=='?':
+            n1 = n2<0.5 and 1 or 0
+        if n2=='?':
+            n2 = n1<0.5 and 1 or 0
+        return abs(n1 - n2)
