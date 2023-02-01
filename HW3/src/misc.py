@@ -52,7 +52,18 @@ def push(t, x):
     """
     t[1 + len(t)] = x
     return x
- 
+
+def map(t,fun):
+    u = {}
+    for k,v in t.items():
+        if 'tuple' in str(fun(v)):
+            v,k = fun(v)
+            u[k] = v
+        else:
+            v = fun(k,v)
+            u[1 + len(u)] = v
+    return u
+    
 def kap(t, fun):
     """
     map function `fun`(k,v) over list (skip nil results) 
