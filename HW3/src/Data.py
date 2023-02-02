@@ -103,11 +103,7 @@ class Data:
         return node
 
         """
-
     def sway(self, rows, min_var, cols, above):
-        """
-        # t; returns best half, recursively
-        """
         rows = rows or self.rows
         min_var = min_var or (len(rows))**min_var
         cols = cols or self.cols.x
@@ -118,7 +114,6 @@ class Data:
                 left, right, node.A, node.B = right, left, node.B, node.A
             node.left = self.sway(left, min_var, cols, node.A)
         return node
-
         """
 
         # x_mid = {}
