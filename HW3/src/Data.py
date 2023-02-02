@@ -101,7 +101,21 @@ class Data:
             node['right'] = self.cluster(right, min, cols, node['B'])
         
         return node
-        
+
+        """
+    def sway(self, rows, min_var, cols, above):
+        rows = rows or self.rows
+        min_var = min_var or (len(rows))**min_var
+        cols = cols or self.cols.x
+        node = {"data": self.clone(rows)}
+        if len(rows) > 2*min_var:
+            left, right, node.A, node.B, node.mid = self.half(rows,cols,above)
+            if self.better(node.B,node.A):
+                left, right, node.A, node.B = right, left, node.B, node.A
+            node.left = self.sway(left, min_var, cols, node.A)
+        return node
+        """
+
         # x_mid = {}
         # if what == "mid":
         #     x_mid[cols.txt] = cols.mid()
