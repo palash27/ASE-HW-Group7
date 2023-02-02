@@ -28,7 +28,7 @@ class Data:
         else:
             self.cols = Cols(t)     # here, we create "self.cols" from the first row
         
-    def clone(self,init = {},data):
+    def clone(self,data,init = {}):
         data = Data(self.cols['names'])
         
         def fun(x):
