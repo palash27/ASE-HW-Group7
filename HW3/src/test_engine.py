@@ -70,8 +70,10 @@ def STATS(the):
             print(k, "   ", "mid", "   ", o(data.stats("mid", cols, 2)))
             print("", "    ", "div", "   ", o(data.stats("div", cols, 2)))
         
-    
-
+def CLONE(the):
+    data1 = Data(str(the['file']))
+    data2 = data1.clone(data1)
+    return len(data1.rows) == len(data2.rows) and len(data1.cols.x) == len(data2.cols.x) and int(data1.cols.x[1].at) == int(data2.cols.x[1].at) and int(data1.cols.y[1].w) == int(data2.cols.y[1].w)
 
 
 eg("sym", "check syms", SYM)
@@ -81,6 +83,7 @@ eg("rand", "generate, reset, regenerate same", RAND)
 eg("csv", "read from csv", CSV)
 eg("data", "read DATA csv", DATA)
 eg("stats", "stats from DATA", STATS)
+eg("clone", "duplicate structure", CLONE)
 
 
 
