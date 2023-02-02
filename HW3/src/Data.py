@@ -29,14 +29,17 @@ class Data:
             self.cols = Cols(t)     # here, we create "self.cols" from the first row
         
     def clone(self,data,init = {}):
-        data = Data(self.cols['names'])
+        """
+        return a DATA with same structure as `ii.
+        """
+        data = Data(self.cols.names)
         
         def fun(x):
             data.add(x)
            
         map(init,fun)
         return data
-        
+    
     def stats(self, what, cols, nPlaces):
         """
         reports mid or div of cols (defaults to self.cols.y)
