@@ -39,7 +39,7 @@ class Data:
            
         map(init,fun)
         return data
-    
+        
     def stats(self, what, cols, nPlaces):
         """
         reports mid or div of cols (defaults to self.cols.y)
@@ -54,7 +54,54 @@ class Data:
             for _, col in cols.items():
                 y_div[col.txt] = col.rnd(col.div(), 2)
             return y_div
-
+    
+    def better(self,row1,row2,s1,s2,ys,x,y):
+        """
+        true if `row1` dominates
+        """
+        s1,s2,ys = 0,0,self.cols.y
+        x = y = None
+        
+        for _,col in ys.items():
+            x  = col.norm(row1.cells[col.at])
+            y  = col.norm(row2.cells[col.at])
+            s1 = s1 - math.exp(col.w * (x-y)/len(ys))
+            s2 = s2 - math.exp(col.w * (y-x)/len(ys))
+        return s1/len(ys) < s2/len(ys)
+    
+    def dist(self,row1,row2,n,d,cols = None):
+        """
+        returns 0..1 distance `row1` to `row2`
+        """
+        n,d = 0,0
+        if cols == None:
+            cols = self.cols.x
+        
+        for _,col in pairs(cols):
+            n = n + 1
+            d = d + col.dist(row1.cells[col.at], row2.cells[col.at])^the.p
+        
+        return (d/n)^(1/the.p)
+    
+    def cluster(self,rows = None,min = None,cols = None,above = None):
+        """
+        returns `rows`, recursively halved
+        """
+        if rows == None:
+            rows = self.rows
+        if min == None:
+            min = len(rows)^the.min
+        if cols == None:
+            cols = self.cols
+        node = {}
+        node["data"] = self.clone(rows)
+        if len(rows) > 2*min:
+            left, right, node['A'], node['B'], node['mid'] = self.half(rows,cols,above)
+            node['left']  = self.cluster(left,  min, cols, node['A'])
+            node['right'] = self.cluster(right, min, cols, node['B'])
+        
+        return node
+        
         # x_mid = {}
         # if what == "mid":
         #     x_mid[cols.txt] = cols.mid()
