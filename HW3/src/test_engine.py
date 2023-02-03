@@ -75,12 +75,12 @@ def CLONE(the):
     data2 = data1.clone(data1.rows)
     return len(data1.rows) == len(data2.rows) and len(data1.cols.x) == len(data2.cols.x) and int(data1.cols.x[1].at) == int(data2.cols.x[1].at) and int(data1.cols.y[1].w) == int(data2.cols.y[1].w)
 
-# def AROUND(the):
-#     data = Data(str(the['file']))
-#     print(0,0,o(data.rows[1].cells))
-#     for n,t in data.around(data.rows[1]).items():
-#         if n % 50 == 0:
-#             print(n, rnd(t.dist,2) ,o(t.row.cells))
+def AROUND(the):
+    data = Data(str(the['file']))
+    # print(0, 0, o(data.rows[1].cells))
+    for i, t in enumerate(data.around(data.rows[1], the)):
+        if i%50 == 0:
+            print(i, t['dist'], (t['row'].cells))
 
 # def CLUSTERING_LEVEL_1(the):
 #     data = Data(str(the['file']))
@@ -106,7 +106,7 @@ eg("csv", "read from csv", CSV)
 eg("data", "read DATA csv", DATA)
 eg("stats", "stats from DATA", STATS)
 eg("clone", "duplicate structure", CLONE)
-# eg("around", "sorting nearest neighbors", AROUND)
+eg("around", "sorting nearest neighbors", AROUND)
 # eg("half", "1-level bi-clustering",CLUSTERING_LEVEL_1)
 # eg("cluster", "N-level bi-clustering",CLUSTERING_LEVEL_N)
 # eg("optimize", "semi-supervised optimization",OPTIMIZATION)
@@ -116,7 +116,7 @@ def test(the):
     for what, fun in egs.items():
         if the['go'] == "all" or what == the['go']:
             random.seed = the["seed"]
-            if egs[what] == "SYM" or egs[what] == "NUM" or egs[what] == "CSV":
+            if egs[what] == "SYM" or egs[what] == "NUM" or egs[what] == "CSV" or egs[what] == "CLONE":
                 if egs[what]() == False:
                     fails += 1
                     print("❌ fail:",what)
