@@ -69,34 +69,34 @@ def STATS(the):
     for k,cols in dict.items():
             print(k, "   ", "mid", "   ", o(data.stats("mid", cols, 2)))
             print("", "    ", "div", "   ", o(data.stats("div", cols, 2)))
-        
+
 def CLONE(the):
     data1 = Data(str(the['file']))
     data2 = data1.clone(data1)
     return len(data1.rows) == len(data2.rows) and len(data1.cols.x) == len(data2.cols.x) and int(data1.cols.x[1].at) == int(data2.cols.x[1].at) and int(data1.cols.y[1].w) == int(data2.cols.y[1].w)
 
-def AROUND(the):
-    data = Data(str(the['file']))
-    print(0,0,o(data.rows[1].cells))
-    for n,t in data.around(data.rows[1]).items():
-        if n % 50 == 0:
-            print(n, rnd(t.dist,2) ,o(t.row.cells))
+# def AROUND(the):
+#     data = Data(str(the['file']))
+#     print(0,0,o(data.rows[1].cells))
+#     for n,t in data.around(data.rows[1]).items():
+#         if n % 50 == 0:
+#             print(n, rnd(t.dist,2) ,o(t.row.cells))
 
-def CLUSTERING_LEVEL_1(the):
-    data = Data(str(the['file']))
-    left,right,A,B,mid,c = data.half() 
-    print(len(left),len(right),len(data.rows))
-    print(o(A.cells),c)
-    print(o(mid.cells)) 
-    print(o(B.cells))
+# def CLUSTERING_LEVEL_1(the):
+#     data = Data(str(the['file']))
+#     left,right,A,B,mid,c = data.half() 
+#     print(len(left),len(right),len(data.rows))
+#     print(o(A.cells),c)
+#     print(o(mid.cells)) 
+#     print(o(B.cells))
     
-def CLUSTERING_LEVEL_N(the):
-    data = Data(str(the['file']))
-    show(data.cluster(),"mid",data.cols.y,1)
+# def CLUSTERING_LEVEL_N(the):
+#     data = Data(str(the['file']))
+#     show(data.cluster(),"mid",data.cols.y,1)
 
-def OPTIMIZATION(the):
-    data = Data(str(the['file']))
-    show(data.sway(),"mid",data.cols.y,1)   
+# def OPTIMIZATION(the):
+#     data = Data(str(the['file']))
+#     show(data.sway(),"mid",data.cols.y,1)   
 
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
@@ -106,10 +106,10 @@ eg("csv", "read from csv", CSV)
 eg("data", "read DATA csv", DATA)
 eg("stats", "stats from DATA", STATS)
 eg("clone", "duplicate structure", CLONE)
-eg("around", "sorting nearest neighbors", AROUND)
-eg("half", "1-level bi-clustering",CLUSTERING_LEVEL_1)
-eg("cluster", "N-level bi-clustering",CLUSTERING_LEVEL_N)
-eg("optimize", "semi-supervised optimization",OPTIMIZATION)
+# eg("around", "sorting nearest neighbors", AROUND)
+# eg("half", "1-level bi-clustering",CLUSTERING_LEVEL_1)
+# eg("cluster", "N-level bi-clustering",CLUSTERING_LEVEL_N)
+# eg("optimize", "semi-supervised optimization",OPTIMIZATION)
 
 def test(the):
     fails = 0
