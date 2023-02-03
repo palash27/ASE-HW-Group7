@@ -49,15 +49,25 @@ class Num:
         else:
             return rnd(x,n)
 
-    def norm(self,n):
-        return n == '?' and n or (n-self.lo)/(self.hi-self.lo+1E-32)
+    def norm(self, n):
+        if n == "?":
+            return n
+        else:
+            return (float(n) - self.lo)/(self.hi - self.lo + 1e-32)
 
-    def dist(self,n1,n2):
-        if n1=='?' and n2=='?':
+    def dist(self, n1, n2):
+        if n1  == "?" and n2 == "?":
             return 1
-        n1,n2 = self.norm(n1), self.norm(n2)
-        if n1=='?':
-            n1 = n2<0.5 and 1 or 0
-        if n2=='?':
-            n2 = n1<0.5 and 1 or 0
+        n1 = self.norm(n1)
+        n2 = self.norm(n2)
+        if n1 == "?":
+            if n2 < 0.5:
+                n1 = 1
+            else:
+                n1 = 0
+        if n2 == "?":
+            if n1 < 0.5:
+                n2 = 1
+            else:
+                n2 = 0
         return abs(n1 - n2)
