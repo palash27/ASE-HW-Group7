@@ -50,6 +50,27 @@ class Data:
             for _, col in cols.items():
                 y_div[col.txt] = col.rnd(col.div(), 2)
             return y_div
+        
+    def dist(self, row1, row2, the, cols=None):
+        n, d = 0, 0 
+        if cols is None:
+            cols = self.cols.x
+        p = the["p"]
+        for _, col in self.cols.x.items():
+            n = n + 1
+            d = d + (col.dist(row1.cells[col.at], row2.cells[col.at])) ** p
+        return (d/n)**(1/p)
+    
+    def around(self, row1 ,the, rows=None):
+        if rows == None:
+            rows = self.rows
+        def fun(row2):
+            return {"row": row2, "dist": rnd(self.dist(row1, row2, the),2)}
+        l = []
+        for _, v in rows.items():
+            l.append(fun(v))
+        sorted_list = sorted(l, key=lambda x:x['dist'])
+        return sorted_list
     
     def better(self,row1,row2,s1,s2,ys,x,y):
         """
@@ -65,21 +86,6 @@ class Data:
             s2 = s2 - math.exp(col.w * (y-x)/len(ys))
         return s1/len(ys) < s2/len(ys)
     
-    def dist(self,row1,row2,n,d,cols = None):
-        """
-        returns 0..1 distance `row1` to `row2`
-        """
-        n,d = 0,0
-        if cols == None:
-            cols = self.cols.x
-        
-        for _,col in pairs(cols):
-            n = n + 1
-            #d = d + col.dist(row1.cells[col.at], row2.cells[col.at])^the.p
-            d = d + col.dist(row1.cells[col.at], row2.cells[col.at])^2
-        
-        #return (d/n)^(1/the.p)
-        return (d/n)^(1/2)
     
     def cluster(self,rows = None,min = None,cols = None,above = None):
         """
