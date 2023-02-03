@@ -72,7 +72,7 @@ def STATS(the):
 
 def CLONE(the):
     data1 = Data(str(the['file']))
-    data2 = data1.clone(data1)
+    data2 = data1.clone(data1.rows)
     return len(data1.rows) == len(data2.rows) and len(data1.cols.x) == len(data2.cols.x) and int(data1.cols.x[1].at) == int(data2.cols.x[1].at) and int(data1.cols.y[1].w) == int(data2.cols.y[1].w)
 
 # def AROUND(the):
