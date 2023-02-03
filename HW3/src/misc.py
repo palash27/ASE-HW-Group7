@@ -67,12 +67,11 @@ def push(t, x):
 def map(t,fun):
     u = {}
     for k,v in t.items():
-        if 'tuple' in str(fun(v)):
-            v,k = fun(v)
-            u[k] = v
+        v,k = fun(v)
+        if k is None:
+            u[1+len(u)] = v
         else:
-            v = fun(k,v)
-            u[1 + len(u)] = v
+            u[k] = v
     return u
     
 def kap(t, fun):
