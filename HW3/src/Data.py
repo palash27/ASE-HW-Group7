@@ -28,16 +28,10 @@ class Data:
         else:
             self.cols = Cols(t)     # here, we create "self.cols" from the first row
         
-    def clone(self,data,init = {}):
-        """
-        return a DATA with same structure as `ii.
-        """
+    def clone(self, initial):
         data = Data(self.cols.names)
-        
-        def fun(x):
-            data.add(x)
-           
-        map(init,fun)
+        for _,r in initial.items():
+            data.add(r)
         return data
         
     def stats(self, what, cols, nPlaces):
