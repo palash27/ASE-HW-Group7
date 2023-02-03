@@ -42,3 +42,7 @@ jobs:
       working-directory: ./HW2
       run: |
         pdoc --html src --output-dir docs
+    - name: Test Engine for HW3
+      working-directory: ./HW3
+      run: |
+        python -m src.main --go all
