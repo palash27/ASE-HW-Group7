@@ -79,9 +79,11 @@ class Data:
         
         for _,col in pairs(cols):
             n = n + 1
-            d = d + col.dist(row1.cells[col.at], row2.cells[col.at])^the.p
+            #d = d + col.dist(row1.cells[col.at], row2.cells[col.at])^the.p
+            d = d + col.dist(row1.cells[col.at], row2.cells[col.at])^2
         
-        return (d/n)^(1/the.p)
+        #return (d/n)^(1/the.p)
+        return (d/n)^(1/2)
     
     def cluster(self,rows = None,min = None,cols = None,above = None):
         """
@@ -90,7 +92,8 @@ class Data:
         if rows == None:
             rows = self.rows
         if min == None:
-            min = len(rows)^the.min
+            #min = len(rows)^the.min
+            min = len(rows)^0.5
         if cols == None:
             cols = self.cols
         node = {}
