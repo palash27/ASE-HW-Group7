@@ -23,6 +23,17 @@ ACTIONS:
   -g  stats	stats from DATA
 """
 
+def show(node, what, cols, nPlaces, lvl=0):
+    """
+    prints the tree generated from `DATA:tree`.
+    """
+    if node:
+        print("| " * lvl + str(len(node.data.rows)) + "  ", end="")
+        if not node.left or lvl == 0:
+            print(node.data.stats("mid", node.data.cols.y, nPlaces))
+        show(node.left, what, cols, nPlaces, lvl + 1)
+        show(node.right, what, cols, nPlaces, lvl + 1)
+
 
 def rint(lo, hi):
     """
