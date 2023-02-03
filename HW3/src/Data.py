@@ -12,6 +12,8 @@ class Data:
             self.add(x)
         if type(src) == str:
             csv(src,fun)
+        else:
+            self.add(src)
             
 #loading from list needs to be implemented
     def add(self,t):
