@@ -111,24 +111,39 @@ class Data:
         return left, right, A, B, mid, c
     
     
-    def cluster(self,rows = None,min = None,cols = None,above = None):
+    def cluster(self, the, rows = None,min = None,cols = None,above = None):
         """
         returns `rows`, recursively halved
         """
         if rows == None:
             rows = self.rows
+        elif type(rows) == list:
+            rows = dict(enumerate(rows))
         if min == None:
             #min = len(rows)^the.min
-            min = len(rows)^0.5
+            min = len(rows)**0.5
         if cols == None:
-            cols = self.cols
+            cols = self.cols.x
         node = {}
         node["data"] = self.clone(rows)
         if len(rows) > 2*min:
-            left, right, node['A'], node['B'], node['mid'] = self.half(rows,cols,above)
-            node['left']  = self.cluster(left,  min, cols, node['A'])
-            node['right'] = self.cluster(right, min, cols, node['B'])
-        
+            left, right, node['A'], node['B'], node['mid'], c = self.half(the,rows,cols,above)
+            node['left']  = self.cluster(the, left,  min, cols, node['A'])
+            node['right'] = self.cluster(the, right, min, cols, node['B'])
+        return node
+    
+    def sway(self, the, rows=None, min=None, cols=None, above=None):
+        rows = rows or self.rows
+        min = min or len(rows)**0.5 #the.min
+        cols = cols or self.cols.x
+        if type(rows) == list:
+            rows = dict(enumerate(rows))
+        node = {'data': self.clone(rows)}
+        if len(rows) > 2*min:
+            left, right, node['A'], node['B'], node['mid'], c = self.half(the,rows,cols,above)
+            if self.better(node['B'], node['A']):
+                left,right,node['A'],node['B'] = right,left,node['B'],node['A']
+            node['left'] = self.sway(the, left, min, cols, node['A'])
         return node
 
 
