@@ -90,21 +90,9 @@ def HALF(the):
     print(o(mid.cells))
     print(o(B.cells))
 
-# def CLUSTERING_LEVEL_1(the):
-#     data = Data(str(the['file']))
-#     left,right,A,B,mid,c = data.half() 
-#     print(len(left),len(right),len(data.rows))
-#     print(o(A.cells),c)
-#     print(o(mid.cells)) 
-#     print(o(B.cells))
-    
-# def CLUSTERING_LEVEL_N(the):
-#     data = Data(str(the['file']))
-#     show(data.cluster(),"mid",data.cols.y,1)
-
-# def OPTIMIZATION(the):
-#     data = Data(str(the['file']))
-#     show(data.sway(),"mid",data.cols.y,1)   
+def CLUSTER(the):
+    data = Data(str(the['file']))
+    show(data.cluster(the), "mid", data.cols.y, 1)  
 
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
@@ -116,7 +104,7 @@ eg("stats", "stats from DATA", STATS)
 eg("clone", "duplicate structure", CLONE)
 eg("around", "sorting nearest neighbors", AROUND)
 eg("half", "1-level bi-clustering", HALF)
-# eg("cluster", "N-level bi-clustering",CLUSTERING_LEVEL_N)
+eg("cluster", "N-level bi-clustering",CLUSTER)
 # eg("optimize", "semi-supervised optimization",OPTIMIZATION)
 
 def test(the):
