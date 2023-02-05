@@ -94,6 +94,10 @@ def CLUSTER(the):
     data = Data(str(the['file']))
     show(data.cluster(the), "mid", data.cols.y, 1)  
 
+def OPTIMIZE(the):
+    data = Data(str(the['file']))
+    show(data.sway(the), "mid", data.cols.y,1)
+
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
 eg("the", "show settings", THE)
@@ -105,7 +109,7 @@ eg("clone", "duplicate structure", CLONE)
 eg("around", "sorting nearest neighbors", AROUND)
 eg("half", "1-level bi-clustering", HALF)
 eg("cluster", "N-level bi-clustering",CLUSTER)
-# eg("optimize", "semi-supervised optimization",OPTIMIZATION)
+eg("optimize", "semi-supervised optimization",OPTIMIZE)
 
 def test(the):
     fails = 0
