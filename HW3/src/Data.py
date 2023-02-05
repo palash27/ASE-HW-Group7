@@ -15,7 +15,6 @@ class Data:
         else:
             self.add(src)
             
-#loading from list needs to be implemented
     def add(self,t):
         """
         add a new row, update column headers
@@ -72,12 +71,12 @@ class Data:
         sorted_list = sorted(l, key=lambda x:x['dist'])
         return sorted_list
     
-    def better(self,row1,row2,s1,s2,ys,x,y):
+    def better(self,row1,row2):
         """
         true if `row1` dominates
         """
         s1,s2,ys = 0,0,self.cols.y
-        x = y = None
+        x,y = None, None
         
         for _,col in ys.items():
             x  = col.norm(row1.cells[col.at])
@@ -85,6 +84,31 @@ class Data:
             s1 = s1 - math.exp(col.w * (x-y)/len(ys))
             s2 = s2 - math.exp(col.w * (y-x)/len(ys))
         return s1/len(ys) < s2/len(ys)
+    
+    def half(self, the, rows = None, cols = None, above = None):
+        def project(row):
+            return {'row' : row, 'dist' : cosine(dist(row,A,the), dist(row,B,the), c)}
+        
+        def dist(row1,row2,the): 
+            return self.dist(row1,row2,the,cols)
+        
+        rows = rows or self.rows
+        some = many(rows,the['Sample'])
+        A = above or any(some)
+        B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
+        c = dist(A,B, the)
+        l = []
+        left, right = [], []
+        for _, row in rows.items():
+            l.append(project(row))
+        sorted_list = sorted(l, key=lambda x:x['dist'])
+        for n, tmp in enumerate(sorted_list):
+            if n <= len(rows) // 2:
+                left.append(tmp['row'])
+                mid = tmp['row']
+            else:
+                right.append(tmp['row'])
+        return left, right, A, B, mid, c
     
     
     def cluster(self,rows = None,min = None,cols = None,above = None):
@@ -107,19 +131,6 @@ class Data:
         
         return node
 
-        """
-    def sway(self, rows, min_var, cols, above):
-        rows = rows or self.rows
-        min_var = min_var or (len(rows))**min_var
-        cols = cols or self.cols.x
-        node = {"data": self.clone(rows)}
-        if len(rows) > 2*min_var:
-            left, right, node.A, node.B, node.mid = self.half(rows,cols,above)
-            if self.better(node.B,node.A):
-                left, right, node.A, node.B = right, left, node.B, node.A
-            node.left = self.sway(left, min_var, cols, node.A)
-        return node
-        """
 
         # x_mid = {}
         # if what == "mid":
