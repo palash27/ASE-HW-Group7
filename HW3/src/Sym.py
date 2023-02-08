@@ -46,6 +46,9 @@ class Sym:
         return x
     
     def dist(self, s1, s2):
+        """
+        dist
+        """
         if s1 == "?" and s2 == "?":
             return 1
         elif s1 == s2:

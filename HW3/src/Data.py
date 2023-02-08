@@ -30,6 +30,9 @@ class Data:
             self.cols = Cols(t)     # here, we create "self.cols" from the first row
         
     def clone(self, initial):
+        """
+        DATA; return a DATA with same structure as `ii. 
+        """
         data = Data(self.cols.names)
         for _,r in initial.items():
             data.add(r)
@@ -51,6 +54,9 @@ class Data:
             return y_div
         
     def dist(self, row1, row2, the, cols=None):
+        """
+        n; returns 0..1 distance `row1` to `row2`
+        """
         n, d = 0, 0 
         if cols is None:
             cols = self.cols.x
@@ -61,6 +67,9 @@ class Data:
         return (d/n)**(1/p)
     
     def around(self, row1 ,the, rows=None):
+        """
+        t; sort other `rows` by distance to `row`
+        """
         if rows == None:
             rows = self.rows
         def fun(row2):
@@ -86,6 +95,9 @@ class Data:
         return s1/len(ys) < s2/len(ys)
     
     def half(self, the, rows = None, cols = None, above = None):
+        """
+        t,t,row,row,row,n; divides data using 2 far points
+        """
         def project(row):
             return {'row' : row, 'dist' : cosine(dist(row,A,the), dist(row,B,the), c)}
         
@@ -133,6 +145,9 @@ class Data:
         return node
     
     def sway(self, the, rows=None, min=None, cols=None, above=None):
+        """
+        t; returns best half, recursively
+        """
         rows = rows or self.rows
         min = min or len(rows)**0.5 #the.min
         cols = cols or self.cols.x

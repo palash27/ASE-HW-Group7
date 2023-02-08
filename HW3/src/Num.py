@@ -50,12 +50,18 @@ class Num:
             return rnd(x,n)
 
     def norm(self, n):
+        """
+        normalize
+        """
         if n == "?":
             return n
         else:
             return (float(n) - self.lo)/(self.hi - self.lo + 1e-32)
 
     def dist(self, n1, n2):
+        """
+        1 or returns absolute difference of n1 and n2
+        """
         if n1  == "?" and n2 == "?":
             return 1
         n1 = self.norm(n1)
