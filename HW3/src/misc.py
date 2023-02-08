@@ -29,6 +29,9 @@ ACTIONS:
 """
 
 def show(node, what, cols, nPlaces, lvl=0):
+    """
+    nil; prints the tree generated from `DATA:tree`.
+    """
     if node:
         print('| '*lvl + str(len(node['data'].rows)) + " ", end = '')
         if (not node.get('left') or lvl==0):
@@ -61,15 +64,24 @@ def rnd(n, nPlaces=3):
     return math.floor(n * mult + 0.5) / mult
 
 def any(t):
+    """
+    x; returns one items at random
+    """
     return t[random.randint(1, len(t)-1)]
 
 def many(t, n):
+    """
+    t1; returns some items from `t`
+    """
     u = {}
     for i in range(1,n+1):
         u[1+len(u)] = any(t)
     return u
 
 def cosine(a,b,c):
+    """
+    n,n;  find x,y from a line connecting `a` to `b`
+    """
     temp = 1 if c == 0 else 2*c
     x1 = (a**2 + c**2 - b**2) // temp
     x2 = max(0, min(1, x1)) 
@@ -85,6 +97,9 @@ def push(t, x):
     return x
 
 def map(t,fun):
+    """
+    t; map a function `fun`(v) over list (skip nil results) 
+    """
     u = {}
     for k,v in t.items():
         v,k = fun(v)
