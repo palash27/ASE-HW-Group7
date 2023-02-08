@@ -42,6 +42,7 @@ jobs:
       working-directory: ./HW3
       run: |
         python -m src.main --go all
-    - name: Documentation from HW2
+    - name: Documentation from HW3
+      working-directory: ./HW2
       run: |
         pdoc --html src --output-dir docs
