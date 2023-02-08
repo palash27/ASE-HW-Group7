@@ -86,6 +86,12 @@ def many(t, n):
         u[1+len(u)] = any(t)
     return u
 
+def last(t):
+    """
+    x
+    """
+    return t[len(t)-1]
+
 def cosine(a,b,c):
     """
     n,n;  find x,y from a line connecting `a` to `b`
