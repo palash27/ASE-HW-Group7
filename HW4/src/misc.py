@@ -28,6 +28,14 @@ ACTIONS:
   -g  stats	stats from DATA
 """
 
+def transpose(t):
+    u=[]
+    for i in range(0, len(t[0])):
+        u[i] = []
+        for j in range(0, len(t)):
+            u[i][j] = t[j][i]
+    return u
+
 def show(node, what, cols, nPlaces, lvl=0):
     """
     nil; prints the tree generated from `DATA:tree`.
