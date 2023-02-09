@@ -4,7 +4,6 @@ import sys
 from csv import reader
 import random
 import copy
-from src.Data import Data
 
 #Numerics
 help = """   
@@ -31,6 +30,9 @@ ACTIONS:
 """
 
 def transpose(t):
+    """
+    returns transpose of a matrix / 2d list
+    """
     u=[]
     for i in range(0, len(t[0])):
         u[i] = []
@@ -38,7 +40,10 @@ def transpose(t):
             u[i][j] = t[j][i]
     return u
 
-def repCols(cols):
+def repCols(cols, Data):
+    """
+    returns Data(cols)
+    """
     cols = copy.deepcopy(cols)
     for i in range(len(cols)):
         col = cols[i]
@@ -49,6 +54,23 @@ def repCols(cols):
     cols.insert(0, ["Num" + str(k) for k in range(len(cols[0]))])
     cols[0][len(cols[0]) - 1] = "thingX"
     data = Data(cols)
+    return data
+
+def repRows(t, rows, Data=None):
+    """
+    returns Data(rows)
+    """
+    rows = copy.deepcopy(rows)
+    for j, s in enumerate(rows[len(rows) - 1]):
+        rows[0][j] = rows[0][j] + ":" + s
+    rows.pop()
+    for n, row in enumerate(rows):
+        if n == 0:
+            row.append("thingX")
+        else:
+            u = t["rows"][len(t["rows"]) - n]
+            row.append(u[len(u) - 1])
+    data = Data(rows)
     return data
 
 def show(node, what, cols, nPlaces, lvl=0):
