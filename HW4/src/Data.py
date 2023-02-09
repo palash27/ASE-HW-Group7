@@ -94,12 +94,24 @@ class Data:
             s2 = s2 - math.exp(col.w * (y-x)/len(ys))
         return s1/len(ys) < s2/len(ys)
     
+    def furthest(self, row1, rows, cols, t):
+        """
+        sort other `rows` by distance to `row`
+        """
+        t = self.around(row1,rows,cols)
+        return t[len(t)]
+    
     def half(self, the, rows = None, cols = None, above = None):
         """
         t,t,row,row,row,n; divides data using 2 far points
         """
-        def project(row):
-            return {'row' : row, 'dist' : cosine(dist(row,A,the), dist(row,B,the), c)}
+        def project(row, x, y):
+            x,y = cosine(dist(row,A), dist(row,B),c)
+            if row.x == None:
+                row.x = x
+            if row.y == None:
+                row.y = y
+            return {'row' : row, 'x' : x, 'y' : y}
         
         def dist(row1,row2,the): 
             return self.dist(row1,row2,the,cols)
@@ -107,7 +119,8 @@ class Data:
         rows = rows or self.rows
         some = many(rows,the['Sample'])
         A = above or any(some)
-        B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
+        B = self.furthest(A,rows).row
+        #B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
         c = dist(A,B, the)
         l = []
         left, right = [], []
@@ -121,7 +134,6 @@ class Data:
             else:
                 right.append(tmp['row'])
         return left, right, A, B, mid, c
-    
     
     def cluster(self, the, rows = None,min = None,cols = None,above = None):
         """
