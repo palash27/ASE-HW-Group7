@@ -4,6 +4,7 @@ import sys
 from csv import reader
 import random
 import copy
+import json
 
 #Numerics
 help = """   
