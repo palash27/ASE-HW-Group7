@@ -100,24 +100,58 @@ def OPTIMIZE(the):
     show(data.sway(the), "mid", data.cols.y,1)
 
 def COPY(the):
-    t1 = {"a": 1, "b": {"c": 2, "d": [3]}}
+    t1 = {'a' : 1, 'b' : {'c' : 2, 'd' : [3]}}
     t2 = copy.deepcopy(t1)
-    t2["b"]["d"][0] = 10000
-    print("b4", t1, "\nafter", t2)
+    t2['b']['d'][0] = 10000
+    print("b4",o(t1),"\nafter",o(t2))
 
+def REPCOLS(the):
+    t = repCols(dofile(the.file).cols)
+    map(t.cols.all,oo) 
+    map(t.rows,oo)
+
+def SYNONYMS(the):
+    show(repCols(dofile(the.file).cols).cluster())
+
+def CHK_REPROWS(the):
+    t = dofile(the.file)
+    rows = repRows(t, transpose(t.cols))
+    map(rows.cols.all,oo) 
+    map(rows.rows,oo)
+
+def PROTOTYPES(the):
+    t = dofile(the.file)
+    rows = repRows(t, transpose(t.cols))
+    show(rows.cluster())
+
+def POSITION(the):
+    t = dofile(the.file)
+    rows = repRows(t, transpose(t.cols))
+    rows.cluster()
+    repPlace(rows)
+
+def EVERY(the):
+    repgrid(the.file)
+    
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
 eg("the", "show settings", THE)
-eg("rand", "generate, reset, regenerate same", RAND)
-eg("csv", "read from csv", CSV)
-eg("data", "read DATA csv", DATA)
-eg("stats", "stats from DATA", STATS)
-eg("clone", "duplicate structure", CLONE)
-eg("around", "sorting nearest neighbors", AROUND)
-eg("half", "1-level bi-clustering", HALF)
-eg("cluster", "N-level bi-clustering",CLUSTER)
-eg("optimize", "semi-supervised optimization",OPTIMIZE)
+#eg("rand", "generate, reset, regenerate same", RAND)
+#eg("csv", "read from csv", CSV)
+#eg("data", "read DATA csv", DATA)
+#eg("stats", "stats from DATA", STATS)
+#eg("clone", "duplicate structure", CLONE)
+#eg("around", "sorting nearest neighbors", AROUND)
+#eg("half", "1-level bi-clustering", HALF)
+#eg("cluster", "N-level bi-clustering",CLUSTER)
+#eg("optimize", "semi-supervised optimization",OPTIMIZE)
 eg("copy", "check copy", COPY)
+eg("repcols","checking repcols", REPCOLS)
+eg("synonyms","checking repcols cluster", SYNONYMS)
+eg("reprows","checking reprows", CHK_REPROWS)
+eg("prototypes","checking reprows cluster", PROTOTYPES)
+eg("position","where's wally", POSITION)
+eg("every","the whole enchilada", EVERY)
 
 def test(the):
     fails = 0
