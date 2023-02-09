@@ -9,26 +9,22 @@ script.lua : an example script with help text and a test suite
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
   -d  --dump  on crash, dump stack = false
-  -f  --file    name of file       = data/data.csv
-  -F  --Far     distance to "faraway"  = .95	
+  -f  --file    name of file       = ../etc/data/repgrid1.csv
   -g  --go    start-up action      = data
   -h  --help  show help            = false
-  -m  --min     stop clusters at N^min = .5
   -p  --p       distance coefficient   = 2
   -s  --seed  random number seed   = 937162211
-  -S  --Sample  sampling data size     = 512
 ACTIONS:
   -g  the	show settings
+  -g  copy	check copy
   -g  sym	check syms
   -g  num	check nums
-  -g  csv	read from csv
-  -g  data	read DATA csv
-  -g  stats	stats from DATA
-  -g  clone	duplicate structure
-  -g  around	sorting nearest neighbors
-  -g  half	1-level bi-clustering
-  -g  cluster	N-level bi-clustering
-  -g  optimize	semi-supervised optimization
+  -g  repcols	checking repcols
+  -g  synonyms	checking repcols cluster
+  -g  reprows	checking reprows
+  -g  prototypes	checking reprows cluster
+  -g  position	where's wally
+  -g  every	the whole enchilada
 
 """
 
