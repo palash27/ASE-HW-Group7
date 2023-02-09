@@ -3,6 +3,7 @@ from src.Num import *
 from src.Data import *
 from src.misc import *
 import random
+import copy
 
 egs = {}
 def eg(key, str, fun):
@@ -100,7 +101,7 @@ def OPTIMIZE(the):
 
 def COPY(the):
     t1 = {'a' : 1, 'b' : {'c' : 2, 'd' : [3]}}
-    t2 = copy(t1)
+    t2 = copy.deepcopy(t1)
     t2['b']['d'][0] = 10000
     print("b4",o(t1),"\nafter",o(t2))
 
@@ -131,7 +132,7 @@ def POSITION(the):
 
 def EVERY(the):
     repgrid(the.file)
-
+    
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
 eg("the", "show settings", THE)
