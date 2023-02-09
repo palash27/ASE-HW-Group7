@@ -94,6 +94,16 @@ def repPlace(data,n=20):
     for y in range(1, maxy + 1):
         oo(g[y])
 
+def repgrid(sFile, Data=None):
+    """
+    repgrid function to work on the file passed
+    """
+    with open(sFile) as t:
+        rows = repRows(t, transpose(t, t["cols"], Data))
+        cols = repCols(t["cols"], Data)
+        show(rows.cluster())
+        show(cols.cluster())
+        repPlace(rows)
 
 def show(node, what, cols, nPlaces, lvl=0):
     """
