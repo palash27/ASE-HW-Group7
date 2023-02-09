@@ -28,6 +28,14 @@ ACTIONS:
   -g  csv	read from csv
   -g  data	read DATA csv
   -g  stats	stats from DATA
+  -g  the   show settings
+  -g  copy  check copy
+  -g  repcols   checking repcols
+  -g  synonyms  checking repcols cluster
+  -g  reprows   checking reprows
+  -g  prototypes    checking reprows cluster
+  -g  position  where's wally
+  -g  every the whole enchilada
 """
 
 def transpose(t):
