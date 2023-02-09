@@ -94,16 +94,31 @@ def repPlace(data,n=20):
     for y in range(1, maxy + 1):
         oo(g[y])
 
+def dofile(file_path):
+    """
+    function to read custom csv in lua
+    """
+    with open(file_path, "r", encoding="utf-8") as file:
+        file_contents = file.read()
+
+    return_statement = re.findall(r"(?<=return )[^.]*", file_contents)[0]
+    text = return_statement.replace("{", "[").replace("}", "]").replace("=", ":").replace("[\n", "{\n").replace(" ]", " }").replace("'", '"').replace("", '""')
+
+    json_text = re.sub(r"(\w+):", '"\\1":', text)[:-2] + "}"
+    file_json = json.loads(json_text)
+
+    return file_json
+
 def repgrid(sFile, Data=None):
     """
     repgrid function to work on the file passed
     """
-    with open(sFile) as t:
-        rows = repRows(t, transpose(t, t["cols"], Data))
-        cols = repCols(t["cols"], Data)
-        show(rows.cluster())
-        show(cols.cluster())
-        repPlace(rows)
+    t=dofile(sFile)
+    rows = repRows(t, transpose(t, t["cols"], Data))
+    cols = repCols(t["cols"], Data)
+    show(rows.cluster())
+    show(cols.cluster())
+    repPlace(rows)
 
 def show(node, what, cols, nPlaces, lvl=0):
     """
