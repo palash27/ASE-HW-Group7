@@ -3,6 +3,7 @@ from src.Num import *
 from src.Data import *
 from src.misc import *
 import random
+import copy
 
 egs = {}
 def eg(key, str, fun):
@@ -98,6 +99,12 @@ def OPTIMIZE(the):
     data = Data(str(the['file']))
     show(data.sway(the), "mid", data.cols.y,1)
 
+def COPY(the):
+    t1 = {"a": 1, "b": {"c": 2, "d": [3]}}
+    t2 = copy.deepcopy(t1)
+    t2["b"]["d"][0] = 10000
+    print("b4", t1, "\nafter", t2)
+
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
 eg("the", "show settings", THE)
@@ -110,6 +117,7 @@ eg("around", "sorting nearest neighbors", AROUND)
 eg("half", "1-level bi-clustering", HALF)
 eg("cluster", "N-level bi-clustering",CLUSTER)
 eg("optimize", "semi-supervised optimization",OPTIMIZE)
+eg("copy", "check copy", COPY)
 
 def test(the):
     fails = 0
