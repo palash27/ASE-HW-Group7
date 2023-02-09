@@ -73,6 +73,28 @@ def repRows(t, rows, Data=None):
     data = Data(rows)
     return data
 
+def repPlace(data,n=20):
+    """
+    prints g[y]
+    """
+    g = []
+    for i in range(n + 1):
+        g.append([])
+        for j in range(n + 1):
+            g[i].append(" ")
+    maxy = 0
+    print("")
+    for r, row in enumerate(data["rows"]):
+        c = chr(65 + r)
+        print(c, row["cells"][-1])
+        x, y = int(row["x"] * n), int(row["y"] * n)
+        maxy = max(maxy, y + 1)
+        g[y + 1][x + 1] = c
+    print("")
+    for y in range(1, maxy + 1):
+        oo(g[y])
+
+
 def show(node, what, cols, nPlaces, lvl=0):
     """
     nil; prints the tree generated from `DATA:tree`.
