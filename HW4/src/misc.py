@@ -3,6 +3,8 @@ import re
 import sys
 from csv import reader
 import random
+import copy
+from src.Data import Data
 
 #Numerics
 help = """   
@@ -35,6 +37,19 @@ def transpose(t):
         for j in range(0, len(t)):
             u[i][j] = t[j][i]
     return u
+
+def repCols(cols):
+    cols = copy.deepcopy(cols)
+    for i in range(len(cols)):
+        col = cols[i]
+        col[len(col) - 1] = col[0] + ":" + col[len(col) - 1]
+        for j in range(1, len(col) - 1):
+            col[j - 1] = col[j]
+        col.pop()
+    cols.insert(0, ["Num" + str(k) for k in range(len(cols[0]))])
+    cols[0][len(cols[0]) - 1] = "thingX"
+    data = Data(cols)
+    return data
 
 def show(node, what, cols, nPlaces, lvl=0):
     """
