@@ -106,27 +106,27 @@ def COPY(the):
     print("b4",o(t1),"\nafter",o(t2))
 
 def REPCOLS(the):
-    t = repCols(dofile(str(the['file'])).cols)
-    map(t.cols.all,oo) 
-    map(t.rows,oo)
+    t = repCols(dofile(str(the['file']))['cols'])
+    map(t['cols'].all,oo) 
+    map(t['rows'],oo)
 
 def SYNONYMS(the):
-    show(repCols(dofile(str(the['file'])).cols).cluster())
+    show(repCols(dofile(str(the['file']))['cols']).cluster())
 
 def CHK_REPROWS(the):
     t = dofile(str(the['file']))
-    rows = repRows(t, transpose(t.cols))
+    rows = repRows(t, transpose(t['cols']))
     map(rows.cols.all,oo) 
     map(rows.rows,oo)
 
 def PROTOTYPES(the):
     t = dofile(str(the['file']))
-    rows = repRows(t, transpose(t.cols))
+    rows = repRows(t, transpose(t['cols']))
     show(rows.cluster())
 
 def POSITION(the):
     t = dofile(str(the['file']))
-    rows = repRows(t, transpose(t.cols))
+    rows = repRows(t, transpose(t['cols']))
     rows.cluster()
     repPlace(rows)
 
