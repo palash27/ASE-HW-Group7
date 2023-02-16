@@ -61,8 +61,8 @@ def SYM(n,s):
   'at': n or 0,
   'txt': s or "",
   'n': 0,
-  'mode':nil,
-  'most':0,
+  'mode': None,
+  'most': 0,
   'isSym': True,
   'has': {}
   }
