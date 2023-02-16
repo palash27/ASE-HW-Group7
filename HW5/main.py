@@ -32,26 +32,26 @@ def COL(n, s):
   -- e.g. makes goals if the name ends with
   -- the maximize (`+`) or minimize (`-`) or klass (`!`) symbol.
   """
-    col = NUM(n, s) if s.startswith("^[A-Z]") else SYM(n, s)
-    col.isIgnored = True if s.endswith("X") else False
-    col.isKlass = True if s.endswith("!") else False
-    col.isGoal = True if s.endswith("!") or s.endswith("+") or s.endswith("-") else False
-    return col
+  col = NUM(n, s) if s.startswith("^[A-Z]") else SYM(n, s)
+  col.isIgnored = True if s.endswith("X") else False
+  col.isKlass = True if s.endswith("!") else False
+  col.isGoal = True if s.endswith("!") or s.endswith("+") or s.endswith("-") else False
+  return col
 
 def NUM(n, s):
   """
   -- Create a `NUM` to summarize a stream of numbers.
   """
-    return {
-        'at': n or 0,
-        'txt': s or "",
-        'n': 0,
-        'hi': -math.inf,
-        'lo': math.inf,
-        'ok': True,
-        'has': {},
-        'w': -1 if s and s.endswith("-") else 1
-    }
+  return {
+  'at': n or 0,
+  'txt': s or "",
+  'n': 0,
+  'hi': -math.inf,
+  'lo': math.inf,
+  'ok': True,
+  'has': {},
+  'w': -1 if s and s.endswith("-") else 1
+  }
 
 def SYM(n,s):
   """
