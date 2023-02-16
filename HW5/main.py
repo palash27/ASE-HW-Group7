@@ -68,6 +68,13 @@ def SYM(n,s):
   }
 
 def COLS(ss):
+  """
+  -- Create a set of `NUM`s or `SYM`s columns.
+  -- Once created, all cols are stored in `all`
+  -- while the non-skipped cols are also stored as
+  -- either `cols.x` independent input variables or
+  -- `cols.y` dependent goal variables.
+  """
   cols={
   'name': ss,
   'all': [],
