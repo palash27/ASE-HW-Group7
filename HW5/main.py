@@ -33,9 +33,9 @@ def COL(n, s):
   -- the maximize (`+`) or minimize (`-`) or klass (`!`) symbol.
   """
   col = NUM(n, s) if s.startswith("^[A-Z]") else SYM(n, s)
-  col.isIgnored = True if s.endswith("X") else False
-  col.isKlass = True if s.endswith("!") else False
-  col.isGoal = True if s.endswith("!") or s.endswith("+") or s.endswith("-") else False
+  col['isIgnored'] = True if s.endswith("X") else False
+  col['isKlass'] = True if s.endswith("!") else False
+  col['isGoal'] = True if s.endswith("!") or s.endswith("+") or s.endswith("-") else False
   return col
 
 def NUM(n, s):
@@ -49,7 +49,7 @@ def NUM(n, s):
   'hi': -math.inf,
   'lo': math.inf,
   'ok': True,
-  'has': {},
+  'has': [],
   'w': -1 if s and s.endswith("-") else 1
   }
 
@@ -64,5 +64,27 @@ def SYM(n,s):
   'mode': None,
   'most': 0,
   'isSym': True,
-  'has': {}
+  'has': []
   }
+
+def COLS(ss):
+  cols={
+  'name': ss,
+  'all': [],
+  'x': [],
+  'y': []
+  }
+  for n,s in enumerate(ss):
+    col = push(cols['all'], COL(n,s))
+    if not col['sIgnored']:
+      if col['isKlass']:
+        cols['klass']=col
+      push(col['isGoal'] and cols['y'] or cols['x'], col)
+  return cols
+
+# logistical functions
+
+def push(t,x):
+  t[len(t)] = x
+  return x
+
