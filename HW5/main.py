@@ -89,6 +89,22 @@ def COLS(ss):
       push(col['isGoal'] and cols['y'] or cols['x'], col)
   return cols
 
+def RANGE(at,txt,lo,hi):
+  """
+  -- Create a RANGE  that tracks the y dependent values seen in 
+  -- the range `lo` to `hi` some independent variable in column number `at` whose name is `txt`. 
+  -- Note that the way this is used (in the `bins` function, below)
+  -- for  symbolic columns, `lo` is always the same as `hi`.
+  """
+  return {
+  'at':at,
+  'txt':txt,
+  'lo':lo,
+  'hi':lo or hi or lo,
+  'y':SYM()
+  }
+
+
 # logistical functions
 
 def push(t,x):
