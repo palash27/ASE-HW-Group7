@@ -132,3 +132,11 @@ def push(t,x):
   t[len(t)] = x
   return x
 
+def sort(t, f):
+  """
+  Return a list, sorted on `fun`.
+  """
+  t.sort(key=f)
+  return t
+
+
