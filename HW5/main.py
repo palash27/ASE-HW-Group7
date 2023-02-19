@@ -1,4 +1,5 @@
 import math
+import csv
 
 help = """   
 bins: multi-objective semi-supervised discetization
@@ -104,10 +105,30 @@ def RANGE(at,txt,lo,hi):
   'y':SYM()
   }
 
+# DATA = {}
+
+# def new():
+#   return {"rows": [], "cols": None}
+
+def row(data,t):
+  if data["cols"]:
+    push(data["rows"],t)
+    for _,cols in enumerate(data["cols"]["x"], data["cols"]["y"]):
+      for _,col in enumerate(cols): 
+       add(col, t[col["at"]]) 
+  else:
+    data["cols"] = COLS(t)
+  return data
+
+def add(x,y):
+  pass
 
 # logistical functions
 
 def push(t,x):
+  """
+  Push an item `x` onto  a list.  
+  """
   t[len(t)] = x
   return x
 
