@@ -110,18 +110,51 @@ def RANGE(at,txt,lo,hi):
 # def new():
 #   return {"rows": [], "cols": None}
 
-def row(data,t):
-  if data["cols"]:
-    push(data["rows"],t)
-    for _,cols in enumerate(data["cols"]["x"], data["cols"]["y"]):
-      for _,col in enumerate(cols): 
-       add(col, t[col["at"]]) 
-  else:
-    data["cols"] = COLS(t)
-  return data
+# def row(data,t):
+#   if data["cols"]:
+#     push(data["rows"],t)
+#     for _,cols in enumerate(data["cols"]["x"], data["cols"]["y"]):
+#       for _,col in enumerate(cols): 
+#        add(col, t[col["at"]]) 
+#   else:
+#     data["cols"] = COLS(t)
+#   return data
 
-def add(x,y):
-  pass
+# def add(x,y):
+#   pass
+
+# QUERY
+
+def has(col):
+  """
+  A query that returns contents of a column. If `col` is a `NUM` with
+  -- unsorted contents, then sort before return the contents.
+  -- Called by (e.g.) the `mid` and `div` functions.
+  """
+  if not col['isSym'] and not col['ok']:
+    sort(col['has'])
+  col['ok'] = True
+  return col['has']
+
+def mid(col):
+  """
+  -- A query that  returns a `cols`'s central tendency  
+  -- (mode for `SYM`s and median for `NUM`s). Called by (e.g.) the `stats` function.
+  """
+  return col['isSym'] and col['mode'] or per(has(col), 0.5)
+
+def div(col):
+  """
+  -- A query that returns a `col`'s deviation from central tendency    
+  -- (entropy for `SYM`s and standard deviation for `NUM`s)..
+  """
+  if col['isSym']:
+    e=0
+    for _,n in enumerate(col['has']):
+      e=e-n/col[n]*math.log(n/col[n],2)
+      return e
+  else:
+    return (per(has(col),0.9) - per(has(col),0.1))/2.58
 
 # logistical functions
 
@@ -138,5 +171,9 @@ def sort(t, f):
   """
   t.sort(key=f)
   return t
+
+def per(t,p):
+  p=math.floor(((p or 0.5)*len(t))+0.5)
+  return t[max(1,min(len(t),p))]
 
 
