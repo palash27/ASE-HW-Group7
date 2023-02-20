@@ -213,6 +213,52 @@ def bin(col,x):
     tmp = (col['hi']-col['lo'])/(the['bins']-1)
     return col['hi'] == col['lo'] and 1 or math.floor(x/tmp+0.5)*tmp
 
+def mergeAny(ranges0):
+    def noGaps(t):
+        for j in range(1,len(t)):
+            t[j]['lo'] = t[j-1]['hi']
+        
+        t[0]['lo']  = float('-inf')
+        t[-1]['hi'] = float('inf')
+        
+        return t
+  
+    ranges1, j, left, right, y = [], 0, None, None, None
+    
+    while j < len(ranges0):
+        left, right = ranges0[j], None
+        
+        if j + 1 < len(ranges1):
+            right = ranges0[j + 1]
+            y = merge2(left['y'],right['y'])
+            if y then:
+                j += 1
+                left['hi'], left.['y'] = right['hi'], y
+        
+        ranges1.append(left)
+        j += 1
+    
+    return len(ranges0) == len(ranges1) and noGaps(ranges0) or mergeAny(ranges1)
+
+def merge2(col1, col2):
+    new = merge(col1, col2)
+    
+    if div(new) <= (div(col1)*col1['n'] + div(col2)*col2['n'])/new['n']:
+        return new
+
+
+def merge(col1, col2):
+    new = copy(col1)
+    if col1['isSym']:
+        for x, n in col2['has'].items():
+            add(new, x, n)
+    else:
+        for _, n in col2['has'].items():
+            add(new, n)
+        new.lo = min(col1['lo'], col2['lo'])
+        new.hi = max(col1['hi'], col2['hi'])
+    
+    return new
 
 def rint(lo,hi):
     """
