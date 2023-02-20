@@ -1,8 +1,8 @@
 
-from Sym import *
-from Num import *
-from Data import *
-from misc import *
+from src.Sym import *
+from src.Num import *
+from src.Data import *
+from src.misc import *
 import random
 
 
@@ -124,12 +124,12 @@ def CSV(the):
 
 # eg("sym", "check syms", SYM)
 eg("some", 'demo of reservoir sampling', SOME)
-eg("num", "check nums", NUM)
+eg("nums", "check nums", NUM)
 eg("the", "show settings", THE)
-eg("sym", "demo SYM", SYM)
+eg("syms", "demo SYM", SYM)
 # eg("rand", "generate, reset, regenerate same", RAND)
 eg("csv", "read from csv", CSV)
-eg("data", "read DATA csv", DATA)
+# eg("data", "read DATA csv", DATA)
 # eg("clone", "duplicate structure", CLONE)
 # eg("stats", "stats from DATA", STATS)
 # eg("around", "sorting nearest neighbors", AROUND)
