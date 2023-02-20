@@ -1,5 +1,5 @@
-from misc import *
-from Row import *
+from src.misc import *
+from src.Row import *
 def new_data():
     return {'rows':{}, 'cols': None}
 

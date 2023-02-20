@@ -3,7 +3,7 @@ import re
 import sys
 import random
 from csv import reader
-from Sym import *
+from src.Sym import *
 #Numerics
 help = """   
 script.lua : an example script with help text and a test suite
@@ -52,7 +52,7 @@ def add(the, col, x, n=1):
             col['ok'] = False
 
 
-def range(at,txt,lo,hi):
+def range_f(at,txt,lo,hi):
   """
   -- Create a RANGE  that tracks the y dependent values seen in 
   -- the range `lo` to `hi` some independent variable in column number `at` whose name is `txt`. 
