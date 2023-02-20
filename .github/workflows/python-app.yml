@@ -46,7 +46,7 @@ jobs:
 #       working-directory: ./HW2
 #       run: |
 #         pdoc --html src --output-dir docs
-    - name: Test Engine for HW5
+    - name: HW5 Test Engine
       working-directory: ./HW5
       run: |
         python -m src.main --go all
