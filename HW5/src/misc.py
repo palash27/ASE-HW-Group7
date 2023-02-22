@@ -231,7 +231,7 @@ def mergeAny(ranges0):
         if j + 1 < len(ranges1):
             right = ranges0[j + 1]
             y = merge2(left['y'],right['y'])
-            if y then:
+            if y:
                 j += 1
                 left['hi'], left.['y'] = right['hi'], y
         
