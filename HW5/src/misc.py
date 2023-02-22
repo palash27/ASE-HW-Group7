@@ -233,7 +233,7 @@ def mergeAny(ranges0):
             y = merge2(left['y'],right['y'])
             if y:
                 j += 1
-                left['hi'], left.['y'] = right['hi'], y
+                left['hi'], left['y'] = right['hi'], y
         
         ranges1.append(left)
         j += 1
