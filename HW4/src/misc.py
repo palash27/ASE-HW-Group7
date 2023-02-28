@@ -44,9 +44,9 @@ def transpose(t):
     """
     u=[]
     for i in range(0, len(t[0])):
-        u[i] = []
+        u.insert(i,[])
         for j in range(0, len(t)):
-            u[i][j] = t[j][i]
+            u[i].insert(j, t[j][i])
     return u
 
 def repCols(cols, Data):
@@ -129,7 +129,7 @@ def repgrid(sFile, Data=None):
     show(cols.cluster())
     repPlace(rows)
 
-def show(node, what, cols, nPlaces, lvl=0):
+def show(node, what=0, cols=0, nPlaces=0, lvl=0):
     """
     nil; prints the tree generated from `DATA:tree`.
     """

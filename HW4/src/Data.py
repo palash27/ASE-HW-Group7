@@ -54,7 +54,7 @@ class Data:
         x_mid = {}
         y_div = {}
         if what == "mid":
-            for _, col in cols.items():
+            for _, col in enumerate(cols):
                 x_mid[col.txt] = col.rnd(col.mid(),2)
             return x_mid
         elif what == "div":
