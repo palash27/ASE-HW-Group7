@@ -1,6 +1,6 @@
-from src.misc import *
-from src.Rows import *
-from src.Cols import *
+from misc import *
+from Rows import *
+from Cols import *
 
 class Data:
     """
@@ -28,6 +28,15 @@ class Data:
             self.cols.add(t)        # update the summary information in "self.cols"
         else:
             self.cols = Cols(t)     # here, we create "self.cols" from the first row
+
+    # def add(self, t):
+    #     if self.cols:
+    #         if isinstance(t, list):
+    #             t = Rows(t)
+    #             self.rows.append(t)
+    #             self.cols.add(t)
+    #     else:
+    #         self.cols = Cols(t)
         
     def clone(self, initial):
         """

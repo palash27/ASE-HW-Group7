@@ -1,7 +1,7 @@
-from src.Sym import *
-from src.Num import *
-from src.Data import *
-from src.misc import *
+from Sym import *
+from Num import *
+from Data import *
+from misc import *
 import random
 import copy
 
@@ -106,12 +106,16 @@ def COPY(the):
     print("b4",o(t1),"\nafter",o(t2))
 
 def REPCOLS(the):
-    t = repCols(dofile(str(the['file']))['cols'])
-    map(t['cols'].all,oo) 
-    map(t['rows'],oo)
+    t = repCols(dofile(str(the['file']))['cols'], Data)
+    for col in t.cols.all:
+        print(vars(col))
+    for row in t.rows:
+        print(vars(row))
+
+    assert True
 
 def SYNONYMS(the):
-    show(repCols(dofile(str(the['file']))['cols']).cluster())
+    show(repCols(dofile(str(the['file']))['cols'], Data).cluster(the))
 
 def CHK_REPROWS(the):
     t = dofile(str(the['file']))

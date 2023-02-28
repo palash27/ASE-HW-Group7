@@ -111,9 +111,9 @@ def dofile(file_path):
         file_contents = file.read()
 
     return_statement = re.findall(r"(?<=return )[^.]*", file_contents)[0]
-    text = return_statement.replace("{", "[").replace("}", "]").replace("=", ":").replace("[\n", "{\n").replace(" ]", " }").replace("'", '"').replace("", '""')
+    text = (return_statement.replace("{", "[").replace("}", "]").replace("=", ":").replace("[\n", "{\n").replace(" ]", " }").replace("'", '"').replace("_", '"_"'))
 
-    json_text = re.sub(r"(\w+):", '"\\1":', text)[:-2] + "}"
+    json_text = re.sub(r"(\w+):", r'"\1":', text)[:-2] + "}"
     file_json = json.loads(json_text)
 
     return file_json
@@ -200,7 +200,7 @@ def push(t, x):
     """
     push `x` to end of list; return `x` 
     """
-    t[1 + len(t)] = x
+    t.append(x)
     return x
 
 def map(t,fun):
@@ -208,7 +208,8 @@ def map(t,fun):
     t; map a function `fun`(v) over list (skip nil results) 
     """
     u = {}
-    for k,v in t.items():
+    print(t)
+    for k,v in enumerate(t):
         v,k = fun(v)
         if k is None:
             u[1+len(u)] = v
@@ -221,7 +222,7 @@ def kap(t, fun):
     map function `fun`(k,v) over list (skip nil results) 
     """
     u = {}
-    for k, v in t.items():
+    for k, v in enumerate(t):
         v, k = fun(k ,v)
         u[k or (1 + len(u))] = v
     return u
@@ -252,18 +253,45 @@ def oo(t):
     print(o(t))
     return t
 
-def o(t):
+# def o(t):
+#     """
+#     convert `t` to a string. sort named keys. 
+#     """
+#     keys = list(t.keys())
+#     keys = sorted(keys)
+#     sorted_t = {i: t[i] for i in keys }
+#     output = "{"
+#     for k, v in sorted_t.items():
+#         output = output + ":"+str(k) + " " + str(v) + " "
+#     output = output + "}"
+#     return output
+
+def o(t, isKeys=False):
     """
     convert `t` to a string. sort named keys. 
     """
-    keys = list(t.keys())
-    keys = sorted(keys)
-    sorted_t = {i: t[i] for i in keys }
-    output = "{"
-    for k, v in sorted_t.items():
-        output = output + ":"+str(k) + " " + str(v) + " "
-    output = output + "}"
-    return output
+    if type(t) != dict:
+        return str(t)
+    
+    def to_str(k, v):
+        if not str(k).startswith("_"):
+            return f":{o(k)} {o(v)}"
+    
+    pairs = []
+    for k, v in sorted(t.items(), key=lambda x: str(x[0]) if not isinstance(x[0], int) else x[0]):
+        if isKeys or isinstance(k, int):
+            pairs.append(o(v))
+        else:
+            pair_str = to_str(k, v)
+            if pair_str is not None:
+                pairs.append(pair_str)
+    
+    if not pairs:
+        return "{}"
+    elif len(pairs) == 1:
+        return pairs[0]
+    else:
+        return "{" + " ".join(pairs) + "}"
 
 def settings(s):
     """
