@@ -1,7 +1,7 @@
 import re
-from src.Sym import *
-from src.Num import *
-from src.misc import *
+from Sym import *
+from Num import *
+from misc import *
 
 class Cols:
     """
@@ -9,15 +9,18 @@ class Cols:
     """
     def __init__(self, t):
         self.names = t
-        self.all = {}
-        self.x = {}
-        self.y = {}
+        self.all = []
+        self.x = []
+        self.y = []
         self.klass = None
-        for n, s in t.items():
-            if re.match("^[A-Z]+", s) == None:
-                col = Sym(n,s)
-            else:
+        print(t)
+        for n, s in enumerate(t):
+            print(n)
+            print(s)
+            if re.match(r"^[A-Z]+", str(s)):
                 col = Num(n,s)
+            else:
+                col = Sym(n,s)
             push(self.all, col)
             if s[-1] != "X":
                 if s[-1] == "$":

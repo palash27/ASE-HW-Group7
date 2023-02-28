@@ -1,5 +1,5 @@
 import re
-from src.misc import *
+from misc import *
 
 class Num:
     """
