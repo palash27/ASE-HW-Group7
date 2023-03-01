@@ -13,10 +13,10 @@ class Cols:
         self.x = []
         self.y = []
         self.klass = None
-        print(t)
+        # print(t)
         for n, s in enumerate(t):
-            print(n)
-            print(s)
+            # print(n)
+            # print(s)
             if re.match(r"^[A-Z]+", str(s)):
                 col = Num(n,s)
             else:
