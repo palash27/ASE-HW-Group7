@@ -93,7 +93,8 @@ def repPlace(data,n=20):
             g[i].append(" ")
     maxy = 0
     print("")
-    for r, row in enumerate(data["rows"]):
+    print(data.rows)
+    for r, row in enumerate(data.rows):
         c = chr(65 + r)
         print(c, row["cells"][-1])
         x, y = int(row["x"] * n), int(row["y"] * n)
@@ -123,10 +124,10 @@ def repgrid(sFile, Data=None):
     repgrid function to work on the file passed
     """
     t=dofile(sFile)
-    rows = repRows(t, transpose(t, t["cols"], Data))
+    rows = repRows(t, transpose(t["cols"]), Data)
     cols = repCols(t["cols"], Data)
-    show(rows.cluster())
-    show(cols.cluster())
+    show(rows.cluster(rows.cols.all))
+    show(cols.cluster(cols.cols.all))
     repPlace(rows)
 
 def show(node, what=0, cols=0, nPlaces=0, lvl=0):

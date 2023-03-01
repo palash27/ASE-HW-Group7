@@ -119,23 +119,25 @@ def SYNONYMS(the):
 
 def CHK_REPROWS(the):
     t = dofile(str(the['file']))
-    rows = repRows(t, transpose(t['cols']))
-    map(rows.cols.all,oo) 
-    map(rows.rows,oo)
+    rows = repRows(t, transpose(t['cols']), Data)
+    for col in rows.cols.all:
+        print(vars(col))
+    for row in rows.rows:
+        print(vars(row))
 
 def PROTOTYPES(the):
     t = dofile(str(the['file']))
-    rows = repRows(t, transpose(t['cols']))
-    show(rows.cluster())
+    rows = repRows(t, transpose(t['cols']), Data)
+    show(rows.cluster(the))
 
 def POSITION(the):
     t = dofile(str(the['file']))
-    rows = repRows(t, transpose(t['cols']))
-    rows.cluster()
+    rows = repRows(t, transpose(t['cols']), Data)
+    rows.cluster(the)
     repPlace(rows)
 
 def EVERY(the):
-    repgrid(str(the['file']))
+    repgrid(str(the['file']), Data)
     
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
