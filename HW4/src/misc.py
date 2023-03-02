@@ -232,17 +232,22 @@ def coerce(s):
     """
     return int or float or bool or string from `s`
     """
-    def fun(s1):
-        if s1 == "true":
+    def isfloat(num):
+        try:
+            float(num)
             return True
-        elif s1 == "false":
+        except ValueError:
             return False
-        else:
-            return s1
-    if s.isnumeric():
+    if s == "true":
+        return True
+    elif s == "false":
+        return False
+    elif s.isnumeric():
         return int(s)
-    elif type(s) != bool:
-        return fun(re.search('^[\s]*[\S+]*[\s]*$', s).group(0))
+    elif isfloat(s):
+        return float(s)
+    else:
+        return s
 
 
 

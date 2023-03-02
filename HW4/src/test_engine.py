@@ -109,15 +109,15 @@ def REPCOLS(the):
     t = repCols(dofile(str(the['file']))['cols'], Data)
     for col in t.cols.all:
         print("Cols is:")
-        print(type(col))
+        oo(vars(col))
     for row in t.rows:
         print("Rows is:")
-        print(type(row))
-
-    # assert True
+        oo(vars(row))
+    assert True
 
 def SYNONYMS(the):
-    show(repCols(dofile(str(the['file']))['cols'], Data).cluster(the))
+    data=Data(str(the['file']))
+    show(node=repCols(dofile(str(the['file']))['cols'], Data).cluster(),what=0,col=data.cols.all,n_places=0)
 
 def CHK_REPROWS(the):
     t = dofile(str(the['file']))
