@@ -7,43 +7,31 @@ class Data:
     Store many rows, summarized into columns
     """
     def __init__(self,src):
-        self.rows, self.cols = {}, None
-        def fun(x):
-            self.add(x)
+        self.rows, self.cols = [], None
         if type(src) == str:
-            csv(src,fun)
+            csv(src, self.add)
         else:
-            self.add(src)
+            map(src, self.add)
             
     def add(self,t):
         """
         add a new row, update column headers
         """
         if self.cols:       # true if we have already seen the column names
-            if hasattr(t, "cells"):     # ensure is a ROW, reusing old rows in the are passed in -- t =ROW(t.cells and t.cells or t) -- make a new ROW
-                t = t
-            else:
-                t = Row(t)      
-            push(self.rows, t)      # add new data to "self.rows"
+            if isinstance(t, list):     # ensure is a ROW, reusing old rows in the are passed in -- t =ROW(t.cells and t.cells or t) -- make a new ROW
+                t = Row(t)
+            self.rows.append(t)      # add new data to "self.rows"
             self.cols.add(t)        # update the summary information in "self.cols"
         else:
             self.cols = Cols(t)     # here, we create "self.cols" from the first row
-
-    # def add(self, t):
-    #     if self.cols:
-    #         if isinstance(t, list):
-    #             t = Rows(t)
-    #             self.rows.append(t)
-    #             self.cols.add(t)
-    #     else:
-    #         self.cols = Cols(t)
         
-    def clone(self, initial):
+    def clone(self, initial=None):
         """
         DATA; return a DATA with same structure as `ii. 
         """
+        initial = [] if not initial else initial
         data = Data(self.cols.names)
-        for _,r in initial.items():
+        for _,r in enumerate(initial):
             data.add(r)
         return data
         
@@ -51,43 +39,35 @@ class Data:
         """
         reports mid or div of cols (defaults to self.cols.y)
         """
-        x_mid = {}
-        y_div = {}
-        if what == "mid":
-            for _, col in enumerate(cols):
-                x_mid[col.txt] = col.rnd(col.mid(),2)
-            return x_mid
-        elif what == "div":
-            for _, col in cols.items():
-                y_div[col.txt] = col.rnd(col.div(), 2)
-            return y_div
+        def fun(_, col):
+            if what == "mid":
+                ans = col.mid()
+            else:
+                ans = col.div()
+                return col.rnd(val, nPlaces), col.txt
+        return kap(cols or self.cols.y, fun)
         
-    def dist(self, row1, row2, the, cols=None):
+    def dist(self, row1, row2, cols=None):
         """
         n; returns 0..1 distance `row1` to `row2`
         """
         n, d = 0, 0 
-        if cols is None:
-            cols = self.cols.x
+        cols = cols or self.cols.x
         p = the["p"]
-        for _, col in self.cols.x.items():
+        for _, col in enumerate(cols):
             n = n + 1
             d = d + (col.dist(row1.cells[col.at], row2.cells[col.at])) ** p
         return (d/n)**(1/p)
     
-    def around(self, row1 ,the, rows=None):
+    def around(self, row1, rows=None, cols=None):
         """
         t; sort other `rows` by distance to `row`
         """
-        if rows == None:
-            rows = self.rows
+        rows = rows or self.rows
         def fun(row2):
-            return {"row": row2, "dist": rnd(self.dist(row1, row2, the),2)}
-        l = []
-        for _, v in rows.items():
-            l.append(fun(v))
-        sorted_list = sorted(l, key=lambda x:x['dist'])
-        return sorted_list
+            return {"row": row2, "dist": rnd(self.dist(row1, row2, cols),2)}
+        sorted_list_of_rows = sorted(list(map(fun, rows)), key=lambda x:x['dist'])
+        return sorted_list_of_rows
     
     def better(self,row1,row2):
         """
@@ -103,66 +83,61 @@ class Data:
             s2 = s2 - math.exp(col.w * (y-x)/len(ys))
         return s1/len(ys) < s2/len(ys)
     
-    def furthest(self, row1, rows, cols, t):
+    def furthest(self, row1, rows, cols=None):
         """
         sort other `rows` by distance to `row`
         """
         t = self.around(row1,rows,cols)
-        return t[len(t)]
+        return t[len(t)-1]
     
-    def half(self, the, rows = None, cols = None, above = None):
+    def half(self, rows = None, cols = None, above = None):
         """
         t,t,row,row,row,n; divides data using 2 far points
         """
-        def project(row, x, y):
+        def project(row):
             x,y = cosine(dist(row,A), dist(row,B),c)
-            if row.x == None:
-                row.x = x
-            if row.y == None:
-                row.y = y
+            row.x == row.x or x
+            row.y == row.y or y
             return {'row' : row, 'x' : x, 'y' : y}
         
-        def dist(row1,row2,the): 
-            return self.dist(row1,row2,the,cols)
+        def dist(row1,row2): 
+            return self.dist(row1,row2,cols)
         
         rows = rows or self.rows
-        some = many(rows,the['Sample'])
-        A = above or any(some)
+        # some = many(rows,the['Sample'])
+        A = above or any(rows)
         B = self.furthest(A,rows).row
         #B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
-        c = dist(A,B, the)
-        l = []
-        left, right = [], []
-        for _, row in rows.items():
-            l.append(project(row))
-        sorted_list = sorted(l, key=lambda x:x['dist'])
-        for n, tmp in enumerate(sorted_list):
-            if n <= len(rows) // 2:
+        c = dist(A,B)
+        left = []
+        right = []
+        n = 0
+        mid = None
+        for tmp in sorted(list(map(project,rows)), key= lambda x: x['x']):
+            n+=1
+            if n <= len(rows) / 2:
                 left.append(tmp['row'])
                 mid = tmp['row']
             else:
                 right.append(tmp['row'])
         return left, right, A, B, mid, c
     
-    def cluster(self, the, rows = None,min = None,cols = None,above = None):
+    def cluster(self, rows = None,cols = None,above = None):
         """
         returns `rows`, recursively halved
         """
-        if rows == None:
-            rows = self.rows
-        elif type(rows) == list:
-            rows = dict(enumerate(rows))
-        if min == None:
-            #min = len(rows)^the.min
-            min = len(rows)**0.5
-        if cols == None:
-            cols = self.cols.x
+        rows = rows or self.rows
+        cols = cols or self.cols.x
         node = {}
         node["data"] = self.clone(rows)
-        if len(rows) > 2*min:
+        if len(rows) >= 2:
             left, right, node['A'], node['B'], node['mid'], c = self.half(the,rows,cols,above)
-            node['left']  = self.cluster(the, left,  min, cols, node['A'])
-            node['right'] = self.cluster(the, right, min, cols, node['B'])
+            node['left']  = self.cluster(left, cols, node['A'])
+            node['right'] = self.cluster(right, cols, node['B'])
+        if "left" not in node:
+            node['left'] = None
+        if "right" not in node:
+            node["right"] = None
         return node
     
     def sway(self, the, rows=None, min=None, cols=None, above=None):
