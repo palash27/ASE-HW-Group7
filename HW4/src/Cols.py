@@ -13,10 +13,10 @@ class Cols:
         self.x = []
         self.y = []
         self.klass = None
-        # print(t)
+        print(t)
         for n, s in enumerate(t):
-            # print(n)
-            # print(s)
+            print(n)
+            print(s)
             if re.match(r"^[A-Z]+", str(s)):
                 col = Num(n,s)
             else:
@@ -38,12 +38,12 @@ class Cols:
         """
         update the (not skipped) columns with details from `row`
         """
-        for _,col in self.x.items():
+        for _,col in enumerate(self.x):
             col.add(float(row.cells[col.at]))
             # for _,col in t.items():
             #     col.add(row.cells[col.at])
         
-        for _,col in self.y.items():
+        for _,col in enumerate(self.y):
             col.add(float(row.cells[col.at]))
                                     
             # for _,col in t.items():

@@ -16,7 +16,7 @@ def SYM(the):
     sym = Sym()
     for x in ["a","a","a","a","b","b","c"]:
         sym.add(x)
-    if "a" == sym.mid() and 1.379 == rnd(sym.div()):
+    if "a" == sym.mid() and 1.379 == rnd(sym.div(),3):
         return True
     else:
         return False
@@ -25,7 +25,7 @@ def NUM(the):
     num = Num()
     for x in [1,1,1,1,2,2,3]:
         num.add(x)
-    if 11/7 == num.mid() and 0.787 == rnd(num.div()):
+    if 11/7 == num.mid() and 0.787 == rnd(num.div(),3):
         return True
     else:
         return False
@@ -108,11 +108,13 @@ def COPY(the):
 def REPCOLS(the):
     t = repCols(dofile(str(the['file']))['cols'], Data)
     for col in t.cols.all:
-        print(vars(col))
+        print("Cols is:")
+        print(type(col))
     for row in t.rows:
-        print(vars(row))
+        print("Rows is:")
+        print(type(row))
 
-    assert True
+    # assert True
 
 def SYNONYMS(the):
     show(repCols(dofile(str(the['file']))['cols'], Data).cluster(the))

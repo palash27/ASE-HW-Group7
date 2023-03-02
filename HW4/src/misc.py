@@ -54,13 +54,15 @@ def repCols(cols, Data):
     returns Data(cols)
     """
     cols = copy.deepcopy(cols)
-    for i in range(len(cols)):
-        col = cols[i]
+    for i,col in enumerate(cols):
         col[len(col) - 1] = col[0] + ":" + col[len(col) - 1]
-        for j in range(1, len(col) - 1):
+        for j in range(1, len(col)):
             col[j - 1] = col[j]
         col.pop()
-    cols.insert(0, ["Num" + str(k) for k in range(len(cols[0]))])
+    s=[]
+    for i in range(len(cols[0])):
+        s.append("Num"+str(i))
+    cols.insert(0, s)
     cols[0][len(cols[0]) - 1] = "thingX"
     data = Data(cols)
     return data
@@ -208,14 +210,11 @@ def map(t,fun):
     """
     t; map a function `fun`(v) over list (skip nil results) 
     """
-    u = {}
-    print(t)
+    u=[]
     for k,v in enumerate(t):
-        v,k = fun(v)
-        if k is None:
-            u[1+len(u)] = v
-        else:
-            u[k] = v
+        res = fun(v)
+        if res is not None:
+            u[res[1] if len(res) > 1 else len(u) + 1] = res[0]
     return u
     
 def kap(t, fun):
@@ -258,7 +257,7 @@ def oo(t):
 #     """
 #     convert `t` to a string. sort named keys. 
 #     """
-#     keys = list(t.keys())
+#     keys = list(t)
 #     keys = sorted(keys)
 #     sorted_t = {i: t[i] for i in keys }
 #     output = "{"
@@ -268,31 +267,40 @@ def oo(t):
 #     return output
 
 def o(t, isKeys=False):
-    """
-    convert `t` to a string. sort named keys. 
-    """
-    if type(t) != dict:
-        return str(t)
-    
-    def to_str(k, v):
+    def fun(k, v):
         if not str(k).startswith("_"):
             return f":{o(k)} {o(v)}"
+    if not isinstance(t, dict):
+        return str(t)
+    items = t.items() if isKeys else sorted(t.items())
+    return "{" + " ".join(o(k) + " " + o(v) for k, v in items if fun(k, v)) + "}"
+
+# def o(t, isKeys=False):
+#     """
+#     convert `t` to a string. sort named keys. 
+#     """
+#     if type(t) != dict:
+#         return str(t)
     
-    pairs = []
-    for k, v in sorted(t.items(), key=lambda x: str(x[0]) if not isinstance(x[0], int) else x[0]):
-        if isKeys or isinstance(k, int):
-            pairs.append(o(v))
-        else:
-            pair_str = to_str(k, v)
-            if pair_str is not None:
-                pairs.append(pair_str)
+#     def to_str(k, v):
+#         if not str(k).startswith("_"):
+#             return f":{o(k)} {o(v)}"
     
-    if not pairs:
-        return "{}"
-    elif len(pairs) == 1:
-        return pairs[0]
-    else:
-        return "{" + " ".join(pairs) + "}"
+#     pairs = []
+#     for k, v in sorted(t.items(), key=lambda x: str(x[0]) if not isinstance(x[0], int) else x[0]):
+#         if isKeys or isinstance(k, int):
+#             pairs.append(o(v))
+#         else:
+#             pair_str = to_str(k, v)
+#             if pair_str is not None:
+#                 pairs.append(pair_str)
+    
+    # if not pairs:
+    #     return "{}"
+    # elif len(pairs) == 1:
+    #     return pairs[0]
+    # else:
+    #     return "{" + " ".join(pairs) + "}"
 
 def settings(s):
     """
@@ -323,15 +331,27 @@ def cli(command_line_args):
 
     return options
 
-def csv(file_name, fun):
+# def csv(file_name, fun):
+#     sep = "([^,]+)"
+#     with open(file_name) as file_obj:
+#         reader_obj = file_obj.readline()
+#         if reader_obj:
+#             t = []
+#             for obj in re.findall(sep, reader_obj):
+#                 t.append(coerce(obj))
+#             fun(t)
+
+def csv(sFilename, fun):
     """
     call `fun` on rows (after coercing cell text)
     """
-    sep = "([^" + "\," + "]+"
-    with open(file_name) as file_obj:
-        reader_obj = reader(file_obj)
-        for row in reader_obj:
-            t = {}
-            for element in row:
-                t[str(1+len(t))] = coerce(element)
-            fun(t)
+    with open(sFilename, "r") as file_obj:
+        while True:
+            s = file_obj.readline().strip()
+            if s:
+                t = [coerce(s1) for s1 in s.split(",")]
+                fun(t)
+            else:
+                return
+
+            
