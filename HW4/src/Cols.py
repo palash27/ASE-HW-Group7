@@ -39,12 +39,12 @@ class Cols:
         update the (not skipped) columns with details from `row`
         """
         for _,col in enumerate(self.x):
-            col.add(float(row.cells[col.at]))
+            col.add(row.cells[col.at])
             # for _,col in t.items():
             #     col.add(row.cells[col.at])
         
         for _,col in enumerate(self.y):
-            col.add(float(row.cells[col.at]))
+            col.add(row.cells[col.at])
                                     
             # for _,col in t.items():
             #     col.add(row.cells[col.at])
