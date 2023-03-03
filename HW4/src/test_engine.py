@@ -61,30 +61,30 @@ def CSV(the):
     return n == 8*399
 
 def DATA(the):
-    data = Data(str(the['file']))
+    data = Data(the['file'])
     return len(data.rows) == 398 and len(data.cols.x) == 4 and int(data.cols.x[1].at) == 1 and int(data.cols.y[1].w) == -1
 
 def STATS(the):
-    data = Data(str(the['file']))
+    data = Data(the['file'])
     dict = {'y': data.cols.y, 'x': data.cols.x }
     for k,cols in dict.items():
             print(k, "   ", "mid", "   ", o(data.stats("mid", cols, 2)))
             print("", "    ", "div", "   ", o(data.stats("div", cols, 2)))
 
 def CLONE(the):
-    data1 = Data(str(the['file']))
+    data1 = Data(the['file'])
     data2 = data1.clone(data1.rows)
     return len(data1.rows) == len(data2.rows) and len(data1.cols.x) == len(data2.cols.x) and int(data1.cols.x[1].at) == int(data2.cols.x[1].at) and int(data1.cols.y[1].w) == int(data2.cols.y[1].w)
 
 def AROUND(the):
-    data = Data(str(the['file']))
+    data = Data(the['file'])
     # print(0, 0, o(data.rows[1].cells))
     for i, t in enumerate(data.around(data.rows[1], the)):
         if i%50 == 0:
             print(i, t['dist'], (t['row'].cells))
 
 def HALF(the):
-    data = Data(str(the["file"]))
+    data = Data(the["file"])
     left, right, A, B, mid, c = data.half(the)
     print(len(left), len(right), len(data.rows))
     print(o(A.cells), c)
@@ -92,11 +92,11 @@ def HALF(the):
     print(o(B.cells))
 
 def CLUSTER(the):
-    data = Data(str(the['file']))
+    data = Data(the['file'])
     show(data.cluster(the), "mid", data.cols.y, 1)  
 
 def OPTIMIZE(the):
-    data = Data(str(the['file']))
+    data = Data(the['file'])
     show(data.sway(the), "mid", data.cols.y,1)
 
 def COPY(the):
@@ -106,7 +106,7 @@ def COPY(the):
     print("b4",o(t1),"\nafter",o(t2))
 
 def REPCOLS(the):
-    t = repCols(dofile(str(the['file']))['cols'], Data)
+    t = repCols(dofile(the['file'])['cols'], Data)
     for col in t.cols.all:
         print("Cols is:")
         oo(vars(col))
@@ -116,11 +116,11 @@ def REPCOLS(the):
     assert True
 
 def SYNONYMS(the):
-    data=Data(str(the['file']))
-    show(node=repCols(dofile(str(the['file']))['cols'], Data).cluster(),what=0,col=data.cols.all,n_places=0)
+    data=Data(the['file'])
+    show(node=repCols(dofile(the['file'])['cols'], Data).cluster(the),what=0,cols=data.cols.all,nPlaces=0)
 
 def CHK_REPROWS(the):
-    t = dofile(str(the['file']))
+    t = dofile((the['file']))
     rows = repRows(t, transpose(t['cols']), Data)
     for col in rows.cols.all:
         print(vars(col))
@@ -128,18 +128,18 @@ def CHK_REPROWS(the):
         print(vars(row))
 
 def PROTOTYPES(the):
-    t = dofile(str(the['file']))
+    t = dofile((the['file']))
     rows = repRows(t, transpose(t['cols']), Data)
     show(rows.cluster(the))
 
 def POSITION(the):
-    t = dofile(str(the['file']))
+    t = dofile((the['file']))
     rows = repRows(t, transpose(t['cols']), Data)
     rows.cluster(the)
     repPlace(rows)
 
 def EVERY(the):
-    repgrid(str(the['file']), Data)
+    repgrid((the['file']), Data)
     
 eg("sym", "check syms", SYM)
 eg("num", "check nums", NUM)
