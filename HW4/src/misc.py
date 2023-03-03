@@ -84,27 +84,48 @@ def repRows(t, rows, Data=None):
     data = Data(rows)
     return data
 
-def repPlace(data,n=20):
+# def repPlace(data,n=20):
+#     """
+#     prints g[y]
+#     """
+#     g = []
+#     for i in range(n + 1):
+#         g.append([])
+#         for j in range(n + 1):
+#             g[i].append(" ")
+#     maxy = 0
+#     print("")
+#     print(data.rows)
+#     for r, row in enumerate(data.rows):
+#         c = chr(65 + r)
+#         print(c, row["cells"][-1])
+#         x, y = int(row["x"] * n), int(row["y"] * n)
+#         maxy = max(maxy, y + 1)
+#         g[y + 1][x + 1] = c
+#     print("")
+#     for y in range(1, maxy + 1):
+#         oo(g[y])
+
+def repPlace(data, n=20):
     """
-    prints g[y]
+    Args:
+        data:
+        n:
+    Returns:
     """
-    g = []
-    for i in range(n + 1):
-        g.append([])
-        for j in range(n + 1):
-            g[i].append(" ")
+    g = [[" " for _ in range(n + 1)] for i in range(n + 1)]
     maxy = 0
-    print("")
-    print(data.rows)
+    print()
     for r, row in enumerate(data.rows):
         c = chr(65 + r)
-        print(c, row["cells"][-1])
-        x, y = int(row["x"] * n), int(row["y"] * n)
+        print(c, row.cells[-1])
+        x, y = int(row.x * n // 1), int(row.y * n // 1)
         maxy = max(maxy, y + 1)
         g[y + 1][x + 1] = c
-    print("")
-    for y in range(1, maxy + 1):
-        oo(g[y])
+    print()
+    for y in range(maxy):
+        print(*g[y])
+
 
 def dofile(file_path):
     """
@@ -171,7 +192,7 @@ def any(t):
     """
     x; returns one items at random
     """
-    return t[random.randint(1, len(t)-1)]
+    return t[random.randint(0, len(t)-1)]
 
 def many(t, n):
     """
@@ -206,15 +227,19 @@ def push(t, x):
     t.append(x)
     return x
 
-def map(t,fun):
+def mapM(t,fun):
     """
     t; map a function `fun`(v) over list (skip nil results) 
     """
     u=[]
+    print(t)
     for k,v in enumerate(t):
-        res = fun(v)
+        print(k)
+        print(v)
+        x,res = fun(v)
+        print(x)
         if res is not None:
-            u[res[1] if len(res) > 1 else len(u) + 1] = res[0]
+            u[res['dist'] if len(res) > 1 else len(u) + 1] = x
     return u
     
 def kap(t, fun):
@@ -223,7 +248,7 @@ def kap(t, fun):
     """
     u = {}
     for k, v in enumerate(t):
-        v, k = fun(k ,v)
+        v, k = fun(k,v)
         u[k or (1 + len(u))] = v
     return u
 #strings
@@ -346,17 +371,14 @@ def cli(command_line_args):
 #                 t.append(coerce(obj))
 #             fun(t)
 
-def csv(sFilename, fun):
-    """
-    call `fun` on rows (after coercing cell text)
-    """
-    with open(sFilename, "r") as file_obj:
-        while True:
-            s = file_obj.readline().strip()
-            if s:
-                t = [coerce(s1) for s1 in s.split(",")]
-                fun(t)
-            else:
-                return
+
+
+        # while True:
+        #     s = file_obj.readline().strip()
+        #     if s:
+        #         t = [coerce(s1) for s1 in s.split(",")]
+        #         add(t)
+        #     else:
+        #         return
 
             

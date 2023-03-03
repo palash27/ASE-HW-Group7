@@ -35,8 +35,8 @@ class Sym:
         def fun(p):
             return p*math.log(p,2)
         e = 0
-        for _,n in self.has.items():
-            e = e + fun(n/self.n)
+        for _,val in self.has.items():
+            e = e + fun(val/self.n)
         return -e
     
     def rnd(self, x, n):

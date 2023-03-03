@@ -1,17 +1,30 @@
 from misc import *
 from Rows import *
 from Cols import *
-
+import copy
+# from main import *
 class Data:
     """
     Store many rows, summarized into columns
     """
     def __init__(self,src):
-        self.rows, self.cols = [], None
-        if type(src) == str:
-            csv(src, self.add)
+        # self.rows, self.cols = [], None
+        # if type(src) == str:
+        #     csv(src, self.add)
+        # else:
+        #     map(src, self.add)
+        self.cols = None
+        self.rows =[]
+        self.n=0
+        if isinstance(src,str):
+            self.csv(src)
         else:
-            map(src, self.add)
+            if isinstance(src[0],str):
+                self.add(src)
+            else:
+                for line in src:
+                    self.add(line)
+
             
     def add(self,t):
         """
@@ -31,41 +44,45 @@ class Data:
         """
         initial = [] if not initial else initial
         data = Data(self.cols.names)
-        for _,r in enumerate(initial):
-            data.add(r)
+        # for _,r in enumerate(initial):
+        #     data.add(r)
+        _ = list(map(data.add,initial))
         return data
-        
+
     def stats(self, what, cols, nPlaces):
         """
         reports mid or div of cols (defaults to self.cols.y)
         """
-        def fun(_, col):
-            if what == "mid":
-                ans = col.mid()
-            else:
-                ans = col.div()
-                return col.rnd(val, nPlaces), col.txt
-        return kap(cols or self.cols.y, fun)
+        def fun(col):
+            # if what == "mid":
+            #     ans = col.mid()
+            # else:
+            #     ans = col.div()
+            _x = getattr(col,what)
+            return col.rnd(_x(), nPlaces), col.txt
+        return kap(cols, fun)
         
-    def dist(self, row1, row2, cols=None):
+    def dist(self, the, row1, row2, cols=None):
         """
         n; returns 0..1 distance `row1` to `row2`
         """
         n, d = 0, 0 
-        cols = cols or self.cols.x
-        p = the["p"]
-        for _, col in enumerate(cols):
+        c = cols or self.cols.x
+
+        p = 2
+        print(p)
+        for _, col in enumerate(c):
             n = n + 1
-            d = d + (col.dist(row1.cells[col.at], row2.cells[col.at])) ** p
+            d = (d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** p)
         return (d/n)**(1/p)
     
-    def around(self, row1, rows=None, cols=None):
+    def around(self, the, row1, rows=None, cols=None):
         """
         t; sort other `rows` by distance to `row`
         """
         rows = rows or self.rows
         def fun(row2):
-            return {"row": row2, "dist": rnd(self.dist(row1, row2, cols),2)}
+            return {"row": row2, "dist": self.dist(the, row1, row2, cols)}
         sorted_list_of_rows = sorted(list(map(fun, rows)), key=lambda x:x['dist'])
         return sorted_list_of_rows
     
@@ -83,38 +100,38 @@ class Data:
             s2 = s2 - math.exp(col.w * (y-x)/len(ys))
         return s1/len(ys) < s2/len(ys)
     
-    def furthest(self, row1, rows, cols=None):
+    def furthest(self, the, row1, rows, cols=None):
         """
         sort other `rows` by distance to `row`
         """
-        t = self.around(row1,rows,cols)
+        t = self.around(the,row1,rows,cols)
         return t[len(t)-1]
     
-    def half(self, rows = None, cols = None, above = None):
+    def half(self, the,rows = None, cols = None, above = None):
         """
         t,t,row,row,row,n; divides data using 2 far points
         """
         def project(row):
-            x,y = cosine(dist(row,A), dist(row,B),c)
-            row.x == row.x or x
-            row.y == row.y or y
+            x,y = cosine(sub_dist(row,A), sub_dist(row,B),c)
+            row.x = row.x or x
+            row.y = row.y or y
             return {'row' : row, 'x' : x, 'y' : y}
         
-        def dist(row1,row2): 
-            return self.dist(row1,row2,cols)
+        def sub_dist(row1,row2):
+            return self.dist(the,row1,row2,cols)
         
         rows = rows or self.rows
         # some = many(rows,the['Sample'])
         A = above or any(rows)
-        B = self.furthest(A,rows).row
+        B = self.furthest(the,A,rows)["row"]
         #B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
-        c = dist(A,B)
+        c = sub_dist(A,B)
         left = []
         right = []
         n = 0
         mid = None
-        for tmp in sorted(list(map(project,rows)), key= lambda x: x['x']):
-            n+=1
+        for tmp in sorted(list(map(project, rows)), key= lambda x: x['x']):
+            n += 1
             if n <= len(rows) / 2:
                 left.append(tmp['row'])
                 mid = tmp['row']
@@ -122,7 +139,7 @@ class Data:
                 right.append(tmp['row'])
         return left, right, A, B, mid, c
     
-    def cluster(self, rows = None,cols = None,above = None):
+    def cluster(self, the, rows = None,cols = None,above = None):
         """
         returns `rows`, recursively halved
         """
@@ -132,8 +149,8 @@ class Data:
         node["data"] = self.clone(rows)
         if len(rows) >= 2:
             left, right, node['A'], node['B'], node['mid'], c = self.half(the,rows,cols,above)
-            node['left']  = self.cluster(left, cols, node['A'])
-            node['right'] = self.cluster(right, cols, node['B'])
+            node['left']  = self.cluster(the,left, cols, node['A'])
+            node['right'] = self.cluster(the,right, cols, node['B'])
         if "left" not in node:
             node['left'] = None
         if "right" not in node:
@@ -172,4 +189,14 @@ class Data:
         #     print(cols.rnd(cols.txt, nPlaces))
 
             
-
+    def csv(self,sFilename):
+        """
+        call `fun` on rows (after coercing cell text)
+        """
+        with open(sFilename, "r") as file_obj:
+            lines = file_obj.readlines()
+            for line in lines:
+                t = line.replace("\n","").rstrip().split(",")
+                t = [coerce(i) for i in t]
+                self.add(t)
+                self.n+=len(t)

@@ -5,7 +5,7 @@ class Num:
     """
     Summarizes a stream of numbers.
     """
-    def __init__(self, at='', txt="") -> None:
+    def __init__(self, at=0, txt="") -> None:
         self.n, self.mu, self.m2 = 0,0,0
         self.lo = float('inf')
         self.hi = float('-inf')
@@ -62,7 +62,7 @@ class Num:
         """
         1 or returns absolute difference of n1 and n2
         """
-        if n1  == "?" and n2 == "?":
+        if n1 == "?" and n2 == "?":
             return 1
         n1 = self.norm(n1)
         n2 = self.norm(n2)
