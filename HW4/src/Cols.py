@@ -13,10 +13,7 @@ class Cols:
         self.x = []
         self.y = []
         self.klass = None
-        print(t)
         for n, s in enumerate(t):
-            print(n)
-            print(s)
             if re.match(r"^[A-Z]+", s):
                 col = Num(n,s)
             else:
@@ -30,16 +27,6 @@ class Cols:
                     push(self.y, col)
                 else:
                     push(self.x, col)
-                # if s[-1] == "$":
-                #     self.klass = col
-                # elif s[-1] == '+' or s[-1] == "-" or s[-1] == "!":
-                #     if s[-1] == "-":
-                #         col.w = -1
-                #     else:
-                #         col.w = 1
-                #     push(self.y, col)
-                # else:
-                #     push(self.x, col)
     
     def add(self, row):
         """

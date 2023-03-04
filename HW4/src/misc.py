@@ -13,7 +13,7 @@ script.lua : an example script with help text and a test suite
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
   -d  --dump  on crash, dump stack = false
-  -f  --file    name of file       = HW4/data/data.csv
+  -f  --file    name of file       = data/data.csv
   -F  --Far     distance to "faraway"  = .95
   -g  --go      start-up action        = data
   -h  --help    show help              = false
@@ -84,28 +84,6 @@ def repRows(t, rows, Data=None):
     data = Data(rows)
     return data
 
-# def repPlace(data,n=20):
-#     """
-#     prints g[y]
-#     """
-#     g = []
-#     for i in range(n + 1):
-#         g.append([])
-#         for j in range(n + 1):
-#             g[i].append(" ")
-#     maxy = 0
-#     print("")
-#     print(data.rows)
-#     for r, row in enumerate(data.rows):
-#         c = chr(65 + r)
-#         print(c, row["cells"][-1])
-#         x, y = int(row["x"] * n), int(row["y"] * n)
-#         maxy = max(maxy, y + 1)
-#         g[y + 1][x + 1] = c
-#     print("")
-#     for y in range(1, maxy + 1):
-#         oo(g[y])
-
 def repPlace(data, n=20):
     """
     Args:
@@ -125,7 +103,6 @@ def repPlace(data, n=20):
     print()
     for y in range(maxy):
         print(*g[y])
-
 
 def dofile(file_path):
     """
@@ -157,15 +134,6 @@ def show(node, what=0, cols=0, nPlaces=0, lvl=0):
     """
     nil; prints the tree generated from `DATA:tree`.
     """
-    # if node:
-    #     print('| '*lvl + str(len(node['data'].rows)) + " ", end = '')
-    #     if (not node.get('left') or lvl==0):
-    #         print(o(node['data'].stats("mid",node['data'].cols.y, nPlaces )))
-    #     else:
-    #         print("")
-    #     show(node.get('left'), what, cols, nPlaces, lvl+1)
-    #     show(node.get('right'), what, cols, nPlaces, lvl+1)
-
     if node:
         string = "|.." * lvl
         if node["left"] is None:
@@ -283,27 +251,12 @@ def coerce(s):
     else:
         return s
 
-
-
 def oo(t):
     """
     print `t` then return it
     """
     print(o(t))
     return t
-
-# def o(t):
-#     """
-#     convert `t` to a string. sort named keys. 
-#     """
-#     keys = list(t)
-#     keys = sorted(keys)
-#     sorted_t = {i: t[i] for i in keys }
-#     output = "{"
-#     for k, v in sorted_t.items():
-#         output = output + ":"+str(k) + " " + str(v) + " "
-#     output = output + "}"
-#     return output
 
 def o(t, isKeys=False):
     def fun(k, v):
@@ -313,33 +266,6 @@ def o(t, isKeys=False):
         return str(t)
     items = t.items() if isKeys else sorted(t.items())
     return "{" + " ".join(o(k) + " " + o(v) for k, v in items if fun(k, v)) + "}"
-
-# def o(t, isKeys=False):
-#     """
-#     convert `t` to a string. sort named keys. 
-#     """
-#     if type(t) != dict:
-#         return str(t)
-    
-#     def to_str(k, v):
-#         if not str(k).startswith("_"):
-#             return f":{o(k)} {o(v)}"
-    
-#     pairs = []
-#     for k, v in sorted(t.items(), key=lambda x: str(x[0]) if not isinstance(x[0], int) else x[0]):
-#         if isKeys or isinstance(k, int):
-#             pairs.append(o(v))
-#         else:
-#             pair_str = to_str(k, v)
-#             if pair_str is not None:
-#                 pairs.append(pair_str)
-    
-    # if not pairs:
-    #     return "{}"
-    # elif len(pairs) == 1:
-    #     return pairs[0]
-    # else:
-    #     return "{" + " ".join(pairs) + "}"
 
 def settings(s):
     """
@@ -369,25 +295,3 @@ def cli(command_line_args):
         options[k] = coerce(v)
 
     return options
-
-# def csv(file_name, fun):
-#     sep = "([^,]+)"
-#     with open(file_name) as file_obj:
-#         reader_obj = file_obj.readline()
-#         if reader_obj:
-#             t = []
-#             for obj in re.findall(sep, reader_obj):
-#                 t.append(coerce(obj))
-#             fun(t)
-
-
-
-        # while True:
-        #     s = file_obj.readline().strip()
-        #     if s:
-        #         t = [coerce(s1) for s1 in s.split(",")]
-        #         add(t)
-        #     else:
-        #         return
-
-            
