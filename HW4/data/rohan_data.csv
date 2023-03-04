@@ -6,7 +6,7 @@ return {
 {'ChildrenContent', 3, 3, 4, 3, 4, 1, 5, 3, 3, 4, 'ForAdults'},
       {'OnlyUS', 5, 5, 3, 4, 1, 2, 5, 4, 3, 1, 'International'},
        {'LessPopularShows', 4, 5, 2, 4, 1, 2, 3, 5, 1, 5, 'MorePopularShows'},
-      {'Cheap', 5, 4, 4, 1, 2, 4, 3, 3, 3, 1, 'Expensive'}},
+      {'Economical', 5, 4, 4, 1, 2, 4, 3, 3, 3, 1, 'Expensive'}},
 rows={                      { _, _, _, _, _, _, _, _, _, 'Netflix'},
                             { _, _, _, _, _, _, _, _, 'AmazonPrime'},
                             { _, _, _, _, _, _, _, 'Hulu'},
