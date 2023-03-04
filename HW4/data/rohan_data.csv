@@ -1,0 +1,20 @@
+local _ = " "
+return {
+ domain="dissementian platforms",
+ cols={   {'LessIndianShows', 5, 5, 4, 5, 1, 1, 3, 1, 1, 1, 'MoreIndianShows'},
+       {'LessBiopics' , 5, 5, 2, 3, 4, 1, 2, 1, 1, 4, 'LessBiopics'},
+{'ChildrenContent', 3, 3, 4, 3, 4, 1, 5, 3, 3, 4, 'ForAdults'},
+      {'OnlyUS', 5, 5, 3, 4, 1, 2, 5, 4, 3, 1, 'International'},
+       {'LessPopularShows', 4, 5, 2, 4, 1, 2, 3, 5, 1, 5, 'MorePopularShows'},
+      {'Cheap', 5, 4, 4, 1, 2, 4, 3, 3, 3, 1, 'Expensive'}},
+rows={                      { _, _, _, _, _, _, _, _, _, 'Netflix'},
+                            { _, _, _, _, _, _, _, _, 'AmazonPrime'},
+                            { _, _, _, _, _, _, _, 'Hulu'},
+                            { _, _, _, _, _, _, 'SonyLIV'},
+                            { _, _, _, _, _,  'AppleTVPlus'},
+                            { _, _, _, _,  'HBOMax'},
+                            { _, _, _,  'Disney+'},
+                            { _, _,  'Peacock'},
+                            { _, 'Paramount+'},
+                            {'Tubi'}}
+}
