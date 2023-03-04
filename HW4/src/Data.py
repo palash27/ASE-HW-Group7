@@ -2,17 +2,12 @@ from misc import *
 from Rows import *
 from Cols import *
 import copy
-# from main import *
+
 class Data:
     """
     Store many rows, summarized into columns
     """
     def __init__(self,src):
-        # self.rows, self.cols = [], None
-        # if type(src) == str:
-        #     csv(src, self.add)
-        # else:
-        #     map(src, self.add)
         self.cols = None
         self.rows =[]
         self.n=0
@@ -44,8 +39,6 @@ class Data:
         """
         initial = [] if not initial else initial
         data = Data(self.cols.names)
-        # for _,r in enumerate(initial):
-        #     data.add(r)
         _ = list(map(data.add,initial))
         return data
 
@@ -54,10 +47,6 @@ class Data:
         reports mid or div of cols (defaults to self.cols.y)
         """
         def fun(col):
-            # if what == "mid":
-            #     ans = col.mid()
-            # else:
-            #     ans = col.div()
             _x = getattr(col,what)
             return col.rnd(_x(), nPlaces), col.txt
         return kap(cols, fun)
@@ -70,7 +59,6 @@ class Data:
         c = cols or self.cols.x
 
         p = 2
-        print(p)
         for _, col in enumerate(c):
             n = n + 1
             d = (d + col.dist(row1.cells[col.at], row2.cells[col.at]) ** p)
@@ -121,10 +109,8 @@ class Data:
             return self.dist(the,row1,row2,cols)
         
         rows = rows or self.rows
-        # some = many(rows,the['Sample'])
         A = above or any(rows)
         B = self.furthest(the,A,rows)["row"]
-        #B = self.around(A, the, some)[int(float(the['Far']) * len(rows))//1]['row']
         c = sub_dist(A,B)
         left = []
         right = []
@@ -173,21 +159,6 @@ class Data:
                 left,right,node['A'],node['B'] = right,left,node['B'],node['A']
             node['left'] = self.sway(the, left, min, cols, node['A'])
         return node
-
-
-        # x_mid = {}
-        # if what == "mid":
-        #     x_mid[cols.txt] = cols.mid()
-        # print(x_mid)
-        # return cols.txt, cols.mid()
-        
-        # if what == "div":
-        #     return cols.txt, cols.div()
-        #     print(cols, cols.txt, cols.div())
-        # print(cols)
-        # if hasattr(cols, "rnd"):
-        #     print(cols.rnd(cols.txt, nPlaces))
-
             
     def csv(self,sFilename):
         """

@@ -44,9 +44,6 @@ def RAND(the):
         num2.add(rand(0, 1, the["seed"]))
     m1 = rnd(num1.mid(), 10)
     m2 = rnd(num2.mid(), 10)
-    # print(m1)
-    # print(m2)
-    # print(rnd(m1,1))
     if m1 == m2 and .6  == rnd(m1, 1):
         return True
     else:
@@ -108,16 +105,13 @@ def COPY(the):
 def REPCOLS(the):
     t = repCols(dofile(the['file'])['cols'], Data)
     for col in t.cols.all:
-        print("Cols is:")
         oo(vars(col))
     for row in t.rows:
-        print("Rows is:")
         oo(vars(row))
     assert True
 
 def SYNONYMS(the):
     data=Data(the['file'])
-    print("DEBUG",repCols(dofile(the['file'])['cols'], Data).cluster(the).keys())
     show(node=repCols(dofile(the['file'])['cols'], Data).cluster(the),what=0,cols=data.cols.all,nPlaces=0)
 
 def CHK_REPROWS(the):
