@@ -13,7 +13,7 @@ script.lua : an example script with help text and a test suite
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
   -d  --dump  on crash, dump stack = false
-  -f  --file    name of file       = data/data.csv
+  -f  --file    name of file       = HW4/data/data.csv
   -F  --Far     distance to "faraway"  = .95
   -g  --go      start-up action        = data
   -h  --help    show help              = false
@@ -157,15 +157,24 @@ def show(node, what=0, cols=0, nPlaces=0, lvl=0):
     """
     nil; prints the tree generated from `DATA:tree`.
     """
-    if node:
-        print('| '*lvl + str(len(node['data'].rows)) + " ", end = '')
-        if (not node.get('left') or lvl==0):
-            print(o(node['data'].stats("mid",node['data'].cols.y, nPlaces )))
-        else:
-            print("")
-        show(node.get('left'), what, cols, nPlaces, lvl+1)
-        show(node.get('right'), what, cols, nPlaces, lvl+1)
+    # if node:
+    #     print('| '*lvl + str(len(node['data'].rows)) + " ", end = '')
+    #     if (not node.get('left') or lvl==0):
+    #         print(o(node['data'].stats("mid",node['data'].cols.y, nPlaces )))
+    #     else:
+    #         print("")
+    #     show(node.get('left'), what, cols, nPlaces, lvl+1)
+    #     show(node.get('right'), what, cols, nPlaces, lvl+1)
 
+    if node:
+        string = "|.." * lvl
+        if node["left"] is None:
+            print(string, o(last(last(node["data"].rows).cells)))
+        else:
+            string1 = "%.f" % (rnd(100 * node["c"]))
+            print(string, string1)
+        show(node["left"], what, cols, nPlaces, lvl + 1)
+        show(node["right"], what, cols, nPlaces, lvl + 1)
 
 def rint(lo, hi):
     """

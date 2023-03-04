@@ -117,6 +117,7 @@ def REPCOLS(the):
 
 def SYNONYMS(the):
     data=Data(the['file'])
+    print("DEBUG",repCols(dofile(the['file'])['cols'], Data).cluster(the).keys())
     show(node=repCols(dofile(the['file'])['cols'], Data).cluster(the),what=0,cols=data.cols.all,nPlaces=0)
 
 def CHK_REPROWS(the):
@@ -130,7 +131,7 @@ def CHK_REPROWS(the):
 def PROTOTYPES(the):
     t = dofile((the['file']))
     rows = repRows(t, transpose(t['cols']), Data)
-    show(rows.cluster(the))
+    show(rows.cluster(the), "mid", rows.cols.all, 1)
 
 def POSITION(the):
     t = dofile((the['file']))

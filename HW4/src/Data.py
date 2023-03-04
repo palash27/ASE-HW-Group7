@@ -148,7 +148,7 @@ class Data:
         node = {}
         node["data"] = self.clone(rows)
         if len(rows) >= 2:
-            left, right, node['A'], node['B'], node['mid'], c = self.half(the,rows,cols,above)
+            left, right, node['A'], node['B'], node['mid'], node['c'] = self.half(the,rows,cols,above)
             node['left']  = self.cluster(the,left, cols, node['A'])
             node['right'] = self.cluster(the,right, cols, node['B'])
         if "left" not in node:
