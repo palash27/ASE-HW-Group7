@@ -1,0 +1,20 @@
+local _ = " "
+return {
+ domain="Streaming Websites",
+ cols={   {‘OfflineDownloadsNotAvailable’, 1, 3, 3, 5, 5, 5, 4, 5, 5, 5, ‘OfflineDownloadsAvailable’},
+          {‘NoSupport4KStreaming’, 1, 3, 2, 5, 4, 5, 4, 5, 5, 4, ‘Support4KStreaming’},
+          {‘LessOriginalContent’, 2, 4, 3, 4, 4, 3, 3, 4, 4, 5, ‘MoreOriginalContent’},
+          {‘LessHorrorContent’, 4, 2, 3, 3, 5, 2, 3, 2, 3, 3, ‘MoreHorrorContent’},
+          {‘LessSubscribers’, 1, 3, 2, 3, 4, 3, 2, 3, 4, 5, ‘MoreSubscribers’},
+          {‘NotSoGoodUserExperience’, 1, 2, 2, 4, 3, 3, 2, 3, 2, 5, ‘GoodUserExperience’}},
+rows={                      { _, _, _, _, _, _, _, _, _, 'Netflix'},
+                            { _, _, _, _, _, _, _, _, 'AmazonPrime'},
+                            { _, _, _, _, _, _, _, 'Hulu'},
+                            { _, _, _, _, _, _, 'SonyLIV'},
+                            { _, _, _, _, _,  'AppleTVPlus'},
+                            { _, _, _, _,  'HBOMax'},
+                            { _, _, _,  'Disney+'},
+                            { _, _,  'Peacock'},
+                            { _, 'Paramount+'},
+                            {'Tubi'}}
+}
