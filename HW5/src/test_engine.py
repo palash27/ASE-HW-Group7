@@ -50,6 +50,10 @@ def DATA(the):
     data = read_data(the, str(the['file']))
     print(data)
 
+def BINS(the):
+    data = read_data(the, str(the['file']))
+    best, rest = sway(the, data)
+
 def THE(the):
     oo(the)
 
@@ -129,6 +133,7 @@ eg("the", "show settings", THE)
 eg("syms", "demo SYM", SYM)
 # eg("rand", "generate, reset, regenerate same", RAND)
 eg("csv", "read from csv", CSV)
+eg("bins", "find deltas between best and rest", BINS)
 # eg("data", "read DATA csv", DATA)
 # eg("clone", "duplicate structure", CLONE)
 # eg("stats", "stats from DATA", STATS)

@@ -4,7 +4,7 @@ import sys
 import random
 from csv import reader
 from src.Sym import *
-from src.Data import *
+
 
 #Numerics
 help = """   
@@ -160,105 +160,90 @@ def show(node, what, cols, nPlaces, lvl=0):
 
 #Optimization
 
-def sway(data):
-    """
-    -- Recursively prune the worst half the data. Return
-    -- the survivors and some sample of the rest.
-    """
-    def worker(rows,worse):
-        if len(rows) <= len(data['rows'])**the['min']:
-            return rows,many(worse,the['rest']*len(rows))
-        else:
-            l,r,A,B=half(data,rows,cols,above)
-            if better(data,B,A):
-                l,r,A,B=r,l,B,A
-                map(r,push(worse,row))
-                return worker(l,worse,A)
-    best,rest=worker(data['rows'],{})
-    return data_clone(data,best), data_clone(data,rest)
+
 
 # Discretization
 
-def bins(cols, rowss):
-    """
-    -- Return RANGEs that distinguish sets of rows (stored in `rowss`).
-    -- To reduce the search space,
-    -- values in `col` are mapped to small number of `bin`s.
-    -- For NUMs, that number is `the.bins=16` (say) (and after dividing
-    -- the column into, say, 16 bins, then we call `mergeAny` to see
-    -- how many of them can be combined with their neighboring bin).
-    """
-    out={}
-    for _,col in enumerate(cols):
-        ranges={}
-        for y,rows in enumerate(rowss):
-            for _,row in enumerate(rows):
-                x,k=row[col['at']]
-                if x!="?":
-                    k=bin(col,x)
-                    ranges[k]=ranges[k] or RANGE(col['at'], col['txt'], x)
-                    extend(ranges[k],x,y)
-        ranges = sorted(map(ranges,itself))
-        out[len(out)] = col['isSym'] and ranges or mergeAny(ranges)
-    return out
+# def bins(cols, rowss):
+#     """
+#     -- Return RANGEs that distinguish sets of rows (stored in `rowss`).
+#     -- To reduce the search space,
+#     -- values in `col` are mapped to small number of `bin`s.
+#     -- For NUMs, that number is `the.bins=16` (say) (and after dividing
+#     -- the column into, say, 16 bins, then we call `mergeAny` to see
+#     -- how many of them can be combined with their neighboring bin).
+#     """
+#     out={}
+#     for _,col in enumerate(cols):
+#         ranges={}
+#         for y,rows in enumerate(rowss):
+#             for _,row in enumerate(rows):
+#                 x,k=row[col['at']]
+#                 if x!="?":
+#                     k=bin(col,x)
+#                     ranges[k]=ranges[k] or RANGE(col['at'], col['txt'], x)
+#                     extend(ranges[k],x,y)
+#         ranges = sorted(map(ranges,itself))
+#         out[len(out)] = col['isSym'] and ranges or mergeAny(ranges)
+#     return out
 
-def bin(col,x):
-    """
-    -- Map `x` into a small number of bins. `SYM`s just get mapped
-    -- to themselves but `NUM`s get mapped to one of `the.bins` values.
-    -- Called by function `bins`.
-    """
-    if x=="?" or col['isSym']:
-        return x
-    tmp = (col['hi']-col['lo'])/(the['bins']-1)
-    return col['hi'] == col['lo'] and 1 or math.floor(x/tmp+0.5)*tmp
+# def bin(col,x):
+#     """
+#     -- Map `x` into a small number of bins. `SYM`s just get mapped
+#     -- to themselves but `NUM`s get mapped to one of `the.bins` values.
+#     -- Called by function `bins`.
+#     """
+#     if x=="?" or col['isSym']:
+#         return x
+#     tmp = (col['hi']-col['lo'])/(the['bins']-1)
+#     return col['hi'] == col['lo'] and 1 or math.floor(x/tmp+0.5)*tmp
 
-def mergeAny(ranges0):
-    def noGaps(t):
-        for j in range(1,len(t)):
-            t[j]['lo'] = t[j-1]['hi']
+# def mergeAny(ranges0):
+#     def noGaps(t):
+#         for j in range(1,len(t)):
+#             t[j]['lo'] = t[j-1]['hi']
         
-        t[0]['lo']  = float('-inf')
-        t[-1]['hi'] = float('inf')
+#         t[0]['lo']  = float('-inf')
+#         t[-1]['hi'] = float('inf')
         
-        return t
+#         return t
   
-    ranges1, j, left, right, y = [], 0, None, None, None
+#     ranges1, j, left, right, y = [], 0, None, None, None
     
-    while j < len(ranges0):
-        left, right = ranges0[j], None
+#     while j < len(ranges0):
+#         left, right = ranges0[j], None
         
-        if j + 1 < len(ranges1):
-            right = ranges0[j + 1]
-            y = merge2(left['y'],right['y'])
-            if y:
-                j += 1
-                left['hi'], left['y'] = right['hi'], y
+#         if j + 1 < len(ranges1):
+#             right = ranges0[j + 1]
+#             y = merge2(left['y'],right['y'])
+#             if y:
+#                 j += 1
+#                 left['hi'], left['y'] = right['hi'], y
         
-        ranges1.append(left)
-        j += 1
+#         ranges1.append(left)
+#         j += 1
     
-    return len(ranges0) == len(ranges1) and noGaps(ranges0) or mergeAny(ranges1)
+#     return len(ranges0) == len(ranges1) and noGaps(ranges0) or mergeAny(ranges1)
 
-def merge2(col1, col2):
-    new = merge(col1, col2)
+# def merge2(col1, col2):
+#     new = merge(col1, col2)
     
-    if div(new) <= (div(col1)*col1['n'] + div(col2)*col2['n'])/new['n']:
-        return new
+#     if div(new) <= (div(col1)*col1['n'] + div(col2)*col2['n'])/new['n']:
+#         return new
 
 
-def merge(col1, col2):
-    new = copy(col1)
-    if col1['isSym']:
-        for x, n in col2['has'].items():
-            add(new, x, n)
-    else:
-        for _, n in col2['has'].items():
-            add(new, n)
-        new.lo = min(col1['lo'], col2['lo'])
-        new.hi = max(col1['hi'], col2['hi'])
+# def merge(col1, col2):
+#     new = copy(col1)
+#     if col1['isSym']:
+#         for x, n in col2['has'].items():
+#             add(new, x, n)
+#     else:
+#         for _, n in col2['has'].items():
+#             add(new, n)
+#         new.lo = min(col1['lo'], col2['lo'])
+#         new.hi = max(col1['hi'], col2['hi'])
     
-    return new
+#     return new
 
 def rint(lo,hi):
     """
