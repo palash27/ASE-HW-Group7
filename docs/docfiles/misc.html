@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>misc</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/deekay/Desktop/ase/hw2%20onwards/HW3/src/misc.py">/Users/deekay/Desktop/ase/hw2 onwards/HW3/src/misc.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/deekay/Desktop/ase/hw2%20onwards/HW4/src/misc.py">/Users/deekay/Desktop/ase/hw2 onwards/HW4/src/misc.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -17,11 +17,13 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
-</td><td width="25%" valign=top><a href="random.html">random</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="copy.html">copy</a><br>
+<a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="random.html">random</a><br>
 </td><td width="25%" valign=top><a href="re.html">re</a><br>
-</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
-</td></tr></table></td></tr></table><p>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -32,11 +34,12 @@
  <dl><dt><a name="-cli"><strong>cli</strong></a>(command_line_args)</dt><dd><tt>update&nbsp;key,vals&nbsp;in&nbsp;`t`&nbsp;from&nbsp;command-line&nbsp;flags</tt></dd></dl>
  <dl><dt><a name="-coerce"><strong>coerce</strong></a>(s)</dt><dd><tt>return&nbsp;int&nbsp;or&nbsp;float&nbsp;or&nbsp;bool&nbsp;or&nbsp;string&nbsp;from&nbsp;`s`</tt></dd></dl>
  <dl><dt><a name="-cosine"><strong>cosine</strong></a>(a, b, c)</dt><dd><tt>n,n;&nbsp;&nbsp;find&nbsp;x,y&nbsp;from&nbsp;a&nbsp;line&nbsp;connecting&nbsp;`a`&nbsp;to&nbsp;`b`</tt></dd></dl>
- <dl><dt><a name="-csv"><strong>csv</strong></a>(file_name, fun)</dt><dd><tt>call&nbsp;`fun`&nbsp;on&nbsp;rows&nbsp;(after&nbsp;coercing&nbsp;cell&nbsp;text)</tt></dd></dl>
+ <dl><dt><a name="-dofile"><strong>dofile</strong></a>(file_path)</dt><dd><tt>function&nbsp;to&nbsp;read&nbsp;custom&nbsp;csv&nbsp;in&nbsp;lua</tt></dd></dl>
  <dl><dt><a name="-kap"><strong>kap</strong></a>(t, fun)</dt><dd><tt>map&nbsp;function&nbsp;`fun`(k,v)&nbsp;over&nbsp;list&nbsp;(skip&nbsp;nil&nbsp;results)</tt></dd></dl>
+ <dl><dt><a name="-last"><strong>last</strong></a>(t)</dt><dd><tt>x</tt></dd></dl>
  <dl><dt><a name="-many"><strong>many</strong></a>(t, n)</dt><dd><tt>t1;&nbsp;returns&nbsp;some&nbsp;items&nbsp;from&nbsp;`t`</tt></dd></dl>
- <dl><dt><a name="-map"><strong>map</strong></a>(t, fun)</dt><dd><tt>t;&nbsp;map&nbsp;a&nbsp;function&nbsp;`fun`(v)&nbsp;over&nbsp;list&nbsp;(skip&nbsp;nil&nbsp;results)</tt></dd></dl>
- <dl><dt><a name="-o"><strong>o</strong></a>(t)</dt><dd><tt>convert&nbsp;`t`&nbsp;to&nbsp;a&nbsp;string.&nbsp;sort&nbsp;named&nbsp;keys.</tt></dd></dl>
+ <dl><dt><a name="-mapM"><strong>mapM</strong></a>(t, fun)</dt><dd><tt>t;&nbsp;map&nbsp;a&nbsp;function&nbsp;`fun`(v)&nbsp;over&nbsp;list&nbsp;(skip&nbsp;nil&nbsp;results)</tt></dd></dl>
+ <dl><dt><a name="-o"><strong>o</strong></a>(t, isKeys=False)</dt><dd><tt>s;&nbsp;convert&nbsp;`t`&nbsp;to&nbsp;a&nbsp;string.&nbsp;sort&nbsp;named&nbsp;keys.</tt></dd></dl>
  <dl><dt><a name="-oo"><strong>oo</strong></a>(t)</dt><dd><tt>print&nbsp;`t`&nbsp;then&nbsp;return&nbsp;it</tt></dd></dl>
  <dl><dt><a name="-push"><strong>push</strong></a>(t, x)</dt><dd><tt>push&nbsp;`x`&nbsp;to&nbsp;end&nbsp;of&nbsp;list;&nbsp;return&nbsp;`x`</tt></dd></dl>
  <dl><dt><a name="-rand"><strong>rand</strong></a>(lo, hi, Seed)</dt><dd><tt>a&nbsp;float&nbsp;"x"&nbsp;lo&lt;=x&nbsp;&lt;&nbsp;x</tt></dd></dl>
@@ -53,10 +56,18 @@ provided&nbsp;by&nbsp;the&nbsp;dialect.<br>
 &nbsp;<br>
 The&nbsp;returned&nbsp;object&nbsp;is&nbsp;an&nbsp;iterator.&nbsp;&nbsp;Each&nbsp;iteration&nbsp;returns&nbsp;a&nbsp;row<br>
 of&nbsp;the&nbsp;CSV&nbsp;file&nbsp;(which&nbsp;can&nbsp;span&nbsp;multiple&nbsp;input&nbsp;lines).</tt></dd></dl>
+ <dl><dt><a name="-repCols"><strong>repCols</strong></a>(cols, Data)</dt><dd><tt>returns&nbsp;Data(cols)</tt></dd></dl>
+ <dl><dt><a name="-repPlace"><strong>repPlace</strong></a>(data, n=20)</dt><dd><tt>Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;data:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;n:<br>
+Returns:</tt></dd></dl>
+ <dl><dt><a name="-repRows"><strong>repRows</strong></a>(t, rows, Data=None)</dt><dd><tt>returns&nbsp;Data(rows)</tt></dd></dl>
+ <dl><dt><a name="-repgrid"><strong>repgrid</strong></a>(sFile, Data=None)</dt><dd><tt>repgrid&nbsp;function&nbsp;to&nbsp;work&nbsp;on&nbsp;the&nbsp;file&nbsp;passed</tt></dd></dl>
  <dl><dt><a name="-rint"><strong>rint</strong></a>(lo, hi)</dt><dd><tt>a&nbsp;integer&nbsp;lo..hi-1</tt></dd></dl>
  <dl><dt><a name="-rnd"><strong>rnd</strong></a>(n, nPlaces=3)</dt><dd><tt>return&nbsp;`n`&nbsp;rounded&nbsp;to&nbsp;`nPlaces`</tt></dd></dl>
  <dl><dt><a name="-settings"><strong>settings</strong></a>(s)</dt><dd><tt>parse&nbsp;help&nbsp;string&nbsp;to&nbsp;extract&nbsp;a&nbsp;table&nbsp;of&nbsp;options</tt></dd></dl>
- <dl><dt><a name="-show"><strong>show</strong></a>(node, what, cols, nPlaces, lvl=0)</dt><dd><tt>nil;&nbsp;prints&nbsp;the&nbsp;tree&nbsp;generated&nbsp;from&nbsp;`DATA:tree`.</tt></dd></dl>
+ <dl><dt><a name="-show"><strong>show</strong></a>(node, what=0, cols=0, nPlaces=0, lvl=0)</dt><dd><tt>nil;&nbsp;prints&nbsp;the&nbsp;tree&nbsp;generated&nbsp;from&nbsp;`DATA:tree`.</tt></dd></dl>
+ <dl><dt><a name="-transpose"><strong>transpose</strong></a>(t)</dt><dd><tt>returns&nbsp;transpose&nbsp;of&nbsp;a&nbsp;matrix&nbsp;/&nbsp;2d&nbsp;list</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -64,5 +75,5 @@ of&nbsp;the&nbsp;CSV&nbsp;file&nbsp;(which&nbsp;can&nbsp;span&nbsp;multiple&nbsp
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>help</strong> = '   <font color="#c040c0">\n</font>script.lua : an example script with help tex...  data<font color="#c040c0">\t</font>read DATA csv<font color="#c040c0">\n</font>  -g  stats<font color="#c040c0">\t</font>stats from DATA<font color="#c040c0">\n</font>'</td></tr></table>
+<td width="100%"><strong>help</strong> = "   <font color="#c040c0">\n</font>script.lua : an example script with help tex...n  where's wally<font color="#c040c0">\n</font>  -g  every the whole enchilada<font color="#c040c0">\n</font>"</td></tr></table>
 </body></html>

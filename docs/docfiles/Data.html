@@ -8,7 +8,7 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>Data</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/deekay/Desktop/ase/hw2%20onwards/HW3/src/Data.py">/Users/deekay/Desktop/ase/hw2 onwards/HW3/src/Data.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/deekay/Desktop/ase/hw2%20onwards/HW4/src/Data.py">/Users/deekay/Desktop/ase/hw2 onwards/HW4/src/Data.py</a></font></td></tr></table>
     <p></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -17,11 +17,13 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
-</td><td width="25%" valign=top><a href="random.html">random</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="copy.html">copy</a><br>
+<a href="json.html">json</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="random.html">random</a><br>
 </td><td width="25%" valign=top><a href="re.html">re</a><br>
-</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
-</td></tr></table></td></tr></table><p>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -52,15 +54,19 @@ Store&nbsp;many&nbsp;rows,&nbsp;summarized&nbsp;into&nbsp;columns<br>&nbsp;</tt>
 
 <dl><dt><a name="Data-add"><strong>add</strong></a>(self, t)</dt><dd><tt>add&nbsp;a&nbsp;new&nbsp;row,&nbsp;update&nbsp;column&nbsp;headers</tt></dd></dl>
 
-<dl><dt><a name="Data-around"><strong>around</strong></a>(self, row1, the, rows=None)</dt><dd><tt>t;&nbsp;sort&nbsp;other&nbsp;`rows`&nbsp;by&nbsp;distance&nbsp;to&nbsp;`row`</tt></dd></dl>
+<dl><dt><a name="Data-around"><strong>around</strong></a>(self, the, row1, rows=None, cols=None)</dt><dd><tt>t;&nbsp;sort&nbsp;other&nbsp;`rows`&nbsp;by&nbsp;distance&nbsp;to&nbsp;`row`</tt></dd></dl>
 
 <dl><dt><a name="Data-better"><strong>better</strong></a>(self, row1, row2)</dt><dd><tt>true&nbsp;if&nbsp;`row1`&nbsp;dominates</tt></dd></dl>
 
-<dl><dt><a name="Data-clone"><strong>clone</strong></a>(self, initial)</dt><dd><tt>DATA;&nbsp;return&nbsp;a&nbsp;DATA&nbsp;with&nbsp;same&nbsp;structure&nbsp;as&nbsp;`ii.</tt></dd></dl>
+<dl><dt><a name="Data-clone"><strong>clone</strong></a>(self, initial=None)</dt><dd><tt>DATA;&nbsp;return&nbsp;a&nbsp;DATA&nbsp;with&nbsp;same&nbsp;structure&nbsp;as&nbsp;`ii.</tt></dd></dl>
 
-<dl><dt><a name="Data-cluster"><strong>cluster</strong></a>(self, the, rows=None, min=None, cols=None, above=None)</dt><dd><tt>returns&nbsp;`rows`,&nbsp;recursively&nbsp;halved</tt></dd></dl>
+<dl><dt><a name="Data-cluster"><strong>cluster</strong></a>(self, the, rows=None, cols=None, above=None)</dt><dd><tt>returns&nbsp;`rows`,&nbsp;recursively&nbsp;halved</tt></dd></dl>
 
-<dl><dt><a name="Data-dist"><strong>dist</strong></a>(self, row1, row2, the, cols=None)</dt><dd><tt>n;&nbsp;returns&nbsp;0..1&nbsp;distance&nbsp;`row1`&nbsp;to&nbsp;`row2`</tt></dd></dl>
+<dl><dt><a name="Data-csv"><strong>csv</strong></a>(self, sFilename)</dt><dd><tt>call&nbsp;`fun`&nbsp;on&nbsp;rows&nbsp;(after&nbsp;coercing&nbsp;cell&nbsp;text)</tt></dd></dl>
+
+<dl><dt><a name="Data-dist"><strong>dist</strong></a>(self, the, row1, row2, cols=None)</dt><dd><tt>n;&nbsp;returns&nbsp;0..1&nbsp;distance&nbsp;`row1`&nbsp;to&nbsp;`row2`</tt></dd></dl>
+
+<dl><dt><a name="Data-furthest"><strong>furthest</strong></a>(self, the, row1, rows, cols=None)</dt><dd><tt>sort&nbsp;other&nbsp;`rows`&nbsp;by&nbsp;distance&nbsp;to&nbsp;`row`</tt></dd></dl>
 
 <dl><dt><a name="Data-half"><strong>half</strong></a>(self, the, rows=None, cols=None, above=None)</dt><dd><tt>t,t,row,row,row,n;&nbsp;divides&nbsp;data&nbsp;using&nbsp;2&nbsp;far&nbsp;points</tt></dd></dl>
 
@@ -103,5 +109,5 @@ of&nbsp;the&nbsp;CSV&nbsp;file&nbsp;(which&nbsp;can&nbsp;span&nbsp;multiple&nbsp
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>help</strong> = '   <font color="#c040c0">\n</font>script.lua : an example script with help tex...  data<font color="#c040c0">\t</font>read DATA csv<font color="#c040c0">\n</font>  -g  stats<font color="#c040c0">\t</font>stats from DATA<font color="#c040c0">\n</font>'</td></tr></table>
+<td width="100%"><strong>help</strong> = "   <font color="#c040c0">\n</font>script.lua : an example script with help tex...n  where's wally<font color="#c040c0">\n</font>  -g  every the whole enchilada<font color="#c040c0">\n</font>"</td></tr></table>
 </body></html>
