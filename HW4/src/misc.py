@@ -259,6 +259,9 @@ def oo(t):
     return t
 
 def o(t, isKeys=False):
+    """
+    s; convert `t` to a string. sort named keys.
+    """
     def fun(k, v):
         if not str(k).startswith("_"):
             return f":{o(k)} {o(v)}"

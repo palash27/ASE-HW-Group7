@@ -47,7 +47,7 @@ class Sym:
     
     def dist(self, s1, s2):
         """
-        dist
+        return 0 or 1 depending on value of s1 and s2
         """
         if s1 == "?" and s2 == "?":
             return 1
