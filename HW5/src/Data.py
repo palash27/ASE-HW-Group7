@@ -1,9 +1,19 @@
 from src.misc import *
 from src.Row import *
 def new_data():
+    """
+    Create a `DATA` to contain `rows`, summarized in `cols`.
+    """
     return {'rows':{}, 'cols': None}
 
 def read_data(the, sfile):
+    """
+    -- Create a new DATA by reading csv file whose first row 
+    -- are the comma-separate names processed by `COLS` (above).
+    -- into a new `DATA`. Every other row is stored in the DATA by
+    -- calling the 
+    -- `row` function (defined below).
+    """
     data = new_data()
     def fun(t):
         row(the, data,t)
@@ -11,6 +21,10 @@ def read_data(the, sfile):
     return data
 
 def data_clone(data, ts={}):
+    """
+    -- Create a new DATA with the same columns as  `data`. Optionally, load up the new
+    -- DATA with the rows inside `ts`.
+    """
     data1 = row(new_data(), data['cols']['names'])
     for _, t in ts.items():
         row(data1, t)
@@ -33,6 +47,13 @@ def sway(the, data):
     return data_clone(data,best), data_clone(data,rest)
 
 def half(the, data, rows=None, above=None, cols=None):
+    """
+    -- Cluster `rows` into two sets by
+    -- dividing the data via their distance to two remote points.
+    -- To speed up finding those remote points, only look at
+    -- `some` of the data. Also, to avoid outliers, only look
+    -- `the.Far=.95` (say) of the way across the space. 
+    """
     left, right = [], []
     far,some,tmp,A,B,c = None,None,None,None,None,None
     def gap(r1, r2):
@@ -71,6 +92,10 @@ def half(the, data, rows=None, above=None, cols=None):
     # print("tmp", tmp)
 
 def dist(data, t1, t2, cols):
+    """
+    -- A query that returns the distances 0..1 between rows `t1` and `t2`.   
+    -- If any values are unknown, assume max distances.
+    """
     if cols is None:
         cols = data['cols']['x']
     d, n = 0, 1/float('inf')
@@ -101,12 +126,24 @@ def dist(data, t1, t2, cols):
     return (d/n)**(1/2) #the.p
 
 def norm(num,n):
+    """
+    -- A query that normalizes `n` 0..1. Called by (e.g.) the `dist` function.
+    """
     if n=='?':
         return n
     else:
         return (float(n) - float(num['lo']))/(float(num['hi']) - float(num['lo']) + (1/float('inf')))
     
 def better(data, row1, row2):
+    """
+    -- A query that returns true if `row1` is better than another.
+    -- This is Zitzler's indicator predicate that
+    -- judges the domination status 
+    -- of pair of individuals by running a “what-if” query. 
+    -- It checks what we lose if we (a) jump from one 
+    -- individual to another (see `s1`), or if we (b) jump the other way (see `s2`).
+    -- The jump that losses least indicates which is the best row.
+    """
     s1, s2, ys, x, y  = 0, 0, data['cols']['y'], None, None
     for _, col in ys.items():
         x = norm(col, row1[col['at']])

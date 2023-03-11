@@ -1,5 +1,8 @@
 import re
 def num(n=0,s=""):
+    """
+    Create a `NUM` to summarize a stream of numbers
+    """
     if re.match("-$", s) is None:
         w = 1
     else:
