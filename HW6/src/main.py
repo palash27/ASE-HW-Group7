@@ -1,6 +1,6 @@
-from src.misc import cli
+from misc import cli
 import sys
-from src.test_engine import test
+from test_engine import test
 
 
 help = """   
