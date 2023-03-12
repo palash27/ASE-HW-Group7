@@ -1,5 +1,6 @@
-from misc import *
-from Cols import *
+from src.misc import *
+from src.Cols import *
+
 def row(the, data, t):
     """
     -- Update `data` with  row `t`. If `data.cols`

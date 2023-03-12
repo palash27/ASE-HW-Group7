@@ -1,6 +1,7 @@
-from Num import *
-from Sym import *
-from misc import *
+from src.Num import *
+from src.Sym import *
+from src.misc import *
+
 def col_f(n, s):
   """
   -- Create a `NUM` or a `SYM`. Column

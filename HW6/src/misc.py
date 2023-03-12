@@ -3,8 +3,8 @@ import re
 import sys
 import random
 from csv import reader
-from Sym import *
-from Data import *
+from src.Sym import *
+from src.Data import *
 
 #Numerics
 help = """   
