@@ -1,8 +1,8 @@
 
-from src.Sym import *
-from src.Num import *
-from src.Data import *
-from src.misc import *
+from Sym import *
+from Num import *
+from Data import *
+from misc import *
 import random
 
 

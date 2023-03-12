@@ -3,8 +3,8 @@ import re
 import sys
 import random
 from csv import reader
-from src.Sym import *
-from src.Data import *
+from Sym import *
+from Data import *
 
 #Numerics
 help = """   
@@ -36,6 +36,16 @@ ACTIONS:
 
 
 def add(the, col, x, n=1):
+    """
+    -- Update one COL with `x` (values from one cells of one row).
+    -- Used  by (e.g.) the `row` and `adds` function.
+    -- `SYM`s just increment a symbol counts.
+    -- `NUM`s store `x` in a finite sized cache. When it
+    -- fills to more than `is.Max`, then at probability 
+    -- `is.Max/col.n` replace any existing item
+    -- (selected at random). If anything is added, the list
+    -- may not longer be sorted so set `col.ok=false`.
+    """
     if x != '?':
         col['n'] = col['n'] + n
         if 'isSym' in col:
@@ -71,11 +81,18 @@ def range_f(at,txt,lo,hi):
 
 
 def extend(range, n, s):
+    """
+    -- Update a RANGE to cover `x` and `y`
+    """
     range['lo'] = min(n, range['lo'])
     range['hi'] = max(n, range['hi'])
     add(range['y'], s)
 
 def dist(data, t1, t2, cols):
+    """
+    -- A query that returns the distances 0..1 between rows `t1` and `t2`.   
+    -- If any values are unknown, assume max distances.
+    """
     if cols is None:
         cols = data['cols']['x']
     d, n = 0, 1/float('inf')
@@ -107,12 +124,24 @@ def dist(data, t1, t2, cols):
 
 
 def norm(num,n):
+    """
+    A query that normalizes `n` 0..1. Called by (e.g.) the `dist` function.
+    """
     if n=='?':
         return n
     else:
         return (n-num['lo'])/(num['hi'] - num['lo'] + (1/float('inf')))
     
 def better(data, row1, row2):
+    """
+    -- A query that returns true if `row1` is better than another.
+    -- This is Zitzler's indicator predicate that
+    -- judges the domination status 
+    -- of pair of individuals by running a “what-if” query. 
+    -- It checks what we lose if we (a) jump from one 
+    -- individual to another (see `s1`), or if we (b) jump the other way (see `s2`).
+    -- The jump that losses least indicates which is the best row.
+    """
     s1, s2, ys, x, y  = 0, 0, data['cols']['y'], None, None
     for _, col in ys.items():
         x = norm(col, row1[col['at']])
@@ -123,18 +152,31 @@ def better(data, row1, row2):
 
 
 def has(col):
+    """
+    -- A query that returns contents of a column. If `col` is a `NUM` with
+    -- unsorted contents, then sort before return the contents.
+    -- Called by (e.g.) the `mid` and `div` functions.
+    """
     if 'isSym' not in col and not col['ok']:
         col['has'].sort()
     col['ok'] = True
     return col['has']
 
 def mid(col):
+    """
+    -- A query that  returns a `cols`'s central tendency  
+    -- (mode for `SYM`s and median for `NUM`s). Called by (e.g.) the `stats` function.
+    """
     if 'isSym' in col:
         return col['mode']
     else:
         return per(has(col), 0.5)
     
 def div(col):
+    """
+    -- A query that returns a `col`'s deviation from central tendency    
+    -- (entropy for `SYM`s and standard deviation for `NUM`s).
+    """
     if 'isSym' in col:
         e = 0
         for _, n in col['has'].items():
@@ -144,6 +186,9 @@ def div(col):
         return (per(has(col),0.9) - per(has(col),0.1))/2.58
 
 def per(t, p=0.5):
+    """
+    -- Return the `p`-ratio item in `t`; e.g. `per(t,.5)` returns the medium.
+    """
     p = math.floor((p*len(t))+0.5)
     return t[max(1, min(len(t),p))]
 
@@ -214,6 +259,12 @@ def bin(col,x):
     return col['hi'] == col['lo'] and 1 or math.floor(x/tmp+0.5)*tmp
 
 def mergeAny(ranges0):
+    """
+    -- Given a sorted list of ranges, try fusing adjacent items
+    -- (stopping when no more fuse-ings can be found). When done,
+    -- make the ranges run from minus to plus infinity
+    -- (with no gaps in between).
+    """
     def noGaps(t):
         for j in range(1,len(t)):
             t[j]['lo'] = t[j-1]['hi']
@@ -241,6 +292,11 @@ def mergeAny(ranges0):
     return len(ranges0) == len(ranges1) and noGaps(ranges0) or mergeAny(ranges1)
 
 def merge2(col1, col2):
+    """
+    -- If (1) the parts are too small or
+    -- (2) the whole is as good (or simpler) than the parts,
+    -- then return the merge.
+    """
     new = merge(col1, col2)
     
     if div(new) <= (div(col1)*col1['n'] + div(col2)*col2['n'])/new['n']:
@@ -248,6 +304,9 @@ def merge2(col1, col2):
 
 
 def merge(col1, col2):
+    """
+    -- Merge two `cols`. Called by function `merged`.
+    """
     new = copy(col1)
     if col1['isSym']:
         for x, n in col2['has'].items():
@@ -267,19 +326,31 @@ def rint(lo,hi):
     return math.floor(0.5 + rand(lo, hi))
 
 def rand(lo=0, hi=1, Seed = 937162211):
+    """
+    random floats
+    """
     Seed = (16807 * Seed) % 2147483647
     return lo + (hi-lo) * Seed / 2147483647
 
 def rnd(n, nPlaces=2):
+    """
+    -- Round numbers
+    """
     mult = 10 ** (nPlaces)
     return math.floor(n * mult) / mult
 
 #Lists
 def push(t, x):
+    """
+    -- Push an item `x` onto  a list. 
+    """
     t[1+len(t)] = x
     return x
  
 def kap(t, fun):
+    """
+    -- Map a function on table (results in items key1,key2,...)
+    """
     u = {}
     for k, v in t.items():
         v, k = fun(k ,v)
@@ -287,6 +358,9 @@ def kap(t, fun):
     return u
 
 def map(t,fun):
+    """
+    -- Map a function on  table (results in items 1,2,3...)
+    """
     u = {}
     for k,v in t.items():
         v,k = fun(v)
@@ -297,9 +371,15 @@ def map(t,fun):
     return u
 
 def any(t):
+    """
+    -- Return one item at random.    
+    """
     return t[random.randint(1, len(t)-1)]
 
 def many(t, n):
+    """
+    -- Return many items, selected at random.   
+    """
     u = {}
     for i in range(1,n+1):
         u[1+len(u)] = any(t)
@@ -313,6 +393,9 @@ def cosine(a,b,c):
     return x2, y
 
 def coerce(s):
+    """
+    -- Coerce string to boolean, int,float or (failing all else) strings.
+    """
     def fun(s1):
         if s1 == "true":
             return True
@@ -328,10 +411,16 @@ def coerce(s):
 
 
 def oo(t):
+    """
+    -- Print a nested table (sorted by the keys of the table).
+    """
     print(o(t))
     return t
 
 def o(t):
+    """
+    Implementation of `o` which is called in `oo`
+    """
     keys = list(t.keys())
     keys = sorted(keys)
     sorted_t = {i: t[i] for i in keys }
@@ -348,6 +437,11 @@ def settings(s):
     return t
 
 def cli(command_line_args):
+    """
+    -- Update `t` using command-line options. For boolean
+    -- flags, just flip the default values. For others, read
+    -- the new value from the command line.
+    """
     options = {}
     options = settings(help)
     for k, v in options.items():
@@ -365,6 +459,9 @@ def cli(command_line_args):
     return options
 
 def csv(file_name, fun):
+    """
+    -- Run `fun` on the cells  in each row of a csv file.
+    """
     sep = "([^" + "\," + "]+"
     with open(file_name) as file_obj:
         reader_obj = reader(file_obj)
