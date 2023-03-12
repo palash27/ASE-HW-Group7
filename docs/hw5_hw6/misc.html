@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module misc</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>misc</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/deekay/Desktop/ase/hw2%20onwards/HW6/src/misc.py">/Users/deekay/Desktop/ase/hw2 onwards/HW6/src/misc.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-add"><strong>add</strong></a>(the, col, x, n=1)</dt><dd><tt>--&nbsp;Update&nbsp;one&nbsp;COL&nbsp;with&nbsp;`x`&nbsp;(values&nbsp;from&nbsp;one&nbsp;cells&nbsp;of&nbsp;one&nbsp;row).<br>
+--&nbsp;Used&nbsp;&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`row`&nbsp;and&nbsp;`adds`&nbsp;function.<br>
+--&nbsp;`SYM`s&nbsp;just&nbsp;increment&nbsp;a&nbsp;symbol&nbsp;counts.<br>
+--&nbsp;`NUM`s&nbsp;store&nbsp;`x`&nbsp;in&nbsp;a&nbsp;finite&nbsp;sized&nbsp;cache.&nbsp;When&nbsp;it<br>
+--&nbsp;fills&nbsp;to&nbsp;more&nbsp;than&nbsp;`is.Max`,&nbsp;then&nbsp;at&nbsp;probability&nbsp;<br>
+--&nbsp;`is.Max/col.n`&nbsp;replace&nbsp;any&nbsp;existing&nbsp;item<br>
+--&nbsp;(selected&nbsp;at&nbsp;random).&nbsp;If&nbsp;anything&nbsp;is&nbsp;added,&nbsp;the&nbsp;list<br>
+--&nbsp;may&nbsp;not&nbsp;longer&nbsp;be&nbsp;sorted&nbsp;so&nbsp;set&nbsp;`col.ok=false`.</tt></dd></dl>
+ <dl><dt><a name="-any"><strong>any</strong></a>(t)</dt><dd><tt>--&nbsp;Return&nbsp;one&nbsp;item&nbsp;at&nbsp;random.</tt></dd></dl>
+ <dl><dt><a name="-better"><strong>better</strong></a>(data, row1, row2)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;true&nbsp;if&nbsp;`row1`&nbsp;is&nbsp;better&nbsp;than&nbsp;another.<br>
+--&nbsp;This&nbsp;is&nbsp;Zitzler's&nbsp;indicator&nbsp;predicate&nbsp;that<br>
+--&nbsp;judges&nbsp;the&nbsp;domination&nbsp;status&nbsp;<br>
+--&nbsp;of&nbsp;pair&nbsp;of&nbsp;individuals&nbsp;by&nbsp;running&nbsp;a&nbsp;“what-if”&nbsp;query.&nbsp;<br>
+--&nbsp;It&nbsp;checks&nbsp;what&nbsp;we&nbsp;lose&nbsp;if&nbsp;we&nbsp;(a)&nbsp;jump&nbsp;from&nbsp;one&nbsp;<br>
+--&nbsp;individual&nbsp;to&nbsp;another&nbsp;(see&nbsp;`s1`),&nbsp;or&nbsp;if&nbsp;we&nbsp;(b)&nbsp;jump&nbsp;the&nbsp;other&nbsp;way&nbsp;(see&nbsp;`s2`).<br>
+--&nbsp;The&nbsp;jump&nbsp;that&nbsp;losses&nbsp;least&nbsp;indicates&nbsp;which&nbsp;is&nbsp;the&nbsp;best&nbsp;row.</tt></dd></dl>
+ <dl><dt><a name="-bin"><strong>bin</strong></a>(col, x)</dt><dd><tt>--&nbsp;Map&nbsp;`x`&nbsp;into&nbsp;a&nbsp;small&nbsp;number&nbsp;of&nbsp;bins.&nbsp;`SYM`s&nbsp;just&nbsp;get&nbsp;mapped<br>
+--&nbsp;to&nbsp;themselves&nbsp;but&nbsp;`NUM`s&nbsp;get&nbsp;mapped&nbsp;to&nbsp;one&nbsp;of&nbsp;`the.bins`&nbsp;values.<br>
+--&nbsp;Called&nbsp;by&nbsp;function&nbsp;`bins`.</tt></dd></dl>
+ <dl><dt><a name="-bins"><strong>bins</strong></a>(cols, rowss)</dt><dd><tt>--&nbsp;Return&nbsp;RANGEs&nbsp;that&nbsp;distinguish&nbsp;sets&nbsp;of&nbsp;rows&nbsp;(stored&nbsp;in&nbsp;`rowss`).<br>
+--&nbsp;To&nbsp;reduce&nbsp;the&nbsp;search&nbsp;space,<br>
+--&nbsp;values&nbsp;in&nbsp;`col`&nbsp;are&nbsp;mapped&nbsp;to&nbsp;small&nbsp;number&nbsp;of&nbsp;`bin`s.<br>
+--&nbsp;For&nbsp;NUMs,&nbsp;that&nbsp;number&nbsp;is&nbsp;`the.bins=16`&nbsp;(say)&nbsp;(and&nbsp;after&nbsp;dividing<br>
+--&nbsp;the&nbsp;column&nbsp;into,&nbsp;say,&nbsp;16&nbsp;bins,&nbsp;then&nbsp;we&nbsp;call&nbsp;`mergeAny`&nbsp;to&nbsp;see<br>
+--&nbsp;how&nbsp;many&nbsp;of&nbsp;them&nbsp;can&nbsp;be&nbsp;combined&nbsp;with&nbsp;their&nbsp;neighboring&nbsp;bin).</tt></dd></dl>
+ <dl><dt><a name="-cli"><strong>cli</strong></a>(command_line_args)</dt><dd><tt>--&nbsp;Update&nbsp;`t`&nbsp;using&nbsp;command-line&nbsp;options.&nbsp;For&nbsp;boolean<br>
+--&nbsp;flags,&nbsp;just&nbsp;flip&nbsp;the&nbsp;default&nbsp;values.&nbsp;For&nbsp;others,&nbsp;read<br>
+--&nbsp;the&nbsp;new&nbsp;value&nbsp;from&nbsp;the&nbsp;command&nbsp;line.</tt></dd></dl>
+ <dl><dt><a name="-coerce"><strong>coerce</strong></a>(s)</dt><dd><tt>--&nbsp;Coerce&nbsp;string&nbsp;to&nbsp;boolean,&nbsp;int,float&nbsp;or&nbsp;(failing&nbsp;all&nbsp;else)&nbsp;strings.</tt></dd></dl>
+ <dl><dt><a name="-cosine"><strong>cosine</strong></a>(a, b, c)</dt></dl>
+ <dl><dt><a name="-csv"><strong>csv</strong></a>(file_name, fun)</dt><dd><tt>--&nbsp;Run&nbsp;`fun`&nbsp;on&nbsp;the&nbsp;cells&nbsp;&nbsp;in&nbsp;each&nbsp;row&nbsp;of&nbsp;a&nbsp;csv&nbsp;file.</tt></dd></dl>
+ <dl><dt><a name="-dist"><strong>dist</strong></a>(data, t1, t2, cols)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;the&nbsp;distances&nbsp;0..1&nbsp;between&nbsp;rows&nbsp;`t1`&nbsp;and&nbsp;`t2`.&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;If&nbsp;any&nbsp;values&nbsp;are&nbsp;unknown,&nbsp;assume&nbsp;max&nbsp;distances.</tt></dd></dl>
+ <dl><dt><a name="-div"><strong>div</strong></a>(col)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;a&nbsp;`col`'s&nbsp;deviation&nbsp;from&nbsp;central&nbsp;tendency&nbsp;&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;(entropy&nbsp;for&nbsp;`SYM`s&nbsp;and&nbsp;standard&nbsp;deviation&nbsp;for&nbsp;`NUM`s).</tt></dd></dl>
+ <dl><dt><a name="-extend"><strong>extend</strong></a>(range, n, s)</dt><dd><tt>--&nbsp;Update&nbsp;a&nbsp;RANGE&nbsp;to&nbsp;cover&nbsp;`x`&nbsp;and&nbsp;`y`</tt></dd></dl>
+ <dl><dt><a name="-has"><strong>has</strong></a>(col)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;contents&nbsp;of&nbsp;a&nbsp;column.&nbsp;If&nbsp;`col`&nbsp;is&nbsp;a&nbsp;`NUM`&nbsp;with<br>
+--&nbsp;unsorted&nbsp;contents,&nbsp;then&nbsp;sort&nbsp;before&nbsp;return&nbsp;the&nbsp;contents.<br>
+--&nbsp;Called&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`mid`&nbsp;and&nbsp;`div`&nbsp;functions.</tt></dd></dl>
+ <dl><dt><a name="-kap"><strong>kap</strong></a>(t, fun)</dt><dd><tt>--&nbsp;Map&nbsp;a&nbsp;function&nbsp;on&nbsp;table&nbsp;(results&nbsp;in&nbsp;items&nbsp;key1,key2,...)</tt></dd></dl>
+ <dl><dt><a name="-many"><strong>many</strong></a>(t, n)</dt><dd><tt>--&nbsp;Return&nbsp;many&nbsp;items,&nbsp;selected&nbsp;at&nbsp;random.</tt></dd></dl>
+ <dl><dt><a name="-map"><strong>map</strong></a>(t, fun)</dt><dd><tt>--&nbsp;Map&nbsp;a&nbsp;function&nbsp;on&nbsp;&nbsp;table&nbsp;(results&nbsp;in&nbsp;items&nbsp;1,2,3...)</tt></dd></dl>
+ <dl><dt><a name="-merge"><strong>merge</strong></a>(col1, col2)</dt><dd><tt>--&nbsp;Merge&nbsp;two&nbsp;`cols`.&nbsp;Called&nbsp;by&nbsp;function&nbsp;`merged`.</tt></dd></dl>
+ <dl><dt><a name="-merge2"><strong>merge2</strong></a>(col1, col2)</dt><dd><tt>--&nbsp;If&nbsp;(1)&nbsp;the&nbsp;parts&nbsp;are&nbsp;too&nbsp;small&nbsp;or<br>
+--&nbsp;(2)&nbsp;the&nbsp;whole&nbsp;is&nbsp;as&nbsp;good&nbsp;(or&nbsp;simpler)&nbsp;than&nbsp;the&nbsp;parts,<br>
+--&nbsp;then&nbsp;return&nbsp;the&nbsp;merge.</tt></dd></dl>
+ <dl><dt><a name="-mergeAny"><strong>mergeAny</strong></a>(ranges0)</dt><dd><tt>--&nbsp;Given&nbsp;a&nbsp;sorted&nbsp;list&nbsp;of&nbsp;ranges,&nbsp;try&nbsp;fusing&nbsp;adjacent&nbsp;items<br>
+--&nbsp;(stopping&nbsp;when&nbsp;no&nbsp;more&nbsp;fuse-ings&nbsp;can&nbsp;be&nbsp;found).&nbsp;When&nbsp;done,<br>
+--&nbsp;make&nbsp;the&nbsp;ranges&nbsp;run&nbsp;from&nbsp;minus&nbsp;to&nbsp;plus&nbsp;infinity<br>
+--&nbsp;(with&nbsp;no&nbsp;gaps&nbsp;in&nbsp;between).</tt></dd></dl>
+ <dl><dt><a name="-mid"><strong>mid</strong></a>(col)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;&nbsp;returns&nbsp;a&nbsp;`cols`'s&nbsp;central&nbsp;tendency&nbsp;&nbsp;<br>
+--&nbsp;(mode&nbsp;for&nbsp;`SYM`s&nbsp;and&nbsp;median&nbsp;for&nbsp;`NUM`s).&nbsp;Called&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`stats`&nbsp;function.</tt></dd></dl>
+ <dl><dt><a name="-norm"><strong>norm</strong></a>(num, n)</dt><dd><tt>A&nbsp;query&nbsp;that&nbsp;normalizes&nbsp;`n`&nbsp;0..1.&nbsp;Called&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`dist`&nbsp;function.</tt></dd></dl>
+ <dl><dt><a name="-o"><strong>o</strong></a>(t)</dt><dd><tt>Implementation&nbsp;of&nbsp;`o`&nbsp;which&nbsp;is&nbsp;called&nbsp;in&nbsp;`oo`</tt></dd></dl>
+ <dl><dt><a name="-oo"><strong>oo</strong></a>(t)</dt><dd><tt>--&nbsp;Print&nbsp;a&nbsp;nested&nbsp;table&nbsp;(sorted&nbsp;by&nbsp;the&nbsp;keys&nbsp;of&nbsp;the&nbsp;table).</tt></dd></dl>
+ <dl><dt><a name="-per"><strong>per</strong></a>(t, p=0.5)</dt><dd><tt>--&nbsp;Return&nbsp;the&nbsp;`p`-ratio&nbsp;item&nbsp;in&nbsp;`t`;&nbsp;e.g.&nbsp;`<a href="#-per">per</a>(t,.5)`&nbsp;returns&nbsp;the&nbsp;medium.</tt></dd></dl>
+ <dl><dt><a name="-push"><strong>push</strong></a>(t, x)</dt><dd><tt>--&nbsp;Push&nbsp;an&nbsp;item&nbsp;`x`&nbsp;onto&nbsp;&nbsp;a&nbsp;list.</tt></dd></dl>
+ <dl><dt><a name="-rand"><strong>rand</strong></a>(lo=0, hi=1, Seed=937162211)</dt><dd><tt>random&nbsp;floats</tt></dd></dl>
+ <dl><dt><a name="-range_f"><strong>range_f</strong></a>(at, txt, lo, hi)</dt><dd><tt>--&nbsp;Create&nbsp;a&nbsp;RANGE&nbsp;&nbsp;that&nbsp;tracks&nbsp;the&nbsp;y&nbsp;dependent&nbsp;values&nbsp;seen&nbsp;in&nbsp;<br>
+--&nbsp;the&nbsp;range&nbsp;`lo`&nbsp;to&nbsp;`hi`&nbsp;some&nbsp;independent&nbsp;variable&nbsp;in&nbsp;column&nbsp;number&nbsp;`at`&nbsp;whose&nbsp;name&nbsp;is&nbsp;`txt`.&nbsp;<br>
+--&nbsp;Note&nbsp;that&nbsp;the&nbsp;way&nbsp;this&nbsp;is&nbsp;used&nbsp;(in&nbsp;the&nbsp;`bins`&nbsp;function,&nbsp;below)<br>
+--&nbsp;for&nbsp;&nbsp;symbolic&nbsp;columns,&nbsp;`lo`&nbsp;is&nbsp;always&nbsp;the&nbsp;same&nbsp;as&nbsp;`hi`.</tt></dd></dl>
+ <dl><dt><a name="-reader"><strong>reader</strong></a>(...)</dt><dd><tt>csv_reader&nbsp;=&nbsp;<a href="#-reader">reader</a>(iterable&nbsp;[,&nbsp;dialect='excel']<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional&nbsp;keyword&nbsp;args])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;row&nbsp;in&nbsp;csv_reader:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process(row)<br>
+&nbsp;<br>
+The&nbsp;"iterable"&nbsp;argument&nbsp;can&nbsp;be&nbsp;any&nbsp;object&nbsp;that&nbsp;returns&nbsp;a&nbsp;line<br>
+of&nbsp;input&nbsp;for&nbsp;each&nbsp;iteration,&nbsp;such&nbsp;as&nbsp;a&nbsp;file&nbsp;object&nbsp;or&nbsp;a&nbsp;list.&nbsp;&nbsp;The<br>
+optional&nbsp;"dialect"&nbsp;parameter&nbsp;is&nbsp;discussed&nbsp;below.&nbsp;&nbsp;The&nbsp;function<br>
+also&nbsp;accepts&nbsp;optional&nbsp;keyword&nbsp;arguments&nbsp;which&nbsp;override&nbsp;settings<br>
+provided&nbsp;by&nbsp;the&nbsp;dialect.<br>
+&nbsp;<br>
+The&nbsp;returned&nbsp;object&nbsp;is&nbsp;an&nbsp;iterator.&nbsp;&nbsp;Each&nbsp;iteration&nbsp;returns&nbsp;a&nbsp;row<br>
+of&nbsp;the&nbsp;CSV&nbsp;file&nbsp;(which&nbsp;can&nbsp;span&nbsp;multiple&nbsp;input&nbsp;lines).</tt></dd></dl>
+ <dl><dt><a name="-rint"><strong>rint</strong></a>(lo, hi)</dt><dd><tt>Rounds&nbsp;to&nbsp;integer</tt></dd></dl>
+ <dl><dt><a name="-rnd"><strong>rnd</strong></a>(n, nPlaces=2)</dt><dd><tt>--&nbsp;Round&nbsp;numbers</tt></dd></dl>
+ <dl><dt><a name="-settings"><strong>settings</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-show"><strong>show</strong></a>(node, what, cols, nPlaces, lvl=0)</dt></dl>
+ <dl><dt><a name="-sway"><strong>sway</strong></a>(data)</dt><dd><tt>--&nbsp;Recursively&nbsp;prune&nbsp;the&nbsp;worst&nbsp;half&nbsp;the&nbsp;data.&nbsp;Return<br>
+--&nbsp;the&nbsp;survivors&nbsp;and&nbsp;some&nbsp;sample&nbsp;of&nbsp;the&nbsp;rest.</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>help</strong> = '   <font color="#c040c0">\n</font>script.lua : an example script with help tex...  data<font color="#c040c0">\t</font>read DATA csv<font color="#c040c0">\n</font>  -g  stats<font color="#c040c0">\t</font>stats from DATA<font color="#c040c0">\n</font>'</td></tr></table>
+</body></html>
