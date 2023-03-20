@@ -1,7 +1,7 @@
-from Sym import *
-from Num import *
-from Data import *
-from misc import *
+from src.Sym import *
+from src.Num import *
+from src.Data import *
+from src.misc import *
 import random
 import copy
 

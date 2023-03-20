@@ -1,7 +1,7 @@
 import re
-from Sym import *
-from Num import *
-from misc import *
+from src.Sym import *
+from src.Num import *
+from src.misc import *
 
 class Cols:
     """
