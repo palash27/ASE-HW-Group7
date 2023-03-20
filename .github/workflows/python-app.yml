@@ -50,7 +50,10 @@ jobs:
 #       working-directory: ./HW5
 #       run: |
 #         python -m src.main --go all
-        
+    - name: HW4 Test Engine
+      working-directory: ./HW4
+      run: |
+        python -m src.main --go all
     - name: HW6 Test Engine
       working-directory: ./HW6
       run: |
