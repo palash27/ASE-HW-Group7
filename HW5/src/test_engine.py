@@ -1,8 +1,7 @@
-
-from src.Sym import *
-from src.Num import *
-from src.Data import *
-from src.misc import *
+from Sym import *
+from Num import *
+from Data import *
+from misc import *
 import random
 
 
@@ -11,136 +10,165 @@ egs = {}
 def eg(key, str, fun):
     egs[key] = fun
 
-# def SYM(the):
-#     sym = Sym()
-#     for x in ["a","a","a","a","b","b","c"]:
-#         sym.add(x)
-#     if "a" == sym.mid() and 1.379 == rnd(sym.div()):
-#         return True
-#     else:
-#         return False
-
 
 def SOME(the):
     the['Max'] = 32
-    num1 = num()
+    num1 = Num()
     for i in range(1,10000):
         add(the, num1, i)
     print(has(num1))
 
 def NUM(the):
-    num1 = num()
-    num2 = num()
-    for _ in range(1,10000):
+    num1 = Num()
+    num2 = Num()
+    
+    for _ in range(1,10001):
         add(the, num1, rand())
-    for _ in range(1,10000):
+    for _ in range(1,10001):
         add(the, num2, rand()**2)
     print("1", rnd(mid(num1)), rnd(div(num1)))
     print("2", rnd(mid(num2)), rnd(div(num2)))
-    return 0.5 == rnd(mid(num1),1) and rnd(mid(num1))>rnd(mid(num2))
+    return 0.6 == rnd(mid(num1),1) and rnd(mid(num1))>rnd(mid(num2))
 
 def SYM(the):
-    sym1 = sym()
+    sym1 = Sym()
     for x in ["a","a","a","a","b","b","c"]:
         add(the, sym1, x)
-    print (mid(sym1), rnd(div(sym1))) 
-    return 1.37 == rnd(div(sym1))
+    print(mid(sym1), rnd(div(sym1))) 
+    return 1.38 == rnd(div(sym1))
 
 def DATA(the):
-    data = read_data(the, str(the['file']))
-    print(data)
+    data = Data().read(the, the['file'])
+    col = data.cols.x[1]
+    print(col.col.lo, col.col.hi, mid(col.col), div(col.col))
+    oo(stats(data))
+    
 
 def BINS(the):
-    data = read_data(the, str(the['file']))
+    data = Data().read(the, str(the['file']))
     best, rest = sway(the, data)
+    print("all", "", "", "", o({"best": len(best.rows), "rest": len(rest.rows)}))
+    b4 = None
+    for k, t in enumerate(bins(the, data.cols.x, {"best": best.rows, "rest": rest.rows})):
+        for range in t:
+            if range.txt != b4:
+                print("")
+            b4 = range.txt
+            print(
+                range.txt,
+                range.lo,
+                range.hi,
+                rnd(value(range.y.has, len(best.rows), len(rest.rows), "best")),
+                o(range.y.has),
+            )
 
 def THE(the):
     oo(the)
 
-# def RAND(the):
-#     num1  = Num()
-#     num2 = Num()
-#     random.seed = the["seed"]
-#     for _ in range(1, (10**3)):
-#         num1.add(rand(0, 1, the["seed"]))
-#     random.seed = the["seed"]
-#     for _ in range(1, (10**3)):
-#         num2.add(rand(0, 1, the["seed"]))
-#     m1 = rnd(num1.mid(), 10)
-#     m2 = rnd(num2.mid(), 10)
-#     if m1 == m2 and .6  == rnd(m1, 1):
-#         return True
-#     else:
-#         return False
-
+def RAND(the):
+    seed = 1
+    t = []
+    for i in range(1,1000):
+        t.append(rint(0,100))
+        
+    u = []
+    for i in range(1,1000):
+        u.append(rint(0,100))
+        
+    for k,v in enumerate(t):
+        assert v == u[k]
+        
 def CSV(the):
     n = 0
     def fun(t):
         nonlocal n 
         n = n + len(t)
-    csv('data/data.csv', fun)
+    #csv('data/data.csv', fun)
+    csv('data.csv', fun)
     return n == 8*399
 
 
-# def DATA(the):
-#     data = Data(str(the['file']))
-#     return len(data.rows) == 398 and len(data.cols.x) == 4 and int(data.cols.x[1].at) == 1 and int(data.cols.y[1].w) == -1
 
-# def CLONE(the):
-#     data1 = Data('data/data.csv')
-#     data2 = data1.clone(data1.rows)
-#     return len(data1.rows) == len(data2.rows) and len(data1.cols.x) == len(data2.cols.x) and int(data1.cols.x[1].at) == int(data2.cols.x[1].at) and int(data1.cols.y[1].w) == int(data2.cols.y[1].w)
+def CLONE(the):
+    d = Data()
+    data1 = d.read(the, the['file'])
+    data2 = d.clone(the, data1, data1.rows)
+    oo(stats(data1))
+    oo(stats(data2))
 
-# def STATS(the):
-#     data = Data(str(the['file']))
-#     dict = {'y': data.cols.y, 'x': data.cols.x }
-#     for k,cols in dict.items():
-#             print(k, "   ", "mid", "   ", o(data.stats("mid", cols, 2)))
-#             print("", "    ", "div", "   ", o(data.stats("div", cols, 2)))
 
-# def AROUND(the):
-#     data = Data(str(the['file']))
-#     # print(0, 0, o(data.rows[1].cells))
-#     for i, t in enumerate(data.around(data.rows[1], the)):
-#         if i%50 == 0:
-#             print(i, t['dist'], (t['row'].cells))
+def HALF(the):
+    data = Data().read(the, the["file"])
+    left, right, A, B, c = half(the, data)
+    print(len(left), len(right))
+    l,r = data.clone(the, data,left), data.clone(the, data,right)
+    print("l",o(stats(l)))
+    print("r",o(stats(r))) 
 
-# def HALF(the):
-#     data = Data(str(the["file"]))
-#     left, right, A, B, mid, c = data.half(the)
-#     print(len(left), len(right), len(data.rows))
-#     print(o(A.cells), c)
-#     print(o(mid.cells))
-#     print(o(B.cells))
 
-# def CLUSTER(the):
-#     data = Data(str(the['file']))
-#     show(data.cluster(the), "mid", data.cols.y, 1)
+def CLIFF(the):
+    assert False == cliffsDelta(the, [8,7,6,2,5,8,7,3], [8,7,6,2,5,8,7,3])
+    assert True  == cliffsDelta(the, [8,7,6,2,5,8,7,3], [9,9,7,8,10,9,6])
+    t1, t2 = [], []
+    for i in range(1,1001):
+        t1.append(rand())
+        
+    for i in range(1,1001):
+        t2.append(rand()**0.5)
+        
+    assert False == cliffsDelta(the, t1, t1) 
+    assert True  == cliffsDelta(the, t1, t2)
     
+    diff, j = False, 1.0
     
-# def OPTIMIZE(the):
-#     data = Data(str(the['file']))
-#     show(data.sway(the), "mid", data.cols.y,1)
+    while not diff:
+        def fun(x):
+            return x * j
+            
+        t3 = map(t1,fun)
+        diff = cliffsDelta(the, t1, t3)
+        print(">", rnd(j), diff) 
+        j = j*1.025 
 
+def DIST(the):
+    data = Data().read(the, the['file'])
+    num  = Num()
+    
+    for row in data.rows:
+        add(the, num, dist(the, data, row, data.rows[1]))
+    
+    res = {'lo' : num.lo, 'hi' : num.hi, 'mid' : rnd(mid(num)), 'div' : rnd(div(num))}
+    print(res)
 
+def TREE(the):
+    showTree(tree(the, Data().read(the, the['file'])))
 
+def SWAY(the):
+    data = Data().read(the, the['file'])
+    best, rest = sway(the, data)
+    print("\nall ", o(stats(data))) 
+    print("    ",   o(stats(data,div))) 
+    print("\nbest", o(stats(best))) 
+    print("    ", o(stats(best,div))) 
+    print("\nrest", o(stats(rest))) 
+    print("    ", o(stats(rest,div))) 
+    print("\nall ~= best?", o(diffs(the, best.cols.y, data.cols.y)))
+    print("best ~= rest?", o(diffs(the, best.cols.y, rest.cols.y)))   
 
-
-# eg("sym", "check syms", SYM)
+eg("the", "show options", THE)
+eg("rand", "demo random number generation", RAND)
 eg("some", 'demo of reservoir sampling', SOME)
-eg("nums", "check nums", NUM)
-eg("the", "show settings", THE)
-eg("syms", "demo SYM", SYM)
-# eg("rand", "generate, reset, regenerate same", RAND)
+eg("nums", "demo of NUM", NUM)
+eg("syms", "demo SYMS", SYM)
 eg("csv", "read from csv", CSV)
+eg("data", "showing data sets", DATA)
+eg("clone", "replicate structure of a DATA", CLONE)
+eg("cliffs", "stats tests", CLIFF)
+eg("dist", "distance test", DIST)
+eg("half", "divide data in halg", HALF)
+eg("tree", "make snd show tree of clusters", TREE)
+eg("sway", "optimizing", SWAY)
 eg("bins", "find deltas between best and rest", BINS)
-# eg("data", "read DATA csv", DATA)
-# eg("clone", "duplicate structure", CLONE)
-# eg("stats", "stats from DATA", STATS)
-# eg("around", "sorting nearest neighbors", AROUND)
-# eg("half", "1-level bi-clustering", HALF)
-# eg("cluster", "N-level bi-clustering", CLUSTER)
-# eg("optimize", "semi-supervised optimization", OPTIMIZE)
 
 
 

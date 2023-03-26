@@ -1,6 +1,6 @@
-from src.misc import cli
+from misc import cli
 import sys
-from src.test_engine import test
+from test_engine import test
 
 
 help = """   
@@ -10,7 +10,7 @@ USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
   -b  --bins    initial number of bins       = 16
   -c  --cliffs  cliff's delta threshold      = .147
-  -f  --file    data file                    = data/data.csv
+  -f  --file    data file                    = data.csv
   -F  --Far     distance to distant          = .95
   -g  --go      start-up action              = nothing
   -h  --help    show help                    = false
