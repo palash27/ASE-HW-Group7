@@ -2,8 +2,7 @@ from misc import *
 from Cols import *
 
 
-class Data:
-    
+class Data:    
     def __init__(self) -> None:
         """
         Create a `DATA` to contain `rows`, summarized in `cols`.
