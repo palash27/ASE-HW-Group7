@@ -24,7 +24,7 @@ class Data:
         csv(file_name, lambda t: row(the, data, t))
         return data
 
-    def stats(self, what: str, cols: Union[Cols, None], n_places: int):
+    def stats(self, what: str, cols, n_places):
         
         def fun(col):
             _callable = getattr(col, what)
