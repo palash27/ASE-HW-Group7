@@ -1,6 +1,6 @@
-from misc import *
-from Rows import *
-from Cols import *
+from src.misc import *
+from src.Rows import *
+from src.Cols import *
 import copy
 
 class Data:
