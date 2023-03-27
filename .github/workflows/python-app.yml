@@ -58,11 +58,17 @@ jobs:
       working-directory: ./HW5
       run: |
         python -m src.main --go all
+      run: |
+        pdoc --html src --output-dir docs
     - name: HW6 Test Engine
       working-directory: ./HW6
       run: |
         python -m src.main --go all
+      run: |
+        pdoc --html src --output-dir docs
     - name: HW7 Test Engine
       working-directory: ./HW7
       run: |
         python -m src.main --go all
+      run: |
+        pdoc --html src --output-dir docs
