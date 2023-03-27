@@ -1,8 +1,8 @@
 import sys
-from test_engine import test
-from misc import *
+from src.test_engine import test
+from src.misc import *
 import random
-from Num import *
+from src.Num import *
 
 random.seed(1)
 test()
