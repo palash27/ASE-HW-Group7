@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module misc</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>misc</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/deekay/Desktop/ase/hw2%20onwards/HW7/src/misc.py">/Users/deekay/Desktop/ase/hw2 onwards/HW7/src/misc.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-RX"><strong>RX</strong></a>(t, s=None)</dt><dd><tt>takes&nbsp;argument&nbsp;t&nbsp;and&nbsp;s&nbsp;where&nbsp;s&nbsp;is&nbsp;defaulted&nbsp;to&nbsp;None&nbsp;unless&nbsp;specified.<br>
+sort&nbsp;t&nbsp;and&nbsp;return&nbsp;a&nbsp;dictionary&nbsp;based&nbsp;on&nbsp;value&nbsp;of&nbsp;s</tt></dd></dl>
+ <dl><dt><a name="-bootstrap"><strong>bootstrap</strong></a>(y0, z0)</dt><dd><tt>---&nbsp;x&nbsp;will&nbsp;hold&nbsp;all&nbsp;of&nbsp;y0,z0<br>
+---&nbsp;y&nbsp;contains&nbsp;just&nbsp;y0<br>
+---&nbsp;z&nbsp;contains&nbsp;just&nbsp;z0<br>
+---&nbsp;tobs&nbsp;is&nbsp;some&nbsp;difference&nbsp;seen&nbsp;in&nbsp;the&nbsp;whole&nbsp;space<br>
+---&nbsp;yhat&nbsp;and&nbsp;zhat&nbsp;are&nbsp;y,z&nbsp;fiddled&nbsp;to&nbsp;have&nbsp;the&nbsp;same&nbsp;mean<br>
+--&nbsp;if&nbsp;we&nbsp;have&nbsp;seen&nbsp;enough&nbsp;n,&nbsp;then&nbsp;we&nbsp;are&nbsp;the&nbsp;same<br>
+--&nbsp;On&nbsp;Tuesdays&nbsp;and&nbsp;Thursdays&nbsp;I&nbsp;lie&nbsp;awake&nbsp;at&nbsp;night&nbsp;convinced&nbsp;this&nbsp;should&nbsp;be&nbsp;"&lt;"<br>
+--&nbsp;and&nbsp;the&nbsp;above&nbsp;"&gt;&nbsp;obs"&nbsp;should&nbsp;be&nbsp;"abs(delta&nbsp;-&nbsp;tobs)&nbsp;&gt;&nbsp;someCriticalValue".</tt></dd></dl>
+ <dl><dt><a name="-cliffsDelta"><strong>cliffsDelta</strong></a>(ns1, ns2)</dt><dd><tt>bool;<br>
+true&nbsp;if&nbsp;different&nbsp;by&nbsp;a&nbsp;trivial&nbsp;amount</tt></dd></dl>
+ <dl><dt><a name="-delta"><strong>delta</strong></a>(i, other)</dt><dd><tt>calculating&nbsp;Cohen's&nbsp;d,&nbsp;which&nbsp;is&nbsp;a&nbsp;common&nbsp;effect&nbsp;size&nbsp;measure&nbsp;that&nbsp;standardizes&nbsp;the&nbsp;difference&nbsp;between&nbsp;means&nbsp;by&nbsp;dividing&nbsp;by&nbsp;the&nbsp;pooled&nbsp;standard&nbsp;deviation&nbsp;of&nbsp;the&nbsp;two&nbsp;groups.</tt></dd></dl>
+ <dl><dt><a name="-div"><strong>div</strong></a>(t)</dt><dd><tt>operation&nbsp;based&nbsp;on&nbsp;presence&nbsp;of&nbsp;'has'&nbsp;in&nbsp;`t`.</tt></dd></dl>
+ <dl><dt><a name="-erf"><strong>erf</strong></a>(x)</dt><dd><tt>--&nbsp;from&nbsp;Abramowitz&nbsp;and&nbsp;Stegun&nbsp;7.1.26&nbsp;<br>
+--&nbsp;https://s3.amazonaws.com/nrbook.com/AandS-a4-v1-2.pdf<br>
+--&nbsp;(easier&nbsp;to&nbsp;read&nbsp;at&nbsp;https://en.wikipedia.org/wiki/Error_function#Approximation_with_elementary_functions)</tt></dd></dl>
+ <dl><dt><a name="-gaussian"><strong>gaussian</strong></a>(mu, sd)</dt><dd><tt>n;<br>
+return&nbsp;a&nbsp;sample&nbsp;from&nbsp;a&nbsp;Gaussian&nbsp;with&nbsp;mean&nbsp;`mu`&nbsp;and&nbsp;sd&nbsp;`sd`</tt></dd></dl>
+ <dl><dt><a name="-merge"><strong>merge</strong></a>(rx1, rx2)</dt><dd><tt>Merges&nbsp;two&nbsp;RX&nbsp;objects&nbsp;and&nbsp;returns&nbsp;a&nbsp;new&nbsp;RX&nbsp;object.</tt></dd></dl>
+ <dl><dt><a name="-mid"><strong>mid</strong></a>(t)</dt><dd><tt>calculates&nbsp;the&nbsp;median&nbsp;of&nbsp;a&nbsp;list&nbsp;of&nbsp;numbers.</tt></dd></dl>
+ <dl><dt><a name="-samples"><strong>samples</strong></a>(t, n=None)</dt><dd><tt>function&nbsp;samples&nbsp;that&nbsp;takes&nbsp;argument&nbsp;t&nbsp;and&nbsp;n.<br>
+n&nbsp;here&nbsp;is&nbsp;None&nbsp;by&nbsp;default&nbsp;unless&nbsp;specified.</tt></dd></dl>
+ <dl><dt><a name="-scottKnot"><strong>scottKnot</strong></a>(rxs)</dt><dd><tt>Sorts&nbsp;a&nbsp;list&nbsp;of&nbsp;RX&nbsp;objects&nbsp;by&nbsp;their&nbsp;median&nbsp;and&nbsp;assigns&nbsp;ranks&nbsp;to&nbsp;each&nbsp;object&nbsp;based&nbsp;on&nbsp;Scott-Knott&nbsp;clustering.</tt></dd></dl>
+ <dl><dt><a name="-tiles"><strong>tiles</strong></a>(rxs)</dt><dd><tt>ss;<br>
+makes&nbsp;on&nbsp;string&nbsp;per&nbsp;treatment&nbsp;showing&nbsp;rank,&nbsp;distribution,&nbsp;and&nbsp;values</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>the</strong> = {'Fmt': "'%6.2f'", 'bootstrap': 512, 'cliff': 0.4, 'cohen': 0.35, 'conf': 0.05, 'width': 40}</td></tr></table>
+</body></html>
