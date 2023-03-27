@@ -3,41 +3,14 @@ from src.Sym import *
 from src.Num import *
 from src.misc import *
 class Cols:
-    # """
-    # This is Cols
-    # """
-    # def __init__(self, t):
-    #     self.names = t
-    #     self.all = []
-    #     self.x = []
-    #     self.y = []
-    #     self.klass = None
-    #     for n, s in t.items():
-    #         if re.match("^[A-Z]+", s) == None:
-    #             col = Sym(n,s)
-    #         else:
-    #             col = Num(n,s)
-    #         push(self.all, col)
-    #         if s[-1] != "X":
-    #             if s[-1] == "$":
-    #                 self.klass = col
-    #             elif s[-1] == '+' or s[-1] == "-" or s[-1] == "!":
-    #                 if s[-1] == "-":
-    #                     col.w = -1
-    #                 else:
-    #                     col.w = 1
-    #                 push(self.y, col)
-    #             else:
-    #                 push(self.x, col)
-    
-    # def add(self, row):
-    #     for _,col in self.x.items():
-    #         col.add(float(row.cells[col.at]))
-    #     for _,col in self.y.items():
-    #         col.add(float(row.cells[col.at]))
-    
-
     def __init__(self,t):
+        """
+        -- Create a `NUM` or a `SYM`. Column
+        -- names are a little language that    
+        -- e.g. makes `NUM`s if name starts in upper case; or
+        -- e.g. makes goals if the name ends with
+        -- the maximize (`+`) or minimize (`-`) or klass (`!`) symbol.
+        """
         self.names = t
         self.all = []
         self.x = []
@@ -60,6 +33,10 @@ class Cols:
                     self.klass = col
     
     def add(self,r):
+        """
+        -- Update a COL with multiple items from `t`. This is useful when `col` is being
+        -- used outside of some DATA.
+        """
         for t in [self.x, self.y]:
             for col in t:
                 col.add(r.cells[col.at])

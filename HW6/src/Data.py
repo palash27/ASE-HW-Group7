@@ -4,8 +4,21 @@ from src.Cols import *
 import operator
 import math 
 import copy
+
 class Data:
     def __init__(self,src):
+        """
+        -- Create a `DATA` to contain `rows`, summarized in `cols`.
+        -- Optionally, is any `rows` are supplied, load those in.   
+        -- Case [1]: `src` is a filename of a csv file
+        -- whose first row 
+        -- are the comma-separate names processed by `COLS` (above).
+        -- into a new `DATA`. Every other row is stored in the DATA by
+        -- calling the 
+        -- `row` function (defined below).   
+        -- Case [2]: `src` is another data in which case we minic its
+        -- column structure.
+        """
         self.rows, self.cols = [], None
         def fun(x):
             self.add(x)
@@ -15,15 +28,13 @@ class Data:
             self.add(src)
 
     def add(self,t):
-        # if self.cols:
-        #     if hasattr(t, "cells"):
-        #         t = t
-        #     else:
-        #         t = Row(t)
-        #     push(self.rows, t)
-        #     self.cols.add(t)
-        # else:
-        #     self.cols = Cols(t)
+        """
+        -- Update `data` with  row `t`. If `data.cols`
+        -- does not exist, the use `t` to create `data.cols`.
+        -- Otherwise, add `t` to `data.rows` and update the summaries in `data.cols`.
+        -- To avoid updating skipped columns, we only iterate
+        -- over `cols.x` and `cols.y`.
+        """
         if self.cols:
             if type(t) == list:
                 t = Row(t)
@@ -36,6 +47,9 @@ class Data:
 
         
     def stats(self, what, cols, nPlaces):
+        """
+        -- A query that returns `mid` or `div` of `cols` (defaults to `data.cols.y`).
+        """
         def fun(_, col):
             if what == 'div':
                 value = col.div()
@@ -45,18 +59,12 @@ class Data:
             return rounded_value, col.txt
 
         return kap(cols or self.cols.y, fun)
-        # x_mid = {}
-        # y_div = {}
-        # if what == "mid":
-        #     for _, col in cols.items():
-        #         x_mid[col.txt] = col.rnd(col.mid(),2)
-        #     return x_mid
-        # elif what == "div":
-        #     for _, col in cols.items():
-        #         y_div[col.txt] = col.rnd(col.div(), 2)
-        #     return y_div
         
     def clone(self, initial):
+        """
+        -- Create a new DATA with the same columns as  `data`. Optionally, load up the new
+        -- DATA with the rows inside `ts`.
+        """
         data = Data(self.cols.names)
         # for _,r in initial.items():
         #     data.add(r)
@@ -67,6 +75,10 @@ class Data:
         return data
    
     def dist(self, row1, row2, the, cols=None):
+        """
+        -- A query that returns the distances 0..1 between rows `t1` and `t2`.   
+        -- If any values are unknown, assume max distances.
+        """
         n, d = 0, 0 
         if cols is None:
             cols = self.cols.x
@@ -80,42 +92,36 @@ class Data:
     
 
     def around(self, row1 ,the, rows=None, cols=None):
+        """
+        returns a sorted list of dictionaries containing information about the distances between a given row and other rows in a data matrix.
+        """
         if rows == None:
             rows = self.rows
         def fun(row2):
             return {"row": row2, "dist": self.dist(row1, row2, the, cols)}
-        # l = []
-        # for _, v in rows.items():
-        #     l.append(fun(v))
-        # sorted_list = sorted(l, key=lambda x:x['dist'])
-        # return sorted_list
         return sorted(list(map(fun, rows or self.rows)), key = lambda k : k["dist"])
     
     def furthest(self, row1, rows = None, cols = None):
+        """
+        returns the dictionary for the row that is furthest from a given row in a data matrix.
+        """
         t = self.around(row1,rows,cols)
         return t[len(t)-1]
 
     def half(self, the, rows = None, cols = None, above = None):
+        """
+        -- Cluster `rows` into two sets by
+        -- dividing the data via their distance to two remote points.
+        -- To speed up finding those remote points, only look at
+        -- `some` of the data. Also, to avoid outliers, only look
+        -- `the.Far=.95` (say) of the way across the space. 
+        """
         def project(row):
             return {'row' : row, 'dist' : cosine(gap(row,A), gap(row,B), c)}
         def gap(r1, r2):
             return self.dist(r1, r2, the, cols)
         def function(r):
             return {'row' : r, 'dist' : gap(r, A)}
-        
-        # def project(row):
-        #     x, y = cosine(dist(row,A,the), dist(row,B,the), c)
-        #     try:
-        #         row.x = row.x
-        #         row.y = row.y
-        #     except:
-        #         row.x = x
-        #         row.y = y
-        #     return {'row' : row, 'x' : x, 'y' : y}
-        
-        # def dist(row1,row2,the): 
-        #     return self.dist(row1,row2,the,cols)
-        
         rows = rows or self.rows
         some = many(rows,the['Halves'])
         # A = above or any(some)
@@ -177,22 +183,12 @@ class Data:
             s1 = s1 - math.exp(col.w * (x-y)/len(ys))
             s2 = s2 - math.exp(col.w * (y-x)/len(ys))
         return s1/len(ys) < s2/len(ys)
-    
-    # def sway(self, the, rows=None, min=None, cols=None, above=None):
-    #     rows = rows or self.rows
-    #     min = min or len(rows)**0.5 #the.min
-    #     cols = cols or self.cols.x
-    #     if type(rows) == list:
-    #         rows = dict(enumerate(rows))
-    #     node = {'data': self.clone(rows)}
-    #     if len(rows) > 2*min:
-    #         left, right, node['A'], node['B'], node['mid'], c = self.half(the,rows,cols,above)
-    #         if self.better(node['B'], node['A']):
-    #             left,right,node['A'],node['B'] = right,left,node['B'],node['A']
-    #         node['left'] = self.sway(the, left, min, cols, node['A'])
-    #     return node
 
     def sway(self, the):
+        """
+        -- Recursively prune the worst half the data. Return
+        -- the survivors and some sample of the rest.
+        """
         data = self
         def worker(rows, worse, evals=None, above=None):
             if len(rows) <= len(data.rows)**float(the['min']):
@@ -212,6 +208,9 @@ class Data:
         return self.clone(best), self.clone(rest), evals1  
     
     def tree(self, the, rows = None , mini = None, cols = None, above = None):
+        """
+        -- Cluster, recursively, some `rows` by  dividing them in two, many times
+        """
         rows = rows or self.rows
         mini  = mini or len(rows)**the['min']
         cols = cols or self.cols.x
@@ -223,6 +222,9 @@ class Data:
         return node
     
     def xpln(self, best, rest, the):
+        """
+        -- Collect all the ranges into one flat list and sort them by their `value`.
+        """
         tmp = []
         maxSizes = {}
         def v(has):
@@ -245,6 +247,9 @@ class Data:
         return rule,most
     
     def RULE(self, ranges, maxSize):
+        """
+        takes a list of dictionaries containing information about ranges, and an integer maxSize as input, and returns a pruned version of the dictionary of ranges.
+        """
         t = {}
         for range in ranges:
             t[range['txt']] = t.get(range['txt'], []) 
@@ -252,6 +257,9 @@ class Data:
         return prune(t, maxSize)
     
     def showRule(self, rule):
+        """
+        takes a dictionary of rules as input and prints a formatted version of the rule.
+        """
         print("rule", rule)
         def pretty(range):
             if range['lo'] == range['hi']:
@@ -279,10 +287,16 @@ class Data:
         return dkap(rule, merges)
     
     def betters(self,n):
+        """
+        takes an integer n as input, sorts the rows of the class instance using the "better" method and returns a tuple containing two lists. The first list contains the first n rows, and the second list contains the remaining rows.
+        """
         tmp=sorted(self.rows, key=lambda row: self.better(row, self.rows[self.rows.index(row)-1]))
         return  n and tmp[0:n], tmp[n+1:]  or tmp
     
     def selects(self, rule, rows):
+        """
+        takes a dictionary of rules and a list of rows as input, and returns a list of rows that satisfy the rules.
+        """
         def disjunction(ranges, row):
             for range in ranges:
                 lo, hi, at = range['lo'], range['hi'], range['at']

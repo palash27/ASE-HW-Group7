@@ -36,6 +36,9 @@ ACTIONS:
 
 
 def show(node, what, cols, nPlaces, lvl=0):
+    """
+    -- Cluster can be displayed by this function.
+    """
     if node:
         print('| '*lvl + str(len(node['data'].rows)) + " ", end = '')
         if (not node.get('left') or lvl==0):
@@ -54,20 +57,32 @@ def rint(lo,hi):
     return math.floor(0.5 + rand(lo, hi))
 
 def rand(lo, hi, Seed = 937162211):
+    """
+    Random floats
+    """
     lo, hi = lo or 0, hi or 1
     Seed = (16807 * Seed) % 2147483647
     return lo + (hi-lo) * Seed / 2147483647
 
 def rnd(n, nPlaces=3):
+    """
+    Round numbers upto 3 places by default unless another place value is provided.
+    """
     mult = 10 ** (nPlaces)
     return math.floor(n * mult + 0.5) / mult
 
 #Lists
 def push(t, x):
+    """
+    Push an item `x` onto  a list.    
+    """
     t[1 + len(t)] = x
     return x
  
 def kap(t, fun):
+    """
+    -- Map a function on table (results in items key1,key2,...)
+    """
     x = {}
     for i in t:
         k = t.index(i)
@@ -76,38 +91,35 @@ def kap(t, fun):
     return x
 
 def dkap(t, fun):
+    """
+    takes a dictionary t and a function fun as input, applies the function to the keys and values of the dictionary, and returns a new dictionary.
+    """
     u = {}
     for k,v in t.items():
         v, k = fun(k,v) 
         u[k or len(u)] = v
     return u
 
-    # u = {}
-    # for k, v in t.items():
-    #     v, k = fun(k ,v)
-    #     u[k or (1 + len(u))] = v
-    # return u
-
-# def map(t,fun):
-#     u = {}
-#     for k,v in t.items():
-#         v,k = fun(v)
-#         if k is None:
-#             u[1+len(u)] = v
-#         else:
-#             u[k] = v
-#     return u
-
 def any(t):
+    """
+    -- Return one item at random.    
+    """
     return t[random.randint(0, len(t)-1)]
 
 def many(t, n):
+    """
+    -- Return many items, selected at random.  
+    """
     u = []
     for i in range(1,n+1):
         u.append(any(t))
     return u
 
 def cosine(a,b,c):
+    """
+    --> n,n;  
+    find x,y from a line connecting `a` to `b`
+    """
     temp = 1 if c == 0 else 2*c
     x1 = (a**2 + c**2 - b**2) // temp
     x2 = max(0, min(1, x1)) 
@@ -115,6 +127,9 @@ def cosine(a,b,c):
     return x2, y
 
 def coerce(s):
+    """
+    -- Coerce string to boolean, int,float or (failing all else) strings.
+    """
     def fun(s1):
         if s1 == "true":
             return True
@@ -127,21 +142,17 @@ def coerce(s):
     elif type(s) != bool:
         return fun(re.search('^[\s]*[\S+]*[\s]*$', s).group(0))
 
-
-
 def oo(t):
+    """
+    -- Print a nested table (sorted by the keys of the table).
+    """
     print(o(t))
     return t
 
 def o(t):
-    # keys = list(t.keys())
-    # keys = sorted(keys)
-    # sorted_t = {i: t[i] for i in keys }
-    # output = "{"
-    # for k, v in sorted_t.items():
-    #     output = output + ":"+str(k) + " " + str(v) + " "
-    # output = output + "}"
-    # return output
+    """
+    internal function to enable oo() to print a nested table 
+    """
     if type(t)!=dict:
         return str(t)
     def show(k,v):
@@ -156,12 +167,20 @@ def o(t):
     return " ".join(u)
 
 def settings(s):
+    """
+    --> t;  parse help string to extract a table of options
+    """
     t = {}
     for k,v in re.findall("[-][\S]+[\s]+[-][-]([\S]+)[^\n]+= ([\S]+)", s): 
         t[k] = coerce(v)
     return t
 
 def cli(command_line_args):
+    """
+    -- Update `t` using command-line options. For boolean
+    -- flags, just flip the default values. For others, read
+    -- the new value from the command line.
+    """
     options = {}
     options = settings(help)
     for k, v in options.items():
@@ -178,17 +197,10 @@ def cli(command_line_args):
 
     return options
 
-# def csv(file_name, fun):
-#     sep = "([^" + "\," + "]+"
-#     with open(file_name) as file_obj:
-#         reader_obj = reader(file_obj)
-#         for row in reader_obj:
-#             t = {}
-#             for element in row:
-#                 t[str(1+len(t))] = coerce(element)
-#             fun(t)
-
 def csv(sFilename, fun):
+    """
+    -- Run `fun` on the cells  in each row of a csv file.
+    """
     if sFilename:
         src = io.open(sFilename)
         t = []
@@ -201,9 +213,20 @@ def csv(sFilename, fun):
         print("not opeinng")
 
 def deepcopy(t):
+    """
+    -- Deep copy of a table `t`.
+    """
     return copy.deepcopy(t)
 
 def cliffsDelta(the, ns1, ns2):
+    """
+    -- Non-parametric effect-size test
+    --  M.Hess, J.Kromrey. 
+    --  Robust Confidence Intervals for Effect Sizes: 
+    --  A Comparative Study of Cohen's d and Cliff's Delta Under Non-normality and Heterogeneous Variances
+    --  American Educational Research Association, San Diego, April 12 - 16, 2004    
+    --  0.147=  small, 0.33 =  medium, 0.474 = large; med --> small at .2385
+    """
     if(len(ns1)>256):
         ns1 = many(ns1, 256)
     if(len(ns2)>256):
@@ -224,10 +247,15 @@ def cliffsDelta(the, ns1, ns2):
     
     return abs(lt-gt)/n > the['cliffs']
 
-# def diffs(nums1, nums2):
-#     return kap(nums1, cliffsDelta(nums['has'], nums2[k]['has'], nums.txt))
-
 def bins(the,cols,rowss):
+    """
+    -- Return RANGEs that distinguish sets of rows (stored in `rowss`).
+    -- To reduce the search space,
+    -- values in `col` are mapped to small number of `bin`s.
+    -- For NUMs, that number is `the.bins=16` (say) (and after dividing
+    -- the column into, say, 16 bins, then we call `mergeAny` to see
+    -- how many of them can be combined with their neighboring bin).
+    """
     out =[]
     for col in cols:
         ranges = {}
@@ -248,35 +276,58 @@ def bins(the,cols,rowss):
     return out
 
 def bin(the,col,x):
+    """
+    -- Map `x` into a small number of bins. `SYM`s just get mapped
+    -- to themselves but `NUM`s get mapped to one of `the.bins` values.
+    -- Called by function `bins`.
+    """
     if x=="?" or isinstance(col, Sym):
         return x
     tmp = (col.hi - col.lo)/(int(the['bins']) - 1)
     return  1 if col.hi == col.lo else math.floor(float(x)/tmp + 0.5)*tmp
 
 def merge(col1,col2):
-  new = deepcopy(col1)
-  if isinstance(col1, Sym):
-      for n in col2.has:
-        new.add(n)
-  else:
-    for n in col2.has:
-        new.add(new,n)
-    new.lo = min(col1.lo, col2.lo)
-    new.hi = max(col1.hi, col2.hi) 
-  return new
+    """
+    -- Merge two `cols`. Called by function `merge2`.
+    """
+    new = deepcopy(col1)
+    if isinstance(col1, Sym):
+        for n in col2.has:
+            new.add(n)
+    else:
+        for n in col2.has:
+            new.add(new,n)
+        new.lo = min(col1.lo, col2.lo)
+        new.hi = max(col1.hi, col2.hi) 
+    return new
 
 def RANGE(at,txt,lo,hi=None):
+    """
+    -- Create a RANGE  that tracks the y dependent values seen in 
+    -- the range `lo` to `hi` some independent variable in column number `at` whose name is `txt`. 
+    -- Note that the way this is used (in the `bins` function, below)
+    -- for  symbolic columns, `lo` is always the same as `hi`.
+    """
     return {'at':at,'txt':txt,'lo':lo,'hi':lo or hi or lo,'y':Sym()}
 
 def extend(range,n,s):
+    """
+    -- Update a RANGE to cover `x` and `y`
+    """
     range['lo'] = min(float(n), float(range['lo']))
     range['hi'] = max(float(n), float(range['hi']))
     range['y'].add(s)
 
 def itself(x):
+    """
+    -- Return self
+    """
     return x
 
 def value(has,nB = None, nR = None, sGoal = None):
+    """
+    -- A query that returns the score a distribution of symbols inside a SYM.
+    """
     sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
     b,r = 0,0
     for x,n in has.items():
@@ -289,11 +340,24 @@ def value(has,nB = None, nR = None, sGoal = None):
 
 
 def merge2(col1,col2):
-  new = merge(col1,col2)
-  if new.div() <= (col1.div()*col1.n + col2.div()*col2.n)/new.n:
-    return new
+    """
+    -- If the whole is as good (or simpler) than the parts,
+    -- then return the 
+    -- combination of 2 `col`s.
+    -- Called by function `mergeMany`.
+    """
+    new = merge(col1,col2)
+    if new.div() <= (col1.div()*col1.n + col2.div()*col2.n)/new.n:
+        return new
 
 def mergeAny(ranges0):
+    """
+    -- Given a sorted list of ranges, try fusing adjacent items
+    -- (stopping when no more fuse-ings can be found). When done,
+    -- make the ranges run from minus to plus infinity
+    -- (with no gaps in between).
+    -- Called by function `bins`.
+    """
     def noGaps(t):
         for j in range(1,len(t)):
             t[j]['lo'] = t[j-1]['hi']
@@ -315,6 +379,9 @@ def mergeAny(ranges0):
     return noGaps(ranges0) if len(ranges0)==len(ranges1) else mergeAny(ranges1)
 
 def prune(rule, maxSize):
+    """
+    takes a dictionary rule and a dictionary maxSize as input and returns the modified dictionary rule.
+    """
     n = 0
     for txt, ranges in rule.items():
         n = n + 1
@@ -325,6 +392,9 @@ def prune(rule, maxSize):
         return rule
 
 def firstN(sort_ranges,s_fun):
+    """
+    takes a list sort_ranges and a function s_fun as input, and returns a tuple containing the output of s_fun and the maximum value of a certain quantity.
+    """
     print(" ")
     def function(num):
         print(num['range']['txt'],
