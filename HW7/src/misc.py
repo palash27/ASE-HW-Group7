@@ -1,6 +1,7 @@
 import math
 import random
 import re
+from Num import *
 
 the = {'bootstrap': 512, 'conf' : 0.05, 'cliff' : 0.4, 'cohen' : 0.35, 'Fmt' : """"%6.2f", width=40"""}
 
@@ -93,7 +94,7 @@ def cliffsDelta(ns1, ns2):
     
 def delta(i, other):
     e, y, z = 1E-32, i, other
-    return abs(y.mu - z.mu) / ((e + y.sd**2/y.n + z.sd**2/z/n)**0.5)
+    return abs(y.mu - z.mu) / ((e + y.sd**2/y.n + z.sd**2/z.n)**0.5)
     
 def bootstrap(y0,z0):
   x, y, z, yhat, zhat = Num(), Num(), Num(), [], []
@@ -102,12 +103,12 @@ def bootstrap(y0,z0):
   # y contains just y0
   # z contains just z0
   for y1 in y0:
-    add(x,y1)
-    add(y,y1)
+    x.add(y1)
+    y.add(y1)
   
   for z1 in z0:
-    add(x,z1)
-    add(z,z1)
+    x.add(z1)
+    z.add(z1)
   
   xmu, ymu, zmu = x.mu, y.mu, z.mu
   
