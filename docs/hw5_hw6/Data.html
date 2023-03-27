@@ -17,10 +17,102 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="copy.html">copy</a><br>
+<a href="io.html">io</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="operator.html">operator</a><br>
 </td><td width="25%" valign=top><a href="random.html">random</a><br>
-</td><td width="25%" valign=top><a href="re.html">re</a><br>
+<a href="re.html">re</a><br>
 </td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="Data.html#Data">Data</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Data">class <strong>Data</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Data">Data</a>(src)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Data-RULE"><strong>RULE</strong></a>(self, ranges, maxSize)</dt><dd><tt>takes&nbsp;a&nbsp;list&nbsp;of&nbsp;dictionaries&nbsp;containing&nbsp;information&nbsp;about&nbsp;ranges,&nbsp;and&nbsp;an&nbsp;integer&nbsp;maxSize&nbsp;as&nbsp;input,&nbsp;and&nbsp;returns&nbsp;a&nbsp;pruned&nbsp;version&nbsp;of&nbsp;the&nbsp;dictionary&nbsp;of&nbsp;ranges.</tt></dd></dl>
+
+<dl><dt><a name="Data-__init__"><strong>__init__</strong></a>(self, src)</dt><dd><tt>--&nbsp;Create&nbsp;a&nbsp;`DATA`&nbsp;to&nbsp;contain&nbsp;`rows`,&nbsp;summarized&nbsp;in&nbsp;`cols`.<br>
+--&nbsp;Optionally,&nbsp;is&nbsp;any&nbsp;`rows`&nbsp;are&nbsp;supplied,&nbsp;load&nbsp;those&nbsp;in.&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;Case&nbsp;[1]:&nbsp;`src`&nbsp;is&nbsp;a&nbsp;filename&nbsp;of&nbsp;a&nbsp;csv&nbsp;file<br>
+--&nbsp;whose&nbsp;first&nbsp;row&nbsp;<br>
+--&nbsp;are&nbsp;the&nbsp;comma-separate&nbsp;names&nbsp;processed&nbsp;by&nbsp;`COLS`&nbsp;(above).<br>
+--&nbsp;into&nbsp;a&nbsp;new&nbsp;`DATA`.&nbsp;Every&nbsp;other&nbsp;row&nbsp;is&nbsp;stored&nbsp;in&nbsp;the&nbsp;DATA&nbsp;by<br>
+--&nbsp;calling&nbsp;the&nbsp;<br>
+--&nbsp;`row`&nbsp;function&nbsp;(defined&nbsp;below).&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;Case&nbsp;[2]:&nbsp;`src`&nbsp;is&nbsp;another&nbsp;data&nbsp;in&nbsp;which&nbsp;case&nbsp;we&nbsp;minic&nbsp;its<br>
+--&nbsp;column&nbsp;structure.</tt></dd></dl>
+
+<dl><dt><a name="Data-add"><strong>add</strong></a>(self, t)</dt><dd><tt>--&nbsp;Update&nbsp;`data`&nbsp;with&nbsp;&nbsp;row&nbsp;`t`.&nbsp;If&nbsp;`data.cols`<br>
+--&nbsp;does&nbsp;not&nbsp;exist,&nbsp;the&nbsp;use&nbsp;`t`&nbsp;to&nbsp;create&nbsp;`data.cols`.<br>
+--&nbsp;Otherwise,&nbsp;add&nbsp;`t`&nbsp;to&nbsp;`data.rows`&nbsp;and&nbsp;update&nbsp;the&nbsp;summaries&nbsp;in&nbsp;`data.cols`.<br>
+--&nbsp;To&nbsp;avoid&nbsp;updating&nbsp;skipped&nbsp;columns,&nbsp;we&nbsp;only&nbsp;iterate<br>
+--&nbsp;over&nbsp;`cols.x`&nbsp;and&nbsp;`cols.y`.</tt></dd></dl>
+
+<dl><dt><a name="Data-around"><strong>around</strong></a>(self, row1, the, rows=None, cols=None)</dt><dd><tt>returns&nbsp;a&nbsp;sorted&nbsp;list&nbsp;of&nbsp;dictionaries&nbsp;containing&nbsp;information&nbsp;about&nbsp;the&nbsp;distances&nbsp;between&nbsp;a&nbsp;given&nbsp;row&nbsp;and&nbsp;other&nbsp;rows&nbsp;in&nbsp;a&nbsp;data&nbsp;matrix.</tt></dd></dl>
+
+<dl><dt><a name="Data-better"><strong>better</strong></a>(self, row1, row2)</dt><dd><tt>true&nbsp;if&nbsp;`row1`&nbsp;dominates</tt></dd></dl>
+
+<dl><dt><a name="Data-betters"><strong>betters</strong></a>(self, n)</dt><dd><tt>takes&nbsp;an&nbsp;integer&nbsp;n&nbsp;as&nbsp;input,&nbsp;sorts&nbsp;the&nbsp;rows&nbsp;of&nbsp;the&nbsp;class&nbsp;instance&nbsp;using&nbsp;the&nbsp;"better"&nbsp;method&nbsp;and&nbsp;returns&nbsp;a&nbsp;tuple&nbsp;containing&nbsp;two&nbsp;lists.&nbsp;The&nbsp;first&nbsp;list&nbsp;contains&nbsp;the&nbsp;first&nbsp;n&nbsp;rows,&nbsp;and&nbsp;the&nbsp;second&nbsp;list&nbsp;contains&nbsp;the&nbsp;remaining&nbsp;rows.</tt></dd></dl>
+
+<dl><dt><a name="Data-clone"><strong>clone</strong></a>(self, initial)</dt><dd><tt>--&nbsp;Create&nbsp;a&nbsp;new&nbsp;DATA&nbsp;with&nbsp;the&nbsp;same&nbsp;columns&nbsp;as&nbsp;&nbsp;`data`.&nbsp;Optionally,&nbsp;load&nbsp;up&nbsp;the&nbsp;new<br>
+--&nbsp;DATA&nbsp;with&nbsp;the&nbsp;rows&nbsp;inside&nbsp;`ts`.</tt></dd></dl>
+
+<dl><dt><a name="Data-cluster"><strong>cluster</strong></a>(self, the, rows=None, min=None, cols=None, above=None)</dt><dd><tt>returns&nbsp;`rows`,&nbsp;recursively&nbsp;halved</tt></dd></dl>
+
+<dl><dt><a name="Data-dist"><strong>dist</strong></a>(self, row1, row2, the, cols=None)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;the&nbsp;distances&nbsp;0..1&nbsp;between&nbsp;rows&nbsp;`t1`&nbsp;and&nbsp;`t2`.&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;If&nbsp;any&nbsp;values&nbsp;are&nbsp;unknown,&nbsp;assume&nbsp;max&nbsp;distances.</tt></dd></dl>
+
+<dl><dt><a name="Data-furthest"><strong>furthest</strong></a>(self, row1, rows=None, cols=None)</dt><dd><tt>returns&nbsp;the&nbsp;dictionary&nbsp;for&nbsp;the&nbsp;row&nbsp;that&nbsp;is&nbsp;furthest&nbsp;from&nbsp;a&nbsp;given&nbsp;row&nbsp;in&nbsp;a&nbsp;data&nbsp;matrix.</tt></dd></dl>
+
+<dl><dt><a name="Data-half"><strong>half</strong></a>(self, the, rows=None, cols=None, above=None)</dt><dd><tt>--&nbsp;Cluster&nbsp;`rows`&nbsp;into&nbsp;two&nbsp;sets&nbsp;by<br>
+--&nbsp;dividing&nbsp;the&nbsp;data&nbsp;via&nbsp;their&nbsp;distance&nbsp;to&nbsp;two&nbsp;remote&nbsp;points.<br>
+--&nbsp;To&nbsp;speed&nbsp;up&nbsp;finding&nbsp;those&nbsp;remote&nbsp;points,&nbsp;only&nbsp;look&nbsp;at<br>
+--&nbsp;`some`&nbsp;of&nbsp;the&nbsp;data.&nbsp;Also,&nbsp;to&nbsp;avoid&nbsp;outliers,&nbsp;only&nbsp;look<br>
+--&nbsp;`the.Far=.95`&nbsp;(say)&nbsp;of&nbsp;the&nbsp;way&nbsp;across&nbsp;the&nbsp;space.</tt></dd></dl>
+
+<dl><dt><a name="Data-selects"><strong>selects</strong></a>(self, rule, rows)</dt><dd><tt>takes&nbsp;a&nbsp;dictionary&nbsp;of&nbsp;rules&nbsp;and&nbsp;a&nbsp;list&nbsp;of&nbsp;rows&nbsp;as&nbsp;input,&nbsp;and&nbsp;returns&nbsp;a&nbsp;list&nbsp;of&nbsp;rows&nbsp;that&nbsp;satisfy&nbsp;the&nbsp;rules.</tt></dd></dl>
+
+<dl><dt><a name="Data-showRule"><strong>showRule</strong></a>(self, rule)</dt><dd><tt>takes&nbsp;a&nbsp;dictionary&nbsp;of&nbsp;rules&nbsp;as&nbsp;input&nbsp;and&nbsp;prints&nbsp;a&nbsp;formatted&nbsp;version&nbsp;of&nbsp;the&nbsp;rule.</tt></dd></dl>
+
+<dl><dt><a name="Data-stats"><strong>stats</strong></a>(self, what, cols, nPlaces)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;`mid`&nbsp;or&nbsp;`div`&nbsp;of&nbsp;`cols`&nbsp;(defaults&nbsp;to&nbsp;`data.cols.y`).</tt></dd></dl>
+
+<dl><dt><a name="Data-sway"><strong>sway</strong></a>(self, the)</dt><dd><tt>--&nbsp;Recursively&nbsp;prune&nbsp;the&nbsp;worst&nbsp;half&nbsp;the&nbsp;data.&nbsp;Return<br>
+--&nbsp;the&nbsp;survivors&nbsp;and&nbsp;some&nbsp;sample&nbsp;of&nbsp;the&nbsp;rest.</tt></dd></dl>
+
+<dl><dt><a name="Data-tree"><strong>tree</strong></a>(self, the, rows=None, mini=None, cols=None, above=None)</dt><dd><tt>--&nbsp;Cluster,&nbsp;recursively,&nbsp;some&nbsp;`rows`&nbsp;by&nbsp;&nbsp;dividing&nbsp;them&nbsp;in&nbsp;two,&nbsp;many&nbsp;times</tt></dd></dl>
+
+<dl><dt><a name="Data-xpln"><strong>xpln</strong></a>(self, best, rest, the)</dt><dd><tt>--&nbsp;Collect&nbsp;all&nbsp;the&nbsp;ranges&nbsp;into&nbsp;one&nbsp;flat&nbsp;list&nbsp;and&nbsp;sort&nbsp;them&nbsp;by&nbsp;their&nbsp;`value`.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -28,26 +120,18 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-data_clone"><strong>data_clone</strong></a>(data, ts={})</dt><dd><tt>--&nbsp;Create&nbsp;a&nbsp;new&nbsp;DATA&nbsp;with&nbsp;the&nbsp;same&nbsp;columns&nbsp;as&nbsp;&nbsp;`data`.&nbsp;Optionally,&nbsp;load&nbsp;up&nbsp;the&nbsp;new<br>
---&nbsp;DATA&nbsp;with&nbsp;the&nbsp;rows&nbsp;inside&nbsp;`ts`.</tt></dd></dl>
- <dl><dt><a name="-new_data"><strong>new_data</strong></a>()</dt><dd><tt>Create&nbsp;a&nbsp;`DATA`&nbsp;to&nbsp;contain&nbsp;`rows`,&nbsp;summarized&nbsp;in&nbsp;`cols`.</tt></dd></dl>
- <dl><dt><a name="-read_data"><strong>read_data</strong></a>(the, sfile)</dt><dd><tt>--&nbsp;Create&nbsp;a&nbsp;new&nbsp;DATA&nbsp;by&nbsp;reading&nbsp;csv&nbsp;file&nbsp;whose&nbsp;first&nbsp;row&nbsp;<br>
---&nbsp;are&nbsp;the&nbsp;comma-separate&nbsp;names&nbsp;processed&nbsp;by&nbsp;`COLS`&nbsp;(above).<br>
---&nbsp;into&nbsp;a&nbsp;new&nbsp;`DATA`.&nbsp;Every&nbsp;other&nbsp;row&nbsp;is&nbsp;stored&nbsp;in&nbsp;the&nbsp;DATA&nbsp;by<br>
---&nbsp;calling&nbsp;the&nbsp;<br>
---&nbsp;`row`&nbsp;function&nbsp;(defined&nbsp;below).</tt></dd></dl>
- <dl><dt><a name="-reader"><strong>reader</strong></a>(...)</dt><dd><tt>csv_reader&nbsp;=&nbsp;<a href="#-reader">reader</a>(iterable&nbsp;[,&nbsp;dialect='excel']<br>
+<td width="100%"><dl><dt><a name="-reader"><strong>reader</strong></a>(...)</dt><dd><tt>csv_reader&nbsp;=&nbsp;<a href="#-reader">reader</a>(iterable&nbsp;[,&nbsp;dialect='excel']<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional&nbsp;keyword&nbsp;args])<br>
 &nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;row&nbsp;in&nbsp;csv_reader:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process(row)<br>
 &nbsp;<br>
-The&nbsp;"iterable"&nbsp;argument&nbsp;can&nbsp;be&nbsp;any&nbsp;object&nbsp;that&nbsp;returns&nbsp;a&nbsp;line<br>
-of&nbsp;input&nbsp;for&nbsp;each&nbsp;iteration,&nbsp;such&nbsp;as&nbsp;a&nbsp;file&nbsp;object&nbsp;or&nbsp;a&nbsp;list.&nbsp;&nbsp;The<br>
+The&nbsp;"iterable"&nbsp;argument&nbsp;can&nbsp;be&nbsp;any&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;returns&nbsp;a&nbsp;line<br>
+of&nbsp;input&nbsp;for&nbsp;each&nbsp;iteration,&nbsp;such&nbsp;as&nbsp;a&nbsp;file&nbsp;<a href="builtins.html#object">object</a>&nbsp;or&nbsp;a&nbsp;list.&nbsp;&nbsp;The<br>
 optional&nbsp;"dialect"&nbsp;parameter&nbsp;is&nbsp;discussed&nbsp;below.&nbsp;&nbsp;The&nbsp;function<br>
 also&nbsp;accepts&nbsp;optional&nbsp;keyword&nbsp;arguments&nbsp;which&nbsp;override&nbsp;settings<br>
 provided&nbsp;by&nbsp;the&nbsp;dialect.<br>
 &nbsp;<br>
-The&nbsp;returned&nbsp;object&nbsp;is&nbsp;an&nbsp;iterator.&nbsp;&nbsp;Each&nbsp;iteration&nbsp;returns&nbsp;a&nbsp;row<br>
+The&nbsp;returned&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;an&nbsp;iterator.&nbsp;&nbsp;Each&nbsp;iteration&nbsp;returns&nbsp;a&nbsp;row<br>
 of&nbsp;the&nbsp;CSV&nbsp;file&nbsp;(which&nbsp;can&nbsp;span&nbsp;multiple&nbsp;input&nbsp;lines).</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
