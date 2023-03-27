@@ -4,7 +4,7 @@ from src.Num import *
 from src.misc import *
 class Cols:
     """
-    This is Cols
+    This is Cols class used to initialize a new Cols structure
     """
     def __init__(self,t):
         self.names = t
@@ -29,6 +29,10 @@ class Cols:
                     self.klass = col
     
     def add(self,r):
+        """
+        -- Update a COL with multiple items from `t`. This is useful when `col` is being
+        -- used outside of some DATA.
+        """
         for t in [self.x, self.y]:
             for col in t:
                 col.add(r.cells[col.at])

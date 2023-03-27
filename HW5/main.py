@@ -23,6 +23,7 @@ OPTIONS:
   -s  --seed    random number seed           = 937162211
 """
 
+#Magic regex trick to match keys and values from `help`
 magic = "\n[%s]+[-][%S][%s]+[-][-]([%S]+)[^\n]+= ([%S]+)"
 
 def COL(n, s):
@@ -173,6 +174,9 @@ def sort(t, f):
   return t
 
 def per(t,p):
+  """
+  Return the `p`-ratio item in `t`; e.g. `per(t,.5)` returns the medium.
+  """
   p=math.floor(((p or 0.5)*len(t))+0.5)
   return t[max(1,min(len(t),p))]
 
