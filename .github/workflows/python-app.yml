@@ -62,3 +62,7 @@ jobs:
       working-directory: ./HW6
       run: |
         python -m src.main --go all
+    - name: HW7 Test Engine
+      working-directory: ./HW7
+      run: |
+        python -m src.main --go all
