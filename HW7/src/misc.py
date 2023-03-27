@@ -6,6 +6,11 @@ from Num import *
 the = {'bootstrap': 512, 'conf' : 0.05, 'cliff' : 0.4, 'cohen' : 0.35, 'Fmt' : """'%6.2f'""", 'width' : 40}
 
 def erf(x):
+    """
+    -- from Abramowitz and Stegun 7.1.26 
+    -- https://s3.amazonaws.com/nrbook.com/AandS-a4-v1-2.pdf
+    -- (easier to read at https://en.wikipedia.org/wiki/Error_function#Approximation_with_elementary_functions)
+    """
     a1 = 0.254829592
     a2 = -0.284496736
     a3 = 1.421413741
@@ -22,18 +27,29 @@ def erf(x):
 
 
 def gaussian(mu, sd):
+    """
+    n;
+    return a sample from a Gaussian with mean `mu` and sd `sd`
+    """
     mu = mu or 0
     sd = sd or 1
     return mu + sd * math.sqrt(-2 * math.log(random.random())) * math.cos(2 * math.pi * random.random())
 
 def samples(t, n=None):
+    """
+    function samples that takes argument t and n.
+    n here is None by default unless specified.
+    """
     u = []
     for i in range(1, n or len(t)+1):
         u.append(t[random.randint(0, len(t)-1)])
     return u
 
-
 def cliffsDelta(ns1, ns2):
+    """
+    bool;
+    true if different by a trivial amount
+    """
     n, gt, lt = 0, 0, 0
     if len(ns1) > 128:
         ns1 = samples(ns1, 128)
@@ -49,41 +65,54 @@ def cliffsDelta(ns1, ns2):
     return abs(lt - gt) / n <= the['cliff']
     
 def delta(i, other):
+    """
+    calculating Cohen's d, which is a common effect size measure that standardizes the difference between means by dividing by the pooled standard deviation of the two groups.
+    """
     e, y, z = 1E-32, i, other
     return abs(y.mu - z.mu) / ((e + y.sd**2/y.n + z.sd**2/z.n)**0.5)
     
 def bootstrap(y0,z0):
-  x, y, z, yhat, zhat = Num(), Num(), Num(), [], []
+    """
+    --- x will hold all of y0,z0
+    --- y contains just y0
+    --- z contains just z0
+    --- tobs is some difference seen in the whole space
+    --- yhat and zhat are y,z fiddled to have the same mean
+    -- if we have seen enough n, then we are the same
+    -- On Tuesdays and Thursdays I lie awake at night convinced this should be "<"
+    -- and the above "> obs" should be "abs(delta - tobs) > someCriticalValue".
+    """
+    x, y, z, yhat, zhat = Num(), Num(), Num(), [], []
+    for y1 in y0:
+        x.add(y1)
+        y.add(y1)
+
+    for z1 in z0:
+        x.add(z1)
+        z.add(z1)
   
-  # x will hold all of y0,z0
-  # y contains just y0
-  # z contains just z0
-  for y1 in y0:
-    x.add(y1)
-    y.add(y1)
+    xmu, ymu, zmu = x.mu, y.mu, z.mu
   
-  for z1 in z0:
-    x.add(z1)
-    z.add(z1)
+    for y1 in y0:
+        yhat.append(y1 - ymu + xmu)
   
-  xmu, ymu, zmu = x.mu, y.mu, z.mu
-  
-  for y1 in y0:
-    yhat.append(y1 - ymu + xmu)
-  
-  for z1 in z0:
-    zhat.append(z1 - zmu + xmu)
+    for z1 in z0:
+        zhat.append(z1 - zmu + xmu)
     
   
-  tobs = delta(y,z)
-  n = 0
-  for i in range(0,the['bootstrap'] + 1):
-    if delta(Num(samples(yhat)), Num(samples(zhat))) > tobs:
-        n = n + 1 
+    tobs = delta(y,z)
+    n = 0
+    for i in range(0,the['bootstrap'] + 1):
+        if delta(Num(samples(yhat)), Num(samples(zhat))) > tobs:
+            n = n + 1 
    
-  return (n/the['bootstrap']) >= the['conf']
+    return (n/the['bootstrap']) >= the['conf']
   
 def RX(t, s = None):
+    """
+    takes argument t and s where s is defaulted to None unless specified.
+    sort t and return a dictionary based on value of s
+    """
     t.sort()
     
     if s == None:
@@ -92,6 +121,9 @@ def RX(t, s = None):
     return {'name': s, 'rank': 0, 'n': len(t), 'show': '', 'has': t}
 
 def mid(t):
+    """
+    calculates the median of a list of numbers.
+    """
     if 'has' in t.keys():
         t = t['has']
     
@@ -102,12 +134,18 @@ def mid(t):
     return t[n+1]
 
 def div(t):
+    """
+    operation based on presence of 'has' in `t`.
+    """
     if 'has' in t.keys():
         t = t['has']
     
     return (t[int(len(t)*9/10)] - t[int(len(t)*1/10)]) / 2.56
 
 def merge(rx1, rx2):
+    """
+    Merges two RX objects and returns a new RX object.
+    """
     rx3 = RX([], rx1['name'])
     
     rx3['has'] = rx1['has'] + rx2['has']
@@ -116,6 +154,9 @@ def merge(rx1, rx2):
     return rx3
     
 def scottKnot(rxs):
+    """
+    Sorts a list of RX objects by their median and assigns ranks to each object based on Scott-Knott clustering.
+    """
     def merges(i, j):
         out = RX([], rxs[i]['name'])
         for k in range(i, j + 1):
@@ -152,6 +193,10 @@ def scottKnot(rxs):
     return rxs
     
 def tiles(rxs):
+    """
+    ss;
+    makes on string per treatment showing rank, distribution, and values
+    """
     lo, hi = math.inf, -math.inf
     for rx in rxs:
         lo, hi = min(lo, rx['has'][0]), max(hi, rx['has'][-1])
