@@ -2,6 +2,13 @@ from src.Num import *
 from src.Sym import *
 
 def COL(n, s):
+    """
+    -- Create a `NUM` or a `SYM`. Column
+    -- names are a little language that    
+    -- e.g. makes `NUM`s if name starts in upper case; or
+    -- e.g. makes goals if the name ends with
+    -- the maximize (`+`) or minimize (`-`) or klass (`!`) symbol.
+    """
     is_num = s[0].isupper()
     if is_num:
         col = Num(n,s)
