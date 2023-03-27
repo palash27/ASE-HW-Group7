@@ -1,5 +1,5 @@
-from Num import *
-from misc import *
+from src.Num import *
+from src.misc import *
 import random
 
 egs = {}
