@@ -77,6 +77,9 @@ class Data:
     
 
     def around(self, row1 ,the, rows=None, cols=None):
+        """
+        returns a sorted list of dictionaries containing information about the distances between a given row and other rows in a data matrix.
+        """
         if rows == None:
             rows = self.rows
         def fun(row2):
@@ -84,6 +87,9 @@ class Data:
         return sorted(list(map(fun, rows or self.rows)), key = lambda k : k["dist"])
     
     def furthest(self, row1, rows = None, cols = None):
+        """
+        returns the dictionary for the row that is furthest from a given row in a data matrix.
+        """
         t = self.around(row1,rows,cols)
         return t[len(t)-1]
 
