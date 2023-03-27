@@ -4,27 +4,27 @@ import sys
 import random
 from csv import reader
 from src.Sym import *
-from src.Data import *
-
+import copy
+import io 
 #Numerics
 help = """   
 script.lua : an example script with help text and a test suite
 (c)2022, Tim Menzies <timm@ieee.org>, BSD-2 
 USAGE:   script.lua  [OPTIONS] [-g ACTION]
 OPTIONS:
-  -b  --bins    initial number of bins       = 16
-  -c  --cliffs  cliff's delta threshold      = .147
-  -f  --file    data file                    = data/data.csv
-  -F  --Far     distance to distant          = .95
-  -g  --go      start-up action              = nothing
-  -h  --help    show help                    = false
-  -H  --Halves  search space for clustering  = 512
-  -m  --min     size of smallest cluster     = .5
-  -M  --Max     numbers                      = 512
-  -p  --p       dist coefficient             = 2
+  -d  --dump  on crash, dump stack = false
+  -f  --file    name of file       = data/data.csv
+  -F  --Far     distance to "faraway"  = .95
+  -g  --go      start-up action        = data
+  -h  --help    show help              = false
+  -m  --min     stop clusters at N^min = .5
+  -p  --p       distance coefficient   = 2
+  -s  --seed    random number seed     = 937162211
+  -S  --Sample  sampling data size     = 512
   -r  --rest    how many of rest to sample   = 4
+  -b  --bins    initial number of bins       = 16
+  -H  --Halves  search space for clustering  = 512
   -R  --Reuse   child splits reuse a parent pole = true
-  -s  --seed    random number seed           = 937162211
 ACTIONS:
   -g  the	show settings
   -g  sym	check syms
@@ -33,164 +33,6 @@ ACTIONS:
   -g  data	read DATA csv
   -g  stats	stats from DATA
 """
-
-
-def add(the, col, x, n=1):
-    """
-    -- Update one COL with `x` (values from one cells of one row).
-    -- Used  by (e.g.) the `row` and `adds` function.
-    -- `SYM`s just increment a symbol counts.
-    -- `NUM`s store `x` in a finite sized cache. When it
-    -- fills to more than `is.Max`, then at probability 
-    -- `is.Max/col.n` replace any existing item
-    -- (selected at random). If anything is added, the list
-    -- may not longer be sorted so set `col.ok=false`.
-    """
-    if x != '?':
-        col['n'] = col['n'] + n
-        if 'isSym' in col:
-            col['has'][x] = n + col['has'].get(x, 0)
-            if col['has'][x] > col['most']:
-                col['most'], col['mode'] = col['has'][x], x
-        else:
-            col['lo'], col['hi'] = min(x, col['lo']), max(x, col['hi'])
-            all = len(col['has'])
-            if all < int(the['Max']):
-                col['has'].append(x)
-            else:
-                if rand() < int(the['Max'])/int(col['n']):
-                    pos = rint(1,all)
-                    col['has'][pos] = x
-            col['ok'] = False
-
-
-def range_f(at,txt,lo,hi):
-  """
-  -- Create a RANGE  that tracks the y dependent values seen in 
-  -- the range `lo` to `hi` some independent variable in column number `at` whose name is `txt`. 
-  -- Note that the way this is used (in the `bins` function, below)
-  -- for  symbolic columns, `lo` is always the same as `hi`.
-  """
-  return {
-  'at':at,
-  'txt':txt,
-  'lo':lo,
-  'hi':lo or hi or lo,
-  'y':sym()
-  }
-
-
-def extend(range, n, s):
-    """
-    -- Update a RANGE to cover `x` and `y`
-    """
-    range['lo'] = min(n, range['lo'])
-    range['hi'] = max(n, range['hi'])
-    add(range['y'], s)
-
-def dist(data, t1, t2, cols):
-    """
-    -- A query that returns the distances 0..1 between rows `t1` and `t2`.   
-    -- If any values are unknown, assume max distances.
-    """
-    if cols is None:
-        cols = data['cols']['x']
-    d, n = 0, 1/float('inf')
-    def dist1(col, x, y):
-        if x == '?' and y == '?':
-            return 1
-        if 'isSym' in col:
-            if x == y:
-                return 0
-            else:
-                return 1
-        else:
-            x, y = norm(col, x), norm(col, y)
-            if x == '?':
-                if y<0.5:
-                    x = 1
-                else:
-                    x = 1
-            if y == '?':
-                if x < 0.5:
-                    y = 1
-                else:
-                    y = 1
-            return abs(x-y)
-    for _, col in cols.items():
-        n = n + 1
-        d = dist1(col, t1[col['at'], t2[col['at']]**2]) #the.p
-    return (d/n)^(1/2) #the.p
-
-
-def norm(num,n):
-    """
-    A query that normalizes `n` 0..1. Called by (e.g.) the `dist` function.
-    """
-    if n=='?':
-        return n
-    else:
-        return (n-num['lo'])/(num['hi'] - num['lo'] + (1/float('inf')))
-    
-def better(data, row1, row2):
-    """
-    -- A query that returns true if `row1` is better than another.
-    -- This is Zitzler's indicator predicate that
-    -- judges the domination status 
-    -- of pair of individuals by running a “what-if” query. 
-    -- It checks what we lose if we (a) jump from one 
-    -- individual to another (see `s1`), or if we (b) jump the other way (see `s2`).
-    -- The jump that losses least indicates which is the best row.
-    """
-    s1, s2, ys, x, y  = 0, 0, data['cols']['y'], None, None
-    for _, col in ys.items():
-        x = norm(col, row1[col['at']])
-        y = norm(col, row2[col['at']])
-        s1 = s1 - math.exp(col['w']*(x-y)/len(ys))
-        s2 = s2 - math.exp(col['w']*(x-y)/len(ys))
-    return s1/len(ys) < s2/len(ys)
-
-
-def has(col):
-    """
-    -- A query that returns contents of a column. If `col` is a `NUM` with
-    -- unsorted contents, then sort before return the contents.
-    -- Called by (e.g.) the `mid` and `div` functions.
-    """
-    if 'isSym' not in col and not col['ok']:
-        col['has'].sort()
-    col['ok'] = True
-    return col['has']
-
-def mid(col):
-    """
-    -- A query that  returns a `cols`'s central tendency  
-    -- (mode for `SYM`s and median for `NUM`s). Called by (e.g.) the `stats` function.
-    """
-    if 'isSym' in col:
-        return col['mode']
-    else:
-        return per(has(col), 0.5)
-    
-def div(col):
-    """
-    -- A query that returns a `col`'s deviation from central tendency    
-    -- (entropy for `SYM`s and standard deviation for `NUM`s).
-    """
-    if 'isSym' in col:
-        e = 0
-        for _, n in col['has'].items():
-            e = e-n/int(col['n'])*math.log(n/int(col['n']),2)
-        return e
-    else:
-        return (per(has(col),0.9) - per(has(col),0.1))/2.58
-
-def per(t, p=0.5):
-    """
-    -- Return the `p`-ratio item in `t`; e.g. `per(t,.5)` returns the medium.
-    """
-    p = math.floor((p*len(t))+0.5)
-    return t[max(1, min(len(t),p))]
 
 
 def show(node, what, cols, nPlaces, lvl=0):
@@ -203,121 +45,7 @@ def show(node, what, cols, nPlaces, lvl=0):
         show(node.get('left'), what, cols, nPlaces, lvl+1)
         show(node.get('right'), what, cols, nPlaces, lvl+1)
 
-#Optimization
 
-def sway(data):
-    """
-    -- Recursively prune the worst half the data. Return
-    -- the survivors and some sample of the rest.
-    """
-    def worker(rows,worse):
-        if len(rows) <= len(data['rows'])**the['min']:
-            return rows,many(worse,the['rest']*len(rows))
-        else:
-            l,r,A,B=half(data,rows,cols,above)
-            if better(data,B,A):
-                l,r,A,B=r,l,B,A
-                map(r,push(worse,row))
-                return worker(l,worse,A)
-    best,rest=worker(data['rows'],{})
-    return data_clone(data,best), data_clone(data,rest)
-
-# Discretization
-
-def bins(cols, rowss):
-    """
-    -- Return RANGEs that distinguish sets of rows (stored in `rowss`).
-    -- To reduce the search space,
-    -- values in `col` are mapped to small number of `bin`s.
-    -- For NUMs, that number is `the.bins=16` (say) (and after dividing
-    -- the column into, say, 16 bins, then we call `mergeAny` to see
-    -- how many of them can be combined with their neighboring bin).
-    """
-    out={}
-    for _,col in enumerate(cols):
-        ranges={}
-        for y,rows in enumerate(rowss):
-            for _,row in enumerate(rows):
-                x,k=row[col['at']]
-                if x!="?":
-                    k=bin(col,x)
-                    ranges[k]=ranges[k] or RANGE(col['at'], col['txt'], x)
-                    extend(ranges[k],x,y)
-        ranges = sorted(map(ranges,itself))
-        out[len(out)] = col['isSym'] and ranges or mergeAny(ranges)
-    return out
-
-def bin(col,x):
-    """
-    -- Map `x` into a small number of bins. `SYM`s just get mapped
-    -- to themselves but `NUM`s get mapped to one of `the.bins` values.
-    -- Called by function `bins`.
-    """
-    if x=="?" or col['isSym']:
-        return x
-    tmp = (col['hi']-col['lo'])/(the['bins']-1)
-    return col['hi'] == col['lo'] and 1 or math.floor(x/tmp+0.5)*tmp
-
-def mergeAny(ranges0):
-    """
-    -- Given a sorted list of ranges, try fusing adjacent items
-    -- (stopping when no more fuse-ings can be found). When done,
-    -- make the ranges run from minus to plus infinity
-    -- (with no gaps in between).
-    """
-    def noGaps(t):
-        for j in range(1,len(t)):
-            t[j]['lo'] = t[j-1]['hi']
-        
-        t[0]['lo']  = float('-inf')
-        t[-1]['hi'] = float('inf')
-        
-        return t
-  
-    ranges1, j, left, right, y = [], 0, None, None, None
-    
-    while j < len(ranges0):
-        left, right = ranges0[j], None
-        
-        if j + 1 < len(ranges1):
-            right = ranges0[j + 1]
-            y = merge2(left['y'],right['y'])
-            if y:
-                j += 1
-                left['hi'], left['y'] = right['hi'], y
-        
-        ranges1.append(left)
-        j += 1
-    
-    return len(ranges0) == len(ranges1) and noGaps(ranges0) or mergeAny(ranges1)
-
-def merge2(col1, col2):
-    """
-    -- If (1) the parts are too small or
-    -- (2) the whole is as good (or simpler) than the parts,
-    -- then return the merge.
-    """
-    new = merge(col1, col2)
-    
-    if div(new) <= (div(col1)*col1['n'] + div(col2)*col2['n'])/new['n']:
-        return new
-
-
-def merge(col1, col2):
-    """
-    -- Merge two `cols`. Called by function `merged`.
-    """
-    new = copy(col1)
-    if col1['isSym']:
-        for x, n in col2['has'].items():
-            add(new, x, n)
-    else:
-        for _, n in col2['has'].items():
-            add(new, n)
-        new.lo = min(col1['lo'], col2['lo'])
-        new.hi = max(col1['hi'], col2['hi'])
-    
-    return new
 
 def rint(lo,hi):
     """
@@ -325,64 +53,58 @@ def rint(lo,hi):
     """
     return math.floor(0.5 + rand(lo, hi))
 
-def rand(lo=0, hi=1, Seed = 937162211):
-    """
-    random floats
-    """
+def rand(lo, hi, Seed = 937162211):
+    lo, hi = lo or 0, hi or 1
     Seed = (16807 * Seed) % 2147483647
     return lo + (hi-lo) * Seed / 2147483647
 
-def rnd(n, nPlaces=2):
-    """
-    -- Round numbers
-    """
+def rnd(n, nPlaces=3):
     mult = 10 ** (nPlaces)
-    return math.floor(n * mult) / mult
+    return math.floor(n * mult + 0.5) / mult
 
 #Lists
 def push(t, x):
-    """
-    -- Push an item `x` onto  a list. 
-    """
-    t[1+len(t)] = x
+    t[1 + len(t)] = x
     return x
  
 def kap(t, fun):
-    """
-    -- Map a function on table (results in items key1,key2,...)
-    """
-    u = {}
-    for k, v in t.items():
-        v, k = fun(k ,v)
-        u[k or (1 + len(u))] = v
-    return u
+    x = {}
+    for i in t:
+        k = t.index(i)
+        i, k =fun(k,i)
+        x[k or len(x)] = i
+    return x
 
-def map(t,fun):
-    """
-    -- Map a function on  table (results in items 1,2,3...)
-    """
+def dkap(t, fun):
     u = {}
     for k,v in t.items():
-        v,k = fun(v)
-        if k is None:
-            u[1+len(u)] = v
-        else:
-            u[k] = v
+        v, k = fun(k,v) 
+        u[k or len(u)] = v
     return u
 
+    # u = {}
+    # for k, v in t.items():
+    #     v, k = fun(k ,v)
+    #     u[k or (1 + len(u))] = v
+    # return u
+
+# def map(t,fun):
+#     u = {}
+#     for k,v in t.items():
+#         v,k = fun(v)
+#         if k is None:
+#             u[1+len(u)] = v
+#         else:
+#             u[k] = v
+#     return u
+
 def any(t):
-    """
-    -- Return one item at random.    
-    """
-    return t[random.randint(1, len(t)-1)]
+    return t[random.randint(0, len(t)-1)]
 
 def many(t, n):
-    """
-    -- Return many items, selected at random.   
-    """
-    u = {}
+    u = []
     for i in range(1,n+1):
-        u[1+len(u)] = any(t)
+        u.append(any(t))
     return u
 
 def cosine(a,b,c):
@@ -393,9 +115,6 @@ def cosine(a,b,c):
     return x2, y
 
 def coerce(s):
-    """
-    -- Coerce string to boolean, int,float or (failing all else) strings.
-    """
     def fun(s1):
         if s1 == "true":
             return True
@@ -411,24 +130,30 @@ def coerce(s):
 
 
 def oo(t):
-    """
-    -- Print a nested table (sorted by the keys of the table).
-    """
     print(o(t))
     return t
 
 def o(t):
-    """
-    Implementation of `o` which is called in `oo`
-    """
-    keys = list(t.keys())
-    keys = sorted(keys)
-    sorted_t = {i: t[i] for i in keys }
-    output = "{"
-    for k, v in sorted_t.items():
-        output = output + ":"+str(k) + " " + str(v) + " "
-    output = output + "}"
-    return output
+    # keys = list(t.keys())
+    # keys = sorted(keys)
+    # sorted_t = {i: t[i] for i in keys }
+    # output = "{"
+    # for k, v in sorted_t.items():
+    #     output = output + ":"+str(k) + " " + str(v) + " "
+    # output = output + "}"
+    # return output
+    if type(t)!=dict:
+        return str(t)
+    def show(k,v):
+        if "^_" not in str(k):
+            v=o(v)
+            return str(k)+" : "+str(v)
+    u=[]
+    for k in t:
+        u.append(show(k,t[k]))
+    if len(t)==0:
+        u.sort()
+    return " ".join(u)
 
 def settings(s):
     t = {}
@@ -437,11 +162,6 @@ def settings(s):
     return t
 
 def cli(command_line_args):
-    """
-    -- Update `t` using command-line options. For boolean
-    -- flags, just flip the default values. For others, read
-    -- the new value from the command line.
-    """
     options = {}
     options = settings(help)
     for k, v in options.items():
@@ -458,16 +178,177 @@ def cli(command_line_args):
 
     return options
 
-def csv(file_name, fun):
-    """
-    -- Run `fun` on the cells  in each row of a csv file.
-    """
-    sep = "([^" + "\," + "]+"
-    with open(file_name) as file_obj:
-        reader_obj = reader(file_obj)
-        for row in reader_obj:
-            t = {}
-            for element in row:
-                t[str(1+len(t))] = coerce(element)
-            fun(t)
+# def csv(file_name, fun):
+#     sep = "([^" + "\," + "]+"
+#     with open(file_name) as file_obj:
+#         reader_obj = reader(file_obj)
+#         for row in reader_obj:
+#             t = {}
+#             for element in row:
+#                 t[str(1+len(t))] = coerce(element)
+#             fun(t)
 
+def csv(sFilename, fun):
+    if sFilename:
+        src = io.open(sFilename)
+        t = []
+        for _,l in enumerate(src):
+            s = l.strip().split(',')
+            r = list(map(coerce, s))
+            t.append(r)
+            fun(r)
+    else:
+        print("not opeinng")
+
+def deepcopy(t):
+    return copy.deepcopy(t)
+
+def cliffsDelta(the, ns1, ns2):
+    if(len(ns1)>256):
+        ns1 = many(ns1, 256)
+    if(len(ns2)>256):
+        ns2 = many(ns2, 256)
+    if(len(ns1)>10*len(ns2)):
+        ns1 = many(ns1, 10*len(ns2))
+    if(len(ns2)>10*len(ns1)):
+        ns2= many(ns2, 10*len(ns1))
+    
+    n, gt, lt = 0, 0, 0
+    for _,x in enumerate(ns1):
+        for _,y in enumerate(ns2):
+            n+=1
+            if x > y:
+                gt = gt + 1
+            if x < y: 
+                lt = lt + 1
+    
+    return abs(lt-gt)/n > the['cliffs']
+
+# def diffs(nums1, nums2):
+#     return kap(nums1, cliffsDelta(nums['has'], nums2[k]['has'], nums.txt))
+
+def bins(the,cols,rowss):
+    out =[]
+    for col in cols:
+        ranges = {}
+        for y, rows in rowss.items():
+            for row in rows:
+                x = row.cells[col.at]
+                if x!= '?':
+                    k = int(bin(the,col,x))
+                    if not k in ranges:
+                        ranges[k] = RANGE(col.at, col.txt, x)
+                    extend(ranges[k], x, y)
+        ranges = list(dict(sorted(ranges.items())).values())
+        if(isinstance(col, Sym)):
+            r = ranges
+        else:
+            r = mergeAny(ranges)
+        out.append(r)
+    return out
+
+def bin(the,col,x):
+    if x=="?" or isinstance(col, Sym):
+        return x
+    tmp = (col.hi - col.lo)/(int(the['bins']) - 1)
+    return  1 if col.hi == col.lo else math.floor(float(x)/tmp + 0.5)*tmp
+
+def merge(col1,col2):
+  new = deepcopy(col1)
+  if isinstance(col1, Sym):
+      for n in col2.has:
+        new.add(n)
+  else:
+    for n in col2.has:
+        new.add(new,n)
+    new.lo = min(col1.lo, col2.lo)
+    new.hi = max(col1.hi, col2.hi) 
+  return new
+
+def RANGE(at,txt,lo,hi=None):
+    return {'at':at,'txt':txt,'lo':lo,'hi':lo or hi or lo,'y':Sym()}
+
+def extend(range,n,s):
+    range['lo'] = min(float(n), float(range['lo']))
+    range['hi'] = max(float(n), float(range['hi']))
+    range['y'].add(s)
+
+def itself(x):
+    return x
+
+def value(has,nB = None, nR = None, sGoal = None):
+    sGoal,nB,nR = sGoal or True, nB or 1, nR or 1
+    b,r = 0,0
+    for x,n in has.items():
+        if x==sGoal:
+            b = b + n
+        else:
+            r = r + n
+    b,r = b/(nB+1/float("inf")), r/(nR+1/float("inf"))
+    return b**2/(b+r)
+
+
+def merge2(col1,col2):
+  new = merge(col1,col2)
+  if new.div() <= (col1.div()*col1.n + col2.div()*col2.n)/new.n:
+    return new
+
+def mergeAny(ranges0):
+    def noGaps(t):
+        for j in range(1,len(t)):
+            t[j]['lo'] = t[j-1]['hi']
+        t[0]['lo']  = float("-inf")
+        t[len(t)-1]['hi'] =  float("inf")
+        return t
+
+    ranges1,j = [],0
+    while j <= len(ranges0)-1:
+        left = ranges0[j]
+        right = None if j == len(ranges0)-1 else ranges0[j+1]
+        if right:
+            y = merge2(left['y'], right['y'])
+            if y:
+                j = j+1
+                left['hi'], left['y'] = right['hi'], y
+        ranges1.append(left)
+        j = j+1
+    return noGaps(ranges0) if len(ranges0)==len(ranges1) else mergeAny(ranges1)
+
+def prune(rule, maxSize):
+    n = 0
+    for txt, ranges in rule.items():
+        n = n + 1
+        if(len(ranges) == maxSize[txt]):
+            n = n+1
+            rule[txt] = None
+    if n > 0:
+        return rule
+
+def firstN(sort_ranges,s_fun):
+    print(" ")
+    def function(num):
+        print(num['range']['txt'],
+              num['range']['lo'],
+              num['range']['hi'],
+              rnd(num['val']),
+              num['range']['y'].has)
+    
+    def useful(val):
+        if val['val']> first_val/10 and val['val']>.05:
+            return val
+    
+    _ = list(map(function, sort_ranges))
+    print()
+    
+    first_val = sort_ranges[0]['val']
+    sort_ranges = [x for x in sort_ranges if useful(x)]
+    
+    most,out = -1, -1
+    for n in range(1,len(sort_ranges)+1):
+        sliced_val = sort_ranges[0:n]
+        slice_val_range = [x['range'] for x in sliced_val]
+        temp,rule = s_fun(slice_val_range)
+        if temp and temp > most:
+            out,most = rule,temp
+    
+    return out,most
