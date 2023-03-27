@@ -17,14 +17,97 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="re.html">re</a><br>
-</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="copy.html">copy</a><br>
+<a href="io.html">io</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="random.html">random</a><br>
+</td><td width="25%" valign=top><a href="re.html">re</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="Num.html#Num">Num</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Num">class <strong>Num</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Num">Num</a>(at='',&nbsp;txt='')&nbsp;-&amp;gt;&nbsp;None<br>
+&nbsp;<br>
+creating&nbsp;a&nbsp;class&nbsp;<a href="#Num">Num</a>&nbsp;to&nbsp;accomodate&nbsp;all&nbsp;functions&nbsp;that&nbsp;help&nbsp;in&nbsp;summarizing&nbsp;a&nbsp;stream&nbsp;of&nbsp;numbers.<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Num-__init__"><strong>__init__</strong></a>(self, at='', txt='') -&gt; None</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="Num-add"><strong>add</strong></a>(self, x)</dt><dd><tt>--&nbsp;Update&nbsp;one&nbsp;COL&nbsp;with&nbsp;`x`&nbsp;(values&nbsp;from&nbsp;one&nbsp;cells&nbsp;of&nbsp;one&nbsp;row).<br>
+--&nbsp;Used&nbsp;&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`row`&nbsp;and&nbsp;`adds`&nbsp;function.<br>
+--&nbsp;`SYM`s&nbsp;just&nbsp;increment&nbsp;a&nbsp;symbol&nbsp;counts.<br>
+--&nbsp;`NUM`s&nbsp;store&nbsp;`x`&nbsp;in&nbsp;a&nbsp;finite&nbsp;sized&nbsp;cache.&nbsp;When&nbsp;it<br>
+--&nbsp;fills&nbsp;to&nbsp;more&nbsp;than&nbsp;`the.Max`,&nbsp;then&nbsp;at&nbsp;probability&nbsp;<br>
+--&nbsp;`the.Max/col.n`&nbsp;replace&nbsp;any&nbsp;existing&nbsp;item<br>
+--&nbsp;(selected&nbsp;at&nbsp;random).&nbsp;If&nbsp;anything&nbsp;is&nbsp;added,&nbsp;the&nbsp;list<br>
+--&nbsp;may&nbsp;not&nbsp;longer&nbsp;be&nbsp;sorted&nbsp;so&nbsp;set&nbsp;`col.ok=false`.</tt></dd></dl>
+
+<dl><dt><a name="Num-dist"><strong>dist</strong></a>(self, n1, n2)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;the&nbsp;distances&nbsp;0..1&nbsp;between&nbsp;rows&nbsp;`t1`&nbsp;and&nbsp;`t2`.&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;If&nbsp;any&nbsp;values&nbsp;are&nbsp;unknown,&nbsp;assume&nbsp;max&nbsp;distances.</tt></dd></dl>
+
+<dl><dt><a name="Num-div"><strong>div</strong></a>(self)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;returns&nbsp;a&nbsp;`col`'s&nbsp;deviation&nbsp;from&nbsp;central&nbsp;tendency&nbsp;&nbsp;&nbsp;&nbsp;<br>
+--&nbsp;(entropy&nbsp;for&nbsp;`SYM`s&nbsp;and&nbsp;standard&nbsp;deviation&nbsp;for&nbsp;`NUM`s)..</tt></dd></dl>
+
+<dl><dt><a name="Num-mid"><strong>mid</strong></a>(self)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;&nbsp;returns&nbsp;a&nbsp;`cols`'s&nbsp;central&nbsp;tendency&nbsp;&nbsp;<br>
+--&nbsp;(mode&nbsp;for&nbsp;`SYM`s&nbsp;and&nbsp;median&nbsp;for&nbsp;`NUM`s).&nbsp;Called&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`stats`&nbsp;function.</tt></dd></dl>
+
+<dl><dt><a name="Num-norm"><strong>norm</strong></a>(self, n)</dt><dd><tt>--&nbsp;A&nbsp;query&nbsp;that&nbsp;normalizes&nbsp;`n`&nbsp;0..1.&nbsp;Called&nbsp;by&nbsp;(e.g.)&nbsp;the&nbsp;`dist`&nbsp;function.</tt></dd></dl>
+
+<dl><dt><a name="Num-rnd"><strong>rnd</strong></a>(self, x, n)</dt><dd><tt>Round&nbsp;numbers</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
 <td colspan=3 valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-num"><strong>num</strong></a>(n=0, s='')</dt><dd><tt>--&nbsp;Create&nbsp;a&nbsp;`NUM`&nbsp;to&nbsp;summarize&nbsp;a&nbsp;stream&nbsp;of&nbsp;numbers.</tt></dd></dl>
-</td></tr></table>
+<td width="100%"><dl><dt><a name="-reader"><strong>reader</strong></a>(...)</dt><dd><tt>csv_reader&nbsp;=&nbsp;<a href="#-reader">reader</a>(iterable&nbsp;[,&nbsp;dialect='excel']<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[optional&nbsp;keyword&nbsp;args])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for&nbsp;row&nbsp;in&nbsp;csv_reader:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;process(row)<br>
+&nbsp;<br>
+The&nbsp;"iterable"&nbsp;argument&nbsp;can&nbsp;be&nbsp;any&nbsp;<a href="builtins.html#object">object</a>&nbsp;that&nbsp;returns&nbsp;a&nbsp;line<br>
+of&nbsp;input&nbsp;for&nbsp;each&nbsp;iteration,&nbsp;such&nbsp;as&nbsp;a&nbsp;file&nbsp;<a href="builtins.html#object">object</a>&nbsp;or&nbsp;a&nbsp;list.&nbsp;&nbsp;The<br>
+optional&nbsp;"dialect"&nbsp;parameter&nbsp;is&nbsp;discussed&nbsp;below.&nbsp;&nbsp;The&nbsp;function<br>
+also&nbsp;accepts&nbsp;optional&nbsp;keyword&nbsp;arguments&nbsp;which&nbsp;override&nbsp;settings<br>
+provided&nbsp;by&nbsp;the&nbsp;dialect.<br>
+&nbsp;<br>
+The&nbsp;returned&nbsp;<a href="builtins.html#object">object</a>&nbsp;is&nbsp;an&nbsp;iterator.&nbsp;&nbsp;Each&nbsp;iteration&nbsp;returns&nbsp;a&nbsp;row<br>
+of&nbsp;the&nbsp;CSV&nbsp;file&nbsp;(which&nbsp;can&nbsp;span&nbsp;multiple&nbsp;input&nbsp;lines).</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>help</strong> = '   <font color="#c040c0">\n</font>script.lua : an example script with help tex...  data<font color="#c040c0">\t</font>read DATA csv<font color="#c040c0">\n</font>  -g  stats<font color="#c040c0">\t</font>stats from DATA<font color="#c040c0">\n</font>'</td></tr></table>
 </body></html>
