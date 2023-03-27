@@ -1,17 +1,14 @@
-from Num import *
-from Sym import *
-from misc import *
+from src.Num import *
+from src.Sym import *
 
-class Col:
-    def __init__(self, n, s):
-        """
-        -- Create a `NUM` or a `SYM`. Column
-        -- names are a little language that    
-        -- e.g. makes `NUM`s if name starts in upper case; or
-        -- e.g. makes goals if the name ends with
-        -- the maximize (`+`) or minimize (`-`) or klass (`!`) symbol.
-        """
-        self.col = Num(n, s) if s[0].isupper() else Sym(n, s)
-        self.isIgnored = self.col.txt.endswith("X")
-        self.isKlass = self.col.txt.endswith("!")
-        self.isGoal = self.col.txt[-1] in ["!", "+", "-"]
+def COL(n, s):
+    is_num = s[0].isupper()
+    if is_num:
+        col = Num(n,s)
+    else:
+        col = Sym(n, s)
+    col.isIgnored = s.endswith("X")
+    col.isKlass = s.endswith("!")
+    col.isGoal = s.endswith("!") or s.endswith("+") or s.endswith("-")
+    
+    return col

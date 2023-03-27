@@ -1,19 +1,43 @@
-from Col import *  # type: ignore
-
-
+import re
+from src.Sym import *
+from src.Num import *
+from src.misc import *
 class Cols:
-    def __init__(self, ss):
-        self.names = ss
+    """
+    This is Cols
+    """
+    def __init__(self,t):
+        self.names = t
         self.all = []
         self.x = []
         self.y = []
-        for i, val in enumerate(ss):
-            col = Col(i, val)
+        self.klass = None
+        for n,s in enumerate(t):
+            pattern = "^[A-Z]+"
+            col_cond = re.search(pattern, s)
+            if col_cond:
+                col = Num(n,s)
+            else:
+                col = Sym(n,s)
             self.all.append(col)
-            if not col.isIgnored:
-                if col.isKlass:
-                    col.isKlass = col
-                if col.isGoal:
+            if not re.search("X$", s):
+                if re.search("[!+-]$", s):
                     self.y.append(col)
                 else:
                     self.x.append(col)
+                if re.search("!$", s):
+                    self.klass = col
+    
+    def add(self,r):
+        for t in [self.x, self.y]:
+            for col in t:
+                col.add(r.cells[col.at])
+
+    
+
+                        
+            
+
+
+
+                
